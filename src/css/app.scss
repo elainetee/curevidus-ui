@@ -2,8 +2,39 @@
 .text-logocolour {
     color: #FFBABA;
     font-weight: bold;
+    font-size: 28px;
+}
+
+.text-headingcolour {
+    color: #963600;
+    font-weight: bold;
+}
+
+.text-loginbtn {
+    color: black;
+    font-weight: bold;
+}
+
+.bg-loginbtn {
+    background: $accent;
+    width: 40%;
+}
+
+#hover {
+    font-size: 15px;
+}
+
+#hover:hover{
+    text-decoration: underline;
 }
 
 .pg-bg-colour {
     background: #F1FAEE;
+}
+
+.align-center {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
