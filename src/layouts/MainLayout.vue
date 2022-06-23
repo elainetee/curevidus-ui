@@ -19,6 +19,34 @@
           CurevidUs
         </q-toolbar-title>
 
+        <!-- <q-btn dense flat round @click="toggleLeftDrawer">
+        <q-avatar size="30px">
+          <img src="icons/noti.png">
+        </q-avatar>
+        </q-btn> -->
+        <div class="q-pr-xl cursor-pointer non-selectable">
+            <q-avatar square size="30px">
+            <img src="icons/userdd.png">
+            <q-menu auto-close>
+              <q-list dense style="min-width: 100px">
+                <q-item clickable>
+                  <q-item-section>My Profile</q-item-section>
+                </q-item>
+                <q-item clickable >
+                  <q-item-section @click="$router.push('/')">Logout</q-item-section>
+                </q-item>
+                <!-- <q-item clickable>
+                  <q-item-section>Paste</q-item-section>
+                </q-item>
+                <q-separator />
+                <q-item clickable>
+                  <q-item-section>Select All</q-item-section>
+                </q-item> -->
+              </q-list>
+            </q-menu>
+            </q-avatar>
+          </div>
+
         <!-- <q-btn dense flat round icon="menu" @click="toggleRightDrawer" /> -->
       </q-toolbar>
       <div class="q-pa-xs q-pl-md row items-center pg-bg-colour">
