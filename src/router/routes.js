@@ -17,7 +17,8 @@ const routes = [
       { name: "post", path: "/post/:id", component: () => import('pages/Post.vue') },
       { name: "editUser", path: "/user/:id", component: () => import('pages/EditUser.vue')},
       { name: "editPost", path: "/editpost/:id", component: () => import('pages/EditPost.vue')},
-    
+      { path: "/homepage", component: () => import('pages/Homepage.vue') },
+      { path: "/report", component: () => import('pages/ConditionReport.vue') }
     ]
   },
 

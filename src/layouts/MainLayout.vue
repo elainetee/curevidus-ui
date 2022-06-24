@@ -19,6 +19,18 @@
           CurevidUs
         </q-toolbar-title>
 
+        <div class="q-pr-xl row text-navbar cursor-pointer non-selectable">
+          <div class="q-mr-xl" @click="$router.push('/report')">
+            Condition Report
+          </div>
+          <div class="q-mr-xl">
+            Friends
+          </div>
+          <div>
+            Forum
+          </div>
+        </div>
+
         <!-- <q-btn dense flat round @click="toggleLeftDrawer">
         <q-avatar size="30px">
           <img src="icons/noti.png">
