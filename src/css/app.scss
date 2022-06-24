@@ -5,17 +5,28 @@
     font-size: 28px;
 }
 
+.text-navbar {
+    color: #FFBABA;
+    // font-weight: bold;
+    font-size: 20px;
+}
+
 .text-headingcolour {
     color: #963600;
     font-weight: bold;
 }
 
-.text-loginbtn {
+.text-subheadcolour {
     color: black;
     font-weight: bold;
 }
 
-.bg-loginbtn {
+.text-btn {
+    color: black;
+    font-weight: bold;
+}
+
+.bg-btn {
     background: $accent;
     width: 40%;
 }

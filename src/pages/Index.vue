@@ -43,8 +43,8 @@
 
               <div class="flex flex-center">
                 <q-btn
-                  color="loginbtn"
-                  text-color="loginbtn"
+                  color="btn"
+                  text-color="btn"
                   label="Login"
                   :loading="isLoading"
                   type="submit"
