@@ -95,7 +95,12 @@ module.exports = configure(function (ctx) {
       // directives: [],
 
       // Quasar plugins
-      plugins: []
+      plugins: [
+        'Cookies',
+        'Notify' ,
+        'Loading' ,
+        'Dialog'
+      ]
     },
 
     // animations: 'all', // --- includes all animations
@@ -139,8 +144,8 @@ module.exports = configure(function (ctx) {
       },
 
       manifest: {
-        name: `Guava-UI`,
-        short_name: `Guava-UI`,
+        name: `Cuvevidus-UI`,
+        short_name: `Curevidus-UI`,
         description: `A Quasar Framework app`,
         display: 'standalone',
         orientation: 'portrait',
@@ -206,7 +211,7 @@ module.exports = configure(function (ctx) {
       builder: {
         // https://www.electron.build/configuration/configuration
 
-        appId: 'guava-ui'
+        appId: 'curevidus-ui'
       },
 
       // "chain" is a webpack-chain object https://github.com/neutrinojs/webpack-chain
