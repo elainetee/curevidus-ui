@@ -11,7 +11,9 @@
         <div class="q-pl-xl"></div>
 
         <q-toolbar-title class="text-logocolour">
-          <q-avatar>
+          <q-avatar
+          class="cursor-pointer"
+            @click="$router.push({ name: 'homepage' })">
             <img src="icons/Curevid png.png" />
           </q-avatar>
           CurevidUs
@@ -21,7 +23,7 @@
         <q-avatar size="30px">
           <img src="icons/noti.png">
         </q-avatar>
-        </q-btn> -->
+        </q-btn> -->{{user.name}}
         <div class="q-pr-xl cursor-pointer non-selectable">
           <q-avatar square size="30px">
             <img src="icons/userdd.png" />
@@ -82,11 +84,29 @@
 
 <script>
 import { ref } from "vue";
+import { Cookies } from "quasar";
 
 export default {
-  data() {},
+  data() {
+    return{
+      user:[]
+    }
+  },
 
   methods: {
+    async getUsername() {
+      try {
+        //  Axios.defaults.headers.common['Authorization'] = 'Bearer' + Cookies.get('token')
+        const res = await this.$axios.get(`http://localhost/api/user`, {
+          headers: { Authorization: "Bearer" + Cookies.get("token") },
+          contentType : "text/plain"
+        });
+        this.user = res.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     async logout() {
       try {
         const res = await this.$axios.post(
@@ -122,6 +142,9 @@ export default {
         rightDrawerOpen.value = !rightDrawerOpen.value;
       },
     };
+  },
+    mounted() {
+    this.getUsername();
   },
 };
 </script>
