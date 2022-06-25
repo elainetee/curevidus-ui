@@ -92,7 +92,7 @@ export default {
       try {
         const res = await this.$axios.post(
           // `${process.env.API}/api/login`,
-          `http://localhost/api/login`,
+          `http://127.0.0.1:8000/api/login`,
           this.form,
           {}
         );

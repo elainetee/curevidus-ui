@@ -124,12 +124,13 @@ export default {
     async getUser() {
       try {
         const res = await this.$axios.get(
-          `http://localhost/api/alluser`,
+          `http://127.0.0.1:8000/api/alluser`,
           {
             headers: { Authorization: "Bearer" + Cookies.get("token") },
           }
         );
         this.users = res.data;
+        // console.log(this.users);
       } catch (error) {
         console.log(error);
         if (error.response.status == 401) {
@@ -159,7 +160,7 @@ export default {
         .onOk(async () => {
           try {
             const res = await this.$axios.delete(
-              `http://localhost/api/user/` + props.row.id,
+              `http://127.0.0.1:8000/api/user/` + props.row.id,
               {
                 headers: { Authorization: "Bearer" + Cookies.get("token") },
               }

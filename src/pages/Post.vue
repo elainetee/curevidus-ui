@@ -102,7 +102,7 @@ export default {
     },
     async getUser() {
       try {
-        const res = await this.$axios.get(`http://localhost/api/alluser`, {
+        const res = await this.$axios.get(`http://127.0.0.1:8000/api/alluser`, {
           headers: { Authorization: "Bearer" + Cookies.get("token") },
         });
         this.users = res.data;
@@ -117,7 +117,7 @@ export default {
     async deletePost(id) {
       try {
         const res = await this.$axios.delete(
-          `http://localhost/api/post/delete/` + id,
+          `http://127.0.0.1:8000/api/post/delete/` + id,
           {
             headers: { Authorization: "Bearer" + Cookies.get("token") },
           }
@@ -133,7 +133,7 @@ export default {
     async getPost() {
       try {
         const res = await this.$axios.get(
-          `http://localhost/api/post/` + this.$route.params.id,
+          `http://127.0.0.1:8000/api/post/` + this.$route.params.id,
           {
             headers: { Authorization: "Bearer" + Cookies.get("token") },
           }
@@ -153,7 +153,7 @@ export default {
         // };
         // this.posts.unshift(newPost);
         const res = await this.$axios.post(
-          `http://localhost/api/post/create/` + this.$route.params.id,
+          `http://127.0.0.1:8000/api/post/create/` + this.$route.params.id,
           this.post,
           { headers: { Authorization: "Bearer" + Cookies.get("token") } }
         );
@@ -175,7 +175,7 @@ export default {
         .onOk(async () => {
           try {
             const res = await this.$axios.delete(
-              `http://localhost/api/user/` + props.row.id,
+              `http://127.0.0.1:8000/api/user/` + props.row.id,
               {
                 headers: { Authorization: "Bearer" + Cookies.get("token") },
               }
@@ -197,7 +197,7 @@ export default {
         .onOk(async (e) => {
           try {
             const res = await this.$axios.patch(
-              `http://localhost/api/post/update/` + props,
+              `http://127.0.0.1:8000/api/post/update/` + props,
               this.post.content,
               {
                 headers: { Authorization: "Bearer" + Cookies.get("token") },
