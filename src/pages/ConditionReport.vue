@@ -1,9 +1,14 @@
 <template>
     <q-page class="column items-center">
-        <div class="q-my-md text-h4 text-center text-subheadcolour">
-            My Condition Report
-            <div class="text-h5 text-subheadcolour">
-                Day 5 of Quarantine
+        <div class="q-mb-md full-width">
+            <div class="text-h4 text-center text-subheadcolour">
+                My Condition Report
+                <div class="text-h5 text-subheadcolour">
+                    Day 5 of Quarantine
+                </div>
+            </div>
+            <div class="column items-center q-my-md">
+                <q-btn label="Update Condition" color="btn" text-color="btn" @click="$router.push('/condition')" style="width: 15%"/>
             </div>
         </div>
 
@@ -54,18 +59,18 @@
                 <q-card-section style="max-height: 50vh; width: 80vh" class="scroll">
                     <div class="text-center text-h5 text-subheadcolour">
                         <div>
-                            Symptoms: 
+                            Symptoms:
                         </div>
                         <div>
-                            Temperature: 
+                            Temperature:
                         </div>
                         <div>
-                            Oxygen level: 
+                            Oxygen level:
                         </div>
                         <div>
-                            Overall condition: 
+                            Overall condition:
                         </div>
-                        
+
                     </div>
                     <!-- <p v-for="n in 15" :key="n">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum
                         repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at
