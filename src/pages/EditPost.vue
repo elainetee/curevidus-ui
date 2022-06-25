@@ -3,7 +3,7 @@
     <div>
       <h3 class="text-h5">Edit Post</h3>
       <div class="form">
-        <q-form @submit="onSubmitUser()" greedy>
+        <q-form @submit="onSubmitPost()" greedy>
           <div class="q-gutter-md">
             <q-input
               class="q-mt-md q-mr-sm"
@@ -14,6 +14,12 @@
             ></q-input>
           </div>
           <div class="row justify-center">
+                        <q-btn
+              style="background: white"
+              class="q-ma-lg"
+              @click="this.$router.go(-1)"
+              label="cancel"
+            />
             <q-btn
               style="background: white"
               class="q-ma-lg"
@@ -32,7 +38,7 @@ import { Cookies } from "quasar";
 export default {
   data() {
     return {
-      post: {},
+      post: [],
     };
   },
   methods: {
@@ -50,19 +56,21 @@ export default {
             headers: { Authorization: "Bearer" + Cookies.get("token") },
           }
         );
-        this.post = res.data;
-        this.post.content = this.post[0].content;
+        this.posts = res.data;
+        this.post = this.posts.find((obj) => obj.id == this.$route.params.id);
+        console.log(this.post);
         // this.post = this.posts.find((obj) => obj.id == this.$route.params.id);
       } catch (error) {
         console.log(error);
       }
     },
 
-    async onSubmitUser() {
+    async onSubmitPost() {
       // call api to submit
       try {
+        console.log(this.post);
         const res = await this.$axios.patch(
-          `http://localhost/api/user/update/` + this.$route.params.id,
+          `http://localhost/api/post/update/` + this.$route.params.id,
           this.post,
           {
             headers: { Authorization: "Bearer" + Cookies.get("token") },
