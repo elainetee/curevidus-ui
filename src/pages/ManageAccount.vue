@@ -92,7 +92,7 @@ export default {
         {
           name: "role",
           label: "Role",
-          field: "role_id",
+          field: "role_name",
           align: "center",
           sortable: true,
         },

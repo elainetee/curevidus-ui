@@ -43,7 +43,7 @@
           </q-item-section>
           <q-item-section>
             <q-item-label class="text-subtitle1"
-              ><strong>{{ posts.user_id }}</strong>
+              ><strong>{{ posts.user_name }}</strong>
             </q-item-label>
             <q-item-label class="text-body1">
               {{ post.content }}
@@ -70,9 +70,8 @@
             </div>
           </q-item-section>
 
-          <q-item-section side top> {{ post.created_at }} </q-item-section>
+          <q-item-section side top> {{ post.duration }} </q-item-section>
         </q-item>
-
         <q-separator inset="item" />
       </q-list>
     </q-scroll-area>
@@ -140,8 +139,7 @@ export default {
           }
         );
         this.posts = res.data;
-        this.posts.user_id = this.posts[0].user_id;
-        console.log(this.posts[0].user_id);
+        this.posts.user_name = this.posts[0].user_name;
       } catch (error) {
         console.log(error);
       }
@@ -149,11 +147,11 @@ export default {
 
     async addPost() {
       try {
-        let newPost = {
-          content: this.post.content,
-          created_at: Date.now(),
-        };
-        this.posts.unshift(newPost);
+        // let newPost = {
+        //   content: this.post.content,
+        //   created_at: Date.now(),
+        // };
+        // this.posts.unshift(newPost);
         const res = await this.$axios.post(
           `http://127.0.0.1:8000/api/post/create/` + this.$route.params.id,
           this.post,
@@ -161,6 +159,7 @@ export default {
         );
         this.post = res.data;
         this.$q.notify("Posted successfully");
+        window.location.reload();
       } catch (error) {
         console.log(error);
       }

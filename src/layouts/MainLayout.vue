@@ -12,8 +12,9 @@
 
         <q-toolbar-title class="text-logocolour">
           <q-avatar
-          class="cursor-pointer"
-            @click="$router.push({ name: 'homepage' })">
+            class="cursor-pointer"
+            @click="$router.push({ name: 'homepage' })"
+          >
             <img src="icons/Curevid png.png" />
           </q-avatar>
           CurevidUs
@@ -23,11 +24,20 @@
           <div class="q-mr-xl" @click="$router.push('/report')">
             Condition Report
           </div>
-          <div class="q-mr-xl">
-            Friends
-          </div>
-          <div>
+          <div class="q-mr-xl" v-if="user.role_id == '3'">Patients</div>
+          <div class="q-mr-xl" v-else>Friends</div>
+          <div
+            class="q-mr-xl"
+            @click="$router.push({ name: 'post', params: { id: user.id } })"
+          >
             Forum
+          </div>
+          <div
+            @click="$router.push({ name: 'manage-account' })"
+            class="q-mr-xl"
+            v-if="user.role_id == '3'"
+          >
+            Manage Account
           </div>
         </div>
 
@@ -35,14 +45,22 @@
         <q-avatar size="30px">
           <img src="icons/noti.png">
         </q-avatar>
-        </q-btn> -->{{user.name}}
+        </q-btn> -->{{ user.name }}
         <div class="q-pr-xl cursor-pointer non-selectable">
           <q-avatar square size="30px">
             <img src="icons/userdd.png" />
             <q-menu auto-close>
               <q-list dense style="min-width: 100px">
                 <q-item clickable>
-                  <q-item-section>My Profile</q-item-section>
+                  <q-item-section
+                    @click="
+                      $router.push({
+                        name: 'profile',
+                        params: {id: this.user.id},
+                      })
+                    "
+                    >My Profile</q-item-section
+                  >
                 </q-item>
                 <q-item clickable>
                   <q-item-section @click="logout()">Logout</q-item-section>
@@ -100,9 +118,9 @@ import { Cookies } from "quasar";
 
 export default {
   data() {
-    return{
-      user:[]
-    }
+    return {
+      user: [],
+    };
   },
 
   methods: {
@@ -111,7 +129,7 @@ export default {
         //  Axios.defaults.headers.common['Authorization'] = 'Bearer' + Cookies.get('token')
         const res = await this.$axios.get(`http://localhost/api/user`, {
           headers: { Authorization: "Bearer" + Cookies.get("token") },
-          contentType : "text/plain"
+          contentType: "text/plain",
         });
         this.user = res.data;
       } catch (error) {
@@ -155,7 +173,7 @@ export default {
       },
     };
   },
-    mounted() {
+  mounted() {
     this.getUsername();
   },
 };
