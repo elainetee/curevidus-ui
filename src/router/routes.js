@@ -14,6 +14,8 @@ const routes = [
     children: [
       { name: "homepage", path: "/homepage", component: () => import('pages/Homepage.vue') },
       { name: "manage-account", path: "/manageaccount", component: () => import('pages/ManageAccount.vue') },
+      { name: "profile", path: "/profile/:id", component: () => import('pages/Profile.vue') },
+      { name: "edit-profile", path: "/editprofile/:id", component: () => import('pages/EditProfile.vue') },
       { name: "post", path: "/post/:id", component: () => import('pages/Post.vue') },
       { name: "editUser", path: "/user/:id", component: () => import('pages/EditUser.vue')},
       { name: "editPost", path: "/editpost/:id", component: () => import('pages/EditPost.vue')},
