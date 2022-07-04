@@ -7,7 +7,7 @@
           <div class="q-gutter-md">
             <q-input
               class="q-mt-md q-mr-sm"
-              v-model="post.content"
+              v-model="posts.content"
               filled
               label="Post"
               :rules="[(v) => v !== '' || 'This field is required']"
@@ -38,7 +38,7 @@ import { Cookies } from "quasar";
 export default {
   data() {
     return {
-      post: [],
+      posts: [],
     };
   },
   methods: {
@@ -57,9 +57,6 @@ export default {
           }
         );
         this.posts = res.data;
-        this.post = this.posts.find((obj) => obj.id == this.$route.params.id);
-        console.log(this.post);
-        // this.post = this.posts.find((obj) => obj.id == this.$route.params.id);
       } catch (error) {
         console.log(error);
       }
@@ -68,10 +65,10 @@ export default {
     async onSubmitPost() {
       // call api to submit
       try {
-        console.log(this.post);
+        console.log(this.posts)
         const res = await this.$axios.patch(
-          `http://localhost/api/post/update/` + this.$route.params.id,
-          this.post,
+          `http://127.0.0.1:8000/api/post/update/` + this.$route.params.id,
+          this.posts,
           {
             headers: { Authorization: "Bearer" + Cookies.get("token") },
           }
