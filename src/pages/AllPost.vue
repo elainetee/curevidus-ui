@@ -3,7 +3,7 @@
     <div class="q-pa-md q-gutter-sm">
       <q-btn @click="$router.push({ name: 'post', params: { id: this.$route.params.id } })"
       color="white" text-color="black" label="My post" />
-      <q-btn @click="$router.push({ name: 'all-post' })"
+      <q-btn
         color="white"
         text-color="black"
         label="Friend post"
@@ -47,35 +47,18 @@
         <q-item v-for="post in posts" :key="post.id" class="q-py-md">
           <q-item-section avatar top>
             <q-avatar size="xl">
-              <img src="icons/userdd.png" />
+              <!-- <img src="icons/userdd.png" /> -->
             </q-avatar>
           </q-item-section>
           <q-item-section>
             <q-item-label class="text-subtitle1"
-              ><strong>{{ posts.user_name }}</strong>
+              ><strong>{{ post.user_name }}</strong>
             </q-item-label>
             <q-item-label class="text-body1">
               {{ post.content }}
             </q-item-label>
             <div class="qweet-icons row justify-between q-mt-sm">
               <q-btn color="grey" icon="comment" size="sm" flat round />
-
-              <q-btn
-                color="grey"
-                icon="edit"
-                size="sm"
-                flat
-                round
-                @click="visitPostPage(post.id)"
-              />
-              <q-btn
-                color="grey"
-                icon="delete"
-                size="sm"
-                flat
-                round
-                @click="deletePost(post.id)"
-              />
             </div>
           </q-item-section>
 
@@ -111,7 +94,7 @@ export default {
     },
     async getUser() {
       try {
-        const res = await this.$axios.get(`http://127.0.0.1:8000/api/alluser`, {
+        const res = await this.$axios.get(`http://localhost/api/alluser`, {
           headers: { Authorization: "Bearer" + Cookies.get("token") },
         });
         this.users = res.data;
@@ -126,7 +109,7 @@ export default {
     async deletePost(id) {
       try {
         const res = await this.$axios.delete(
-          `http://127.0.0.1:8000/api/post/delete/` + id,
+          `http://localhost/api/post/delete/` + id,
           {
             headers: { Authorization: "Bearer" + Cookies.get("token") },
           }
@@ -142,13 +125,12 @@ export default {
     async getPost() {
       try {
         const res = await this.$axios.get(
-          `http://127.0.0.1:8000/api/post/` + this.$route.params.id,
+          `http://localhost/api/allpost`,
           {
             headers: { Authorization: "Bearer" + Cookies.get("token") },
           }
         );
         this.posts = res.data;
-        this.posts.user_name = this.posts[0].user_name;
       } catch (error) {
         console.log(error);
       }
@@ -162,7 +144,7 @@ export default {
         // };
         // this.posts.unshift(newPost);
         const res = await this.$axios.post(
-          `http://127.0.0.1:8000/api/post/create/` + this.$route.params.id,
+          `http://localhost/api/post/create/` + this.$route.params.id,
           this.post,
           { headers: { Authorization: "Bearer" + Cookies.get("token") } }
         );
@@ -184,7 +166,7 @@ export default {
         .onOk(async () => {
           try {
             const res = await this.$axios.delete(
-              `http://127.0.0.1:8000/api/user/` + props.row.id,
+              `http://localhost/api/user/` + props.row.id,
               {
                 headers: { Authorization: "Bearer" + Cookies.get("token") },
               }
@@ -206,7 +188,7 @@ export default {
         .onOk(async (e) => {
           try {
             const res = await this.$axios.patch(
-              `http://127.0.0.1:8000/api/post/update/` + props,
+              `http://localhost/api/post/update/` + props,
               this.post.content,
               {
                 headers: { Authorization: "Bearer" + Cookies.get("token") },
