@@ -20,8 +20,10 @@ const routes = [
       { name: "editUser", path: "/user/:id", component: () => import('pages/EditUser.vue')},
       { name: "editPost", path: "/editpost/:id", component: () => import('pages/EditPost.vue')},
       { name: "all-post", path: "/allpost", component: () => import('pages/AllPost.vue')},
-      { path: "/homepage", component: () => import('pages/Homepage.vue') },
-      { path: "/report", component: () => import('pages/ConditionReport.vue') }
+      // { path: "/homepage", component: () => import('pages/Homepage.vue') },
+      { name: "report", path: "/report/:id", component: () => import('pages/ConditionReport.vue') },
+      { name:"condition", path: "/condition/:id", component: () => import('pages/UpdateCondition.vue') },
+      { name:"medicine", path: "/medicine", component: () => import('pages/Medicine.vue') }
     ]
   },
 
