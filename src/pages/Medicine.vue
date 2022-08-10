@@ -7,15 +7,14 @@
                     Day 5 of Quarantine
                 </div> -->
             </div>
-            <!-- <div class="column items-center q-my-md">
-                <q-btn label="Update Condition" color="btn" text-color="btn"
-                    @click="visitUpdatePage(this.$route.params.id)" style="width: 15%" />
-            </div> -->
+            <div class="column items-center q-my-md">
+                <q-btn label="Add Medicine" color="btn" text-color="btn" @click="visitAddPage()" style="width: 15%" />
+            </div>
         </div>
 
         <q-card class="q-px-xl q-py-md my-card bg-info" style="width: 70%">
             <q-card-section>
-                <div v-for="medi in medicines" :key="medi.id">
+                <div v-for="medi in medicines" :key="medi.medicine_id">
                     <q-card class="q-pa-md q-mb-lg my-card bg-secondary" style="width: 100%">
                         <q-card-section>
                             <div class="row ">
@@ -31,9 +30,10 @@
                                     </div>
 
                                 </div>
-                                <div class="col-4 ">
-                                    <q-btn class="q-pr-xs" label="Edit" color="btn" text-color="btn"/>
-                                    <q-btn label="Delete" color="red-10" />
+                                <div class="col-4">
+                                    <q-btn label="Edit" color="btn" text-color="btn"/>
+                                        <!-- @click="visitEditPage(medi.medicine_id)" /> -->
+                                    <q-btn label="Delete" color="red-10" @click="deleteMedicine(medi.medicine_id)"/>
                                 </div>
                             </div>
 
@@ -58,7 +58,7 @@
         </q-card>
 
         <!-- <div v-for="condition in conditions" :key="condition.id"> -->
-        <q-dialog v-model="fixed">
+        <!-- <q-dialog v-model="fixed">
             <q-card class="bg-secondary">
                 <q-card-section>
                     <div class="text-h6 text-subheadcolour">Day 5 - 12/5/2022</div>
@@ -81,20 +81,19 @@
                             Overall condition:
                         </div>
 
-                    </div>
+                    </div> -->
                     <!-- <p v-for="n in 15" :key="n">Lorem ipsum dolor sit amet consectetur adipisicing elit. Rerum
                         repellendus sit voluptate voluptas eveniet porro. Rerum blanditiis perferendis totam, ea at
                         omnis vel numquam exercitationem aut, natus minima, porro labore.</p> -->
-                </q-card-section>
+                <!-- </q-card-section>
 
                 <q-separator />
 
                 <q-card-actions align="right">
                     <q-btn label="Close" color="primary" v-close-popup />
-                    <!-- <q-btn flat label="Accept" color="primary" v-close-popup /> -->
                 </q-card-actions>
             </q-card>
-        </q-dialog>
+        </q-dialog> -->
         <!-- </div> -->
     </q-page>
 </template>
@@ -104,11 +103,11 @@ import { ref } from 'vue';
 import { Cookies } from "quasar";
 
 export default {
-    setup() {
-        return {
-            fixed: ref(false)
-        }
-    },
+    // setup() {
+    //     return {
+    //         fixed: ref(false)
+    //     }
+    // },
     data() {
         return {
             medicines: [],
@@ -118,13 +117,26 @@ export default {
         this.getMedicines();
     },
     methods: {
+        visitEditPage(medId) {
+            console.log(medId);
+            this.$router.push({
+                name: "editMed",
+                params: { id: medId },
+            });
+        },
+        visitAddPage() {
+            console.log();
+            this.$router.push({
+                name: "addMed"
+            });
+        },
         getMedicines() {
             this.$axios.get("http://127.0.0.1:8000/api/medicine").then(response => {
                 this.medicines = response.data;
                 console.log(this.medicines);
             });
         },
-        async getMedicine() {
+        async getMedicine() { //not working
             try {
                 const res = await this.$axios.get(
                     `http://127.0.0.1:8000/api/medicine`,
@@ -139,6 +151,21 @@ export default {
                 if (error.response.status == 401) {
                     this.accessDenied = true;
                 }
+            }
+        },
+        async deleteMedicine(id) {
+            try {
+                const res = await this.$axios.delete(
+                    `http://127.0.0.1:8000/api/medicine/delete/` + id,
+                    {
+                        headers: { Authorization: "Bearer" + Cookies.get("token") },
+                    }
+                );
+                this.medicines = res.data;
+                this.getMedicines();
+                this.$q.notify("Medicine deleted successfully");
+            } catch (error) {
+                console.log(error);
             }
         },
     },
