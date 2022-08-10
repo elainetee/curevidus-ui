@@ -11,32 +11,32 @@
                 <q-btn label="Update Condition" color="btn" text-color="btn" @click="$router.push('/condition')" style="width: 15%"/>
             </div> -->
         </div>
-        <!-- <div v-if="this.$route.params.id != null"> -->
-        
-            <q-card class="q-px-xl q-py-md my-card bg-secondary" style="width: 50%">
+        <!-- <div v-if="this.$route.params.id == null"> -->
+
+        <q-card class="q-px-xl q-py-md my-card bg-secondary" style="width: 50%">
             <!-- <div v-for="medi in medicines" :key="medi.medicine_name"> -->
-                <q-card-section>
-                    
-                    <q-form @submit="addMedicine()" class="q-gutter-md q-pt-md">
-                        <q-input filled bg-color="white" v-model="medicine.medicine_name" label="Medicine Name *"
-                            lazy-rules :rules="[
-                                val => val && val.length > 0 || 'Please key in medicine name'
-                            ]">
-                            <!-- <template v-if="medi.medicine_name" v-slot:append></template> -->
-                        </q-input>
+            <q-card-section>
 
-                        <q-input filled bg-color="white" type="textarea" v-model="medicine.medicine_desc"
-                            label="Medicine description *" lazy-rules :rules="[
-                                val => val && val.length > 0 || 'Please key in medicine description'
-                            ]" />
+                <q-form class="q-gutter-md q-pt-md">
+                    <q-input filled bg-color="white" v-model="medicine.medicine_name" label="Medicine Name *" lazy-rules
+                        :rules="[
+                            val => val && val.length > 0 || 'Please key in medicine name'
+                        ]">
+                        <!-- <template v-if="medi.medicine_name" v-slot:append></template> -->
+                    </q-input>
 
-                        <q-input filled bg-color="white" v-model="medicine.medicine_price" label="Price (RM) *"
-                            lazy-rules :rules="[
-                                val => val && val.length > 0 || 'Please key in the price for medicine',
-                                val => val > 0 || 'Please key in a valid price'
-                            ]" />
+                    <q-input filled bg-color="white" type="textarea" v-model="medicine.medicine_desc"
+                        label="Medicine description *" lazy-rules :rules="[
+                            val => val && val.length > 0 || 'Please key in medicine description'
+                        ]" />
 
-                        <!-- <q-input filled bg-color="white" v-model="medicine.oxygen_lvl" label="Oxygen Level (%)" lazy-rules
+                    <q-input filled bg-color="white" v-model="medicine.medicine_price" label="Price (RM) *" lazy-rules
+                        :rules="[
+                            val => val.length > 0 || 'Please key in the price for medicine',
+                            val => val > 0 || 'Please key in a valid price'
+                        ]" />
+
+                    <!-- <q-input filled bg-color="white" v-model="medicine.oxygen_lvl" label="Oxygen Level (%)" lazy-rules
                         :rules="[
                             val => val > 0 && val <= 100 || 'Oxygen Level must be between 1-100'
                         ]" />
@@ -47,14 +47,15 @@
                         ]" /> -->
 
 
-                        <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
+                    <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
 
-                        <div>
-                            <q-btn label="Create" type="submit" color="primary" />
-                            <!-- <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" /> -->
-                        </div>
-                    </q-form>
-                    <!-- <q-card class="q-pa-md q-mb-lg my-card bg-secondary" style="width: 100%">
+                    <div>
+                        <q-btn v-if="this.$route.params.id == null" @click="addMedicine()" label="Create" color="primary" />
+                        <q-btn v-if="this.$route.params.id != null" @click="editMedicine()" label="Update" color="primary" />
+                        <!-- <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" /> -->
+                    </div>
+                </q-form>
+                <!-- <q-card class="q-pa-md q-mb-lg my-card bg-secondary" style="width: 100%">
                     <q-card-section>
                         <div class="row ">
                             <div class="text-center col text-h5 text-subheadcolour">
@@ -80,11 +81,11 @@
 
                     </q-card-section>
                 </q-card> -->
-                </q-card-section>
-                    <!-- </div> -->
+            </q-card-section>
+            <!-- </div> -->
 
-            </q-card>
-        
+        </q-card>
+
         <!-- </div> -->
     </q-page>
 </template>
@@ -113,7 +114,7 @@ export default {
         // }
     },
     created() {
-
+        this.getCurMedicine();
         if (this.$route.params.id != null) {
             this.getMedicines(this.$route.params.id);
             // return {
@@ -135,6 +136,28 @@ export default {
                 // this.medicine_desc = this.medicines.medicine_desc;
                 // this.medicine_price = this.medicines.medicine_price;
                 console.log(this.medicines);
+                // return {
+                //     medicine: {
+                //         medicine_name: this.medicines.medicine_name,
+                //         medicine_desc: this.medicines.medicine_desc,
+                //         medicine_price: this.medicines.medicine_price,
+                //         // oxygen_lvl: "",
+                //         // condition_summary: ""
+                //     },
+                //     medicines: this.medicines,
+                // users: [],
+                // };
+                // console.log(this.medicine_name);
+            });
+        },
+        getCurMedicine() {
+            this.$axios.get("http://127.0.0.1:8000/api/medicine/" + this.$route.params.id).then(response => {
+                this.medicines = response.data;
+                this.medicine.medicine_name = this.medicines.medicine_name;
+                this.medicine.medicine_desc = this.medicines.medicine_desc;
+                this.medicine.medicine_price = this.medicines.medicine_price;
+                console.log(this.medicines);
+                console.log(this.medicine.medicine_name);
                 // return {
                 //     medicine: {
                 //         medicine_name: this.medicines.medicine_name,
@@ -186,7 +209,7 @@ export default {
         //         console.log(error);
         //     }
         // },
-        addMedicine() {
+        async editMedicine() {
             // try {
             let newMedicine = {
                 medicine_name: this.medicine.medicine_name,
@@ -194,7 +217,35 @@ export default {
                 medicine_price: this.medicine.medicine_price,
             };
             // this.conditions.unshift(newCondition);
-            this.$axios.post(
+            await this.$axios.patch(
+                `http://127.0.0.1:8000/api/medicine/update/` + this.$route.params.id,
+                newMedicine
+                // { headers: { Authorization: "Bearer" + Cookies.get("token") } }
+            ).then(function (response) {
+                console.log(response);
+            })
+                .catch(function (error) {
+                    console.log(error);
+                });
+            // this.post = res.data;
+            this.$q.notify("Medicine updated successfully");
+            // } catch (error) {
+            //     console.log(error);
+            // }
+            this.$router.push({
+                name: "medicine"
+            });
+            
+        },
+        async addMedicine() {
+            // try {
+            let newMedicine = {
+                medicine_name: this.medicine.medicine_name,
+                medicine_desc: this.medicine.medicine_desc,
+                medicine_price: this.medicine.medicine_price,
+            };
+            // this.conditions.unshift(newCondition);
+            await this.$axios.post(
                 `http://127.0.0.1:8000/api/medicine/store/`,
                 newMedicine
                 // { headers: { Authorization: "Bearer" + Cookies.get("token") } }
@@ -209,6 +260,9 @@ export default {
             // } catch (error) {
             //     console.log(error);
             // }
+            this.$router.push({
+                name: "medicine"
+            });
         }
     }
 }

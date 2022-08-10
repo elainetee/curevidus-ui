@@ -31,7 +31,7 @@
 
                                 </div>
                                 <div class="col-4">
-                                    <q-btn label="Edit" color="btn" text-color="btn"/>
+                                    <q-btn label="Edit" color="btn" @click="visitEditPage(medi.medicine_id)" text-color="btn"/>
                                         <!-- @click="visitEditPage(medi.medicine_id)" /> -->
                                     <q-btn label="Delete" color="red-10" @click="deleteMedicine(medi.medicine_id)"/>
                                 </div>
