@@ -1,5 +1,5 @@
 <template>
-  <q-page class="flex flex-center">
+  <q-page class="flex flex-center wrapper">
     <q-card class="my-card bg-secondary" style="width: 500px">
       <q-card-section>
         <div class="q-my-md text-h4 text-center text-headingcolour">
@@ -58,6 +58,13 @@
         </div>
       </q-card-section>
     </q-card>
+    <div
+      id="hover"
+      class="flex flex-center text-center cursor-pointer"
+      @click="visitSignUpPage()"
+    >
+      Click here to sign up
+    </div>
   </q-page>
 </template>
 
@@ -114,6 +121,13 @@ export default {
     inSubmit() {
       console.log("Hello");
     },
+
+    visitSignUpPage() {
+            console.log();
+            this.$router.push({
+                name: "register"
+            });
+    },
     // setup() {
     //   const $q = useQuasar()
 
@@ -157,6 +171,11 @@ export default {
 .row {
   display: flex;
   flex-direction: row;
+}
+
+.wrapper {
+  gap: 10px;
+  flex-direction: column;
 }
 
 #login {
