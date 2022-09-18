@@ -27,6 +27,11 @@
                     v-model="form.password"
                     type="password"
                     labelling="Password *"
+                    lazy-rules
+                    :rules="[
+                      (val) => (val !== null && val !== '') || 'This field is required',
+                      (val) => (val.length >= 6) || 'Password must be at least 6 characters',
+                    ]"
                 />
 
                 <InputField
@@ -37,6 +42,7 @@
                     :rules="[
                       (val) =>
                       (val == form.password ) || 'Password does not match',
+                      (val) => (val !== null && val !== '') || 'This field is required',
                     ]"
                 />
 
@@ -75,7 +81,7 @@
                 </div>
                 <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
   
-                <div class="flex flex-center">
+                <div class="flex flex-center wrapper">
                   <q-btn
                     color="btn"
                     text-color="btn"
@@ -84,8 +90,17 @@
                     type="submit"
                     ><template v-slot:loading> <q-spinner-facebook /> </template
                   ></q-btn>
-                  <!-- <q-btn label="Submit" type="submit" color="primary"/>
-                  <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" /> -->
+                  <!-- <q-btn label="Back to Login" color="btn" text-color="btn" @click="backToLogin()"/> -->
+                  <div>Already have an account? 
+                  <span
+                    id="hover"
+                    class="text-center cursor-pointer"
+                    @click="backToLogin()"
+                  >
+                    Back to login.
+                    </span>
+                  </div>
+                  <!-- <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" /> -->
                 </div>
               </q-form>
             </div>
@@ -152,6 +167,12 @@ import InputField from "../components/InputField.vue";
         inSubmit() {
             console.log("Hello");
         },
+        backToLogin() {
+            console.log();
+            this.$router.push({
+                name: "login"
+            });
+    },
         // setup() {
         //   const $q = useQuasar()
         //   const email = ref(null)
