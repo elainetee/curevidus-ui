@@ -42,10 +42,18 @@
                     />
 
                     </div> -->
-                    <q-input filled bg-color="white" v-model="condition.condition_date" label="Date (yyyy-MM-dd) *"
+                    <div class="q-pa-md">
+                        <div class="q-gutter-md row items-start">
+                            <!-- <q-date v-model="condition.condition_date" /> -->
+
+                            <q-date v-model="condition.condition_date" minimal />
+                        </div>
+                    </div>
+
+                    <!-- <q-input filled bg-color="white" v-model="condition.condition_date" label="Date (yyyy-MM-dd) *"
                         lazy-rules :rules="[
                             val => val && val.length > 0 || 'Please key in today\'s date'
-                        ]" />
+                        ]" /> -->
 
                     <q-input filled bg-color="white" v-model="condition.condition_symptoms" label="Symptoms *"
                         lazy-rules :rules="[
@@ -126,7 +134,16 @@ export default {
             users: [],
         };
     },
+    created() {
+        this.currentDate();
+    },
     methods: {
+        currentDate() {
+            const current = new Date();
+            const date = `${current.getFullYear()}/${current.getMonth() + 1}/${current.getDate()}`;
+            // return date;
+            this.condition.condition_date = date;
+        },
         addCond2() {
             this.$axios.post(
                 `http://127.0.0.1:8000/api/condition/create/` + this.$route.params.id,
