@@ -42,11 +42,11 @@
                     />
 
                     </div> -->
-                    <div class="q-pa-md">
-                        <div class="q-gutter-md row items-start">
+                    <div class="q-pa-md ">
+                        <div class="q-gutter-md row items-start flex flex-center" >
                             <!-- <q-date v-model="condition.condition_date" /> -->
 
-                            <q-date v-model="condition.condition_date" minimal />
+                            <q-date v-model="condition.condition_date" minimal style="width: 90%"/>
                         </div>
                     </div>
 
@@ -54,11 +54,107 @@
                         lazy-rules :rules="[
                             val => val && val.length > 0 || 'Please key in today\'s date'
                         ]" /> -->
+                        <div class="bg-grey-2 q-pa-sm rounded-borders column items-left">
+                            <div class="q-px-sm text-h6">
+                                Symptoms: *
+                            </div>
+                            
+                            <q-checkbox
+                              name="music_genre"
+                              v-model="condition.condition_symptoms"
+                              val="No symptoms"
+                              label="No symptoms"
+                            />
+                            
+                            <!-- <div v-if="!yeah" class="column items-left"> -->
+                            <q-checkbox
+                              name="music_genre"
+                              v-model="condition.condition_symptoms"
+                              val="Fever"
+                              label="Fever"
+                              :disable = "isDisabled()"
+                            />
+                            
+                            <q-checkbox
+                              name="music_genre"
+                              v-model="condition.condition_symptoms"
+                              val="Fatigue"
+                              label="Fatigue"
+                              :disable = "isDisabled()"
+                            />
 
-                    <q-input filled bg-color="white" v-model="condition.condition_symptoms" label="Symptoms *"
+                            <q-checkbox
+                              name="music_genre"
+                              v-model="condition.condition_symptoms"
+                              val="Runny nose or nasal congestion"
+                              label="Runny nose or nasal congestion"
+                              :disable = "isDisabled()"
+                            />
+
+                            <q-checkbox
+                              name="music_genre"
+                              v-model="condition.condition_symptoms"
+                              val="Body ache"
+                              label="Body ache"
+                              :disable = "isDisabled()"
+                            />
+
+                            <q-checkbox
+                              name="music_genre"
+                              v-model="condition.condition_symptoms"
+                              val="Headache"
+                              label="Headache"
+                              :disable = "isDisabled()"
+                            />
+
+                            <q-checkbox
+                              name="music_genre"
+                              v-model="condition.condition_symptoms"
+                              val="Sore throat"
+                              label="Sore throat"
+                              :disable = "isDisabled()"
+                            />
+
+                            <q-checkbox
+                              name="music_genre"
+                              v-model="condition.condition_symptoms"
+                              val="Chills"
+                              label="Chills"
+                              :disable = "isDisabled()"
+                            />
+
+                            <q-checkbox
+                              name="music_genre"
+                              v-model="condition.condition_symptoms"
+                              val="Shivering"
+                              label="Shivering"
+                              :disable = "isDisabled()"
+                            />
+                            
+                            <q-checkbox
+                              name="music_genre"
+                              v-model="condition.condition_symptoms"
+                              val="Nausea or vomiting"
+                              label="Nausea or vomiting"
+                              :disable = "isDisabled()"
+                            />
+
+                            <q-checkbox
+                              name="music_genre"
+                              v-model="condition.condition_symptoms"
+                              val="Diarrhea"
+                              label="Diarrhea"
+                              :disable = "isDisabled()"
+                            />
+                        <!-- </div> -->
+                        </div>
+                        <!-- <div class="q-px-sm">
+                            The model data: <strong>{{ condition.condition_symptoms }}</strong>
+                        </div> -->
+                    <!-- <q-input filled bg-color="white" v-model="condition.condition_symptoms" label="Symptoms *"
                         lazy-rules :rules="[
                             val => val && val.length > 0 || 'Please key in your symptoms'
-                        ]" />
+                        ]" /> -->
 
                     <q-input filled bg-color="white" v-model="condition.temperature" label="Temperature (°C) *"
                         lazy-rules :rules="[
@@ -123,21 +219,35 @@ import { ref } from 'vue'
 export default {
     data() {
         return {
+            // condition_symptoms: {
+            //     genreRock: ref(false),
+            //     genreFunk: ref(),
+            //     genrePop: ref('pop'),
+            // },
             condition: {
                 condition_date: "",
-                condition_symptoms: "",
+                condition_symptoms: [],
                 temperature: "",
                 oxygen_lvl: "",
                 condition_summary: ""
             },
             conditions: [],
             users: [],
+            
+
         };
     },
     created() {
         this.currentDate();
     },
     methods: {
+        isDisabled(){
+            if(this.condition.condition_symptoms.includes('No symptoms')){
+                this.condition.condition_symptoms = ['No symptoms'];
+                return true;
+            }
+            return false;
+        },
         currentDate() {
             const current = new Date();
             const date = `${current.getFullYear()}/${current.getMonth() + 1}/${current.getDate()}`;
@@ -183,9 +293,10 @@ export default {
         // },
         submitCondition() {
             // try {
+            let overallCond = this.condition.condition_symptoms.join();
             let newCondition = {
                 condition_date: this.condition.condition_date,
-                condition_symptoms: this.condition.condition_symptoms,
+                condition_symptoms: overallCond,
                 temperature: this.condition.temperature,
                 oxygen_lvl: this.condition.oxygen_lvl,
                 condition_summary: this.condition.condition_summary
