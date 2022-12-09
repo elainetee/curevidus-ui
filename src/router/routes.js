@@ -4,8 +4,9 @@ const routes = [
     path: "",
     component: () => import('layouts/LoginLayout.vue'),
     children: [
-      { path: "", component: () => import('pages/Index.vue') },
-      { path: '/index2', component: () => import('pages/Index2.vue') }
+      { name: "login", path: "", component: () => import('pages/Index.vue') },
+      { path: '/index2', component: () => import('pages/Index2.vue') },
+      { name: "register", path: "/register", component: () => import('pages/Register.vue') }
     ]
   },
   {
@@ -23,7 +24,9 @@ const routes = [
       // { path: "/homepage", component: () => import('pages/Homepage.vue') },
       { name: "report", path: "/report/:id", component: () => import('pages/ConditionReport.vue') },
       { name:"condition", path: "/condition/:id", component: () => import('pages/UpdateCondition.vue') },
-      { name:"medicine", path: "/medicine", component: () => import('pages/Medicine.vue') }
+      { name:"medicine", path: "/medicine", component: () => import('pages/Medicine.vue') },
+      { name:"editMed", path: "/medicine/manage/:id", component: () => import('pages/ManageMedicine.vue') },
+      { name:"addMed", path: "/medicine/manage", component: () => import('pages/ManageMedicine.vue') }
     ]
   },
 

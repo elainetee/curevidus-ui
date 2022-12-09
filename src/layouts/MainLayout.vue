@@ -21,7 +21,8 @@
         </q-toolbar-title>
 
         <div class="q-pr-xl row text-navbar cursor-pointer non-selectable">
-          <div class="q-mr-xl" @click="$router.push('/report')">
+          <div class="q-mr-xl" v-if="user.role_id == '3'" @click="$router.push({ name: 'medicine'})">Medicine</div>
+          <div class="q-mr-xl" @click="$router.push({ name: 'report', params: { id: user.id } })">
             Condition Report
           </div>
           <div class="q-mr-xl" v-if="user.role_id == '3'">Patients</div>
@@ -127,7 +128,7 @@ export default {
     async getUsername() {
       try {
         //  Axios.defaults.headers.common['Authorization'] = 'Bearer' + Cookies.get('token')
-        const res = await this.$axios.get(`http://localhost/api/user`, {
+        const res = await this.$axios.get(`http://127.0.0.1:8000/api/user`, {
           headers: { Authorization: "Bearer" + Cookies.get("token") },
           contentType: "text/plain",
         });
@@ -140,7 +141,7 @@ export default {
     async logout() {
       try {
         const res = await this.$axios.post(
-          `http://localhost/api/logout`,
+          `http://127.0.0.1:8000/api/logout`,
           { token: Cookies.get("token") },
           {
             headers: { Authorization: "Bearer" + Cookies.get("token") },
