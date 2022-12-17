@@ -18,7 +18,7 @@
                     <q-card class="q-pa-md q-mb-lg my-card bg-secondary" style="width: 100%">
                         <q-card-section>
                             <div class="row ">
-                                <div class="text-left col text-h4 text-subheadcolour">
+                                <div class="grow-3 text-left col text-h4 text-subheadcolour">
                                     <div>
                                         {{ medi.medicine_name }}
                                     </div>
@@ -30,9 +30,11 @@
                                     </div>
 
                                 </div>
-                                <div class="col-4">
-                                    <q-btn label="Edit" color="btn" @click="visitEditPage(medi.medicine_id)" text-color="btn"/>
+                                <div class="grow-1 column">
+                                    
+                                    <q-btn label="Edit" color="btn-grey" @click="visitEditPage(medi.medicine_id)" text-color="btn"/>
                                         <!-- @click="visitEditPage(medi.medicine_id)" /> -->
+                                    <div class="q-pa-sm"></div>
                                     <q-btn label="Delete" color="red-10" @click="deleteMedicine(medi.medicine_id)"/>
                                 </div>
                             </div>
