@@ -17,7 +17,7 @@
             <!-- <div v-for="medi in medicines" :key="medi.medicine_name"> -->
             <q-card-section>
 
-                <q-form class="q-gutter-md q-pt-md">
+                <q-form class="q-gutter-md q-pt-md" enctype="multipart/form-data">
                     <q-input filled bg-color="white" v-model="medicine.medicine_name" label="Medicine Name *" lazy-rules
                         :rules="[
                             val => val && val.length > 0 || 'Please key in medicine name'
@@ -36,6 +36,19 @@
                             val => val > 0 || 'Please key in a valid price'
                         ]" />
 
+                    <q-file filled bottom-slots v-model="medicine.file" label="Upload your medicine photo here" counter
+                    v-on:change="onChange">
+                        <template v-slot:prepend>
+                          <q-icon name="cloud_upload" @click.stop.prevent />
+                        </template>
+                        <template v-slot:append>
+                          <q-icon name="close" @click.stop.prevent="medicine.file = null" class="cursor-pointer" />
+                        </template>
+
+                        <template v-slot:hint>
+                          Field hint
+                        </template>
+                    </q-file>
                     <!-- <q-input filled bg-color="white" v-model="medicine.oxygen_lvl" label="Oxygen Level (%)" lazy-rules
                         :rules="[
                             val => val > 0 && val <= 100 || 'Oxygen Level must be between 1-100'
@@ -105,6 +118,7 @@ export default {
                 medicine_name: "",
                 medicine_desc: "",
                 medicine_price: "",
+                file: null,
                 // oxygen_lvl: "",
                 // condition_summary: ""
             },
@@ -237,20 +251,36 @@ export default {
             });
             
         },
+        onChange(e) {
+                this.medicine.file = e.target.files[0];
+        },
         async addMedicine() {
             // try {
-            let newMedicine = {
-                medicine_name: this.medicine.medicine_name,
-                medicine_desc: this.medicine.medicine_desc,
-                medicine_price: this.medicine.medicine_price,
-            };
+            const config = {
+                headers: {
+                    'content-type': 'multipart/form-data'
+                }
+            }
+            // let newMedicine = {
+            //     medicine_name: this.medicine.medicine_name,
+            //     medicine_desc: this.medicine.medicine_desc,
+            //     medicine_price: this.medicine.medicine_price,
+            //     file: this.medicine.file,
+            // };
+            let newMedicine = new FormData();
+            newMedicine.append('medicine_name', this.medicine.medicine_name);
+            newMedicine.append('medicine_desc', this.medicine.medicine_desc);
+            newMedicine.append('medicine_price', this.medicine.medicine_price);
+            newMedicine.append('file', this.medicine.file);
             // this.conditions.unshift(newCondition);
             await this.$axios.post(
                 `http://127.0.0.1:8000/api/medicine/store/`,
-                newMedicine
+                newMedicine, config
                 // { headers: { Authorization: "Bearer" + Cookies.get("token") } }
             ).then(function (response) {
                 console.log(response);
+                console.log(this.medicine);
+                
             })
                 .catch(function (error) {
                     console.log(error);
