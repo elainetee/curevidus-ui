@@ -35,7 +35,45 @@
                             val => val.length > 0 || 'Please key in the price for medicine',
                             val => val > 0 || 'Please key in a valid price'
                         ]" />
-
+                    
+                    <div v-if="medicine.medicine_photo_name != null" class="">
+                        <div class="text-h6 text-subheadcolour q-pb-xs">
+                            Medicine photo uploaded:
+                        </div>
+                        <div class="row items-center">
+                            
+                        <div class="col-8">
+                        <q-img
+                            :src="'http://127.0.0.1:8000/storage/uploads/' + medicine.medicine_photo_name"
+                            :ratio="4/3"
+                            style="height: 340px; max-width: 350px"
+                        />
+                        </div>
+                        <div class="col-4 items-left bg-secondary">
+                            <div class="column items-left">
+                                <q-btn label="Remove Photo" color="red-10" @click="confirm = true"/>
+                            </div>
+                            
+                        </div>
+                    
+                    </div>
+                    </div>
+                    <div v-if="medicine.medicine_photo_name == null" class="">
+                        <div class="text-h7 text-subheadcolour q-pb-xs">
+                            Hint: You have not upload any photo for this medicine yet.
+                        </div>
+                            <!-- <q-img
+                                :src="'https://img.kpopmap.com/wp-content/uploads_kpopmap/2017/09/chanyeol-min-1.jpg'"
+                                :ratio="4/3"
+                                style="height: 340px; max-width: 350px"
+                            /> -->
+                    </div>
+                    <!-- <div class="">                        
+                        <div class="text-h6 text-subheadcolour">
+                            Upload a new medicine photo here:
+                        </div>
+                        (The uploaded photo will replace the original photo)
+                    </div> -->
                     <q-file filled bottom-slots v-model="medicine.file" label="Upload your medicine photo here" counter
                     v-on:change="onChange">
                         <template v-slot:prepend>
@@ -46,7 +84,7 @@
                         </template>
 
                         <template v-slot:hint>
-                          Field hint
+                            The uploaded photo will replace the original photo
                         </template>
                     </q-file>
                     <!-- <q-input filled bg-color="white" v-model="medicine.oxygen_lvl" label="Oxygen Level (%)" lazy-rules
@@ -99,6 +137,20 @@
 
         </q-card>
 
+        <q-dialog v-model="confirm" persistent>
+          <q-card>
+            <q-card-section class="row items-center">
+              <!-- <q-avatar icon="signal_wifi_off" color="primary" text-color="white" /> -->
+              <span class="q-ml-sm">Are you sure you want to delete this medicine photo?</span>
+            </q-card-section>
+
+            <q-card-actions align="right">
+              <q-btn flat label="No" color="primary" v-close-popup />
+              <q-btn flat label="Yes, delete" color="primary" @click="removeMedPhoto(this.$route.params.id)" />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
+
         <!-- </div> -->
     </q-page>
 </template>
@@ -108,16 +160,24 @@ import { useQuasar } from 'quasar'
 import { ref } from 'vue'
 
 export default {
+    setup() {
+        return {
+            confirm: ref(false),
+        }
+    },
     data() {
         // if (this.$route.params.id != null) {
         //     this.getMedicines(this.$route.params.id);
         // }
         // else {
+            
         return {
             medicine: {
+                // medicine_id: "",
                 medicine_name: "",
                 medicine_desc: "",
                 medicine_price: "",
+                medicine_photo_name: "",
                 file: null,
                 // oxygen_lvl: "",
                 // condition_summary: ""
@@ -167,9 +227,12 @@ export default {
         getCurMedicine() {
             this.$axios.get("http://127.0.0.1:8000/api/medicine/" + this.$route.params.id).then(response => {
                 this.medicines = response.data;
+                // this.medicine.medicine_id = this.medicines.medicine_id;
                 this.medicine.medicine_name = this.medicines.medicine_name;
                 this.medicine.medicine_desc = this.medicines.medicine_desc;
                 this.medicine.medicine_price = this.medicines.medicine_price;
+                this.medicine.medicine_photo_name = this.medicines.medicine_photo_name;
+                // this.medicine.file = this.medicines.file;
                 console.log(this.medicines);
                 console.log(this.medicine.medicine_name);
                 // return {
@@ -185,6 +248,21 @@ export default {
                 // };
                 // console.log(this.medicine_name);
             });
+        },
+        async removeMedPhoto(id) {
+            try {
+                const res = await this.$axios.patch(
+                    `http://127.0.0.1:8000/api/medicine/updatePhoto/` + id
+                );
+                this.medicines = res.data;
+                this.getMedicines();
+                this.$q.notify("Medicine photo deleted successfully");
+                this.$router.push({
+                    name: "medicine"
+                });
+            } catch (error) {
+                console.log(error);
+            }
         },
         // addCond2() { //working but not using
         //     this.$axios.post(
@@ -224,19 +302,31 @@ export default {
         //     }
         // },
         async editMedicine() {
+            // const config = {
+            //     headers: {
+            //         'content-type': 'multipart/form-data'
+            //     }
+            // }
             // try {
-            let newMedicine = {
-                medicine_name: this.medicine.medicine_name,
-                medicine_desc: this.medicine.medicine_desc,
-                medicine_price: this.medicine.medicine_price,
-            };
+            // let newMedicine = {
+            //     medicine_name: this.medicine.medicine_name,
+            //     medicine_desc: this.medicine.medicine_desc,
+            //     medicine_price: this.medicine.medicine_price,
+            //     file: this.medicine.file
+            // };
+            let newMedicine = new FormData();
+            newMedicine.append('_method', 'PATCH')
+            newMedicine.append('medicine_name', this.medicine.medicine_name);
+            newMedicine.append('medicine_desc', this.medicine.medicine_desc);
+            newMedicine.append('medicine_price', this.medicine.medicine_price);
+            newMedicine.append('file', this.medicine.file);
             // this.conditions.unshift(newCondition);
-            await this.$axios.patch(
-                `http://127.0.0.1:8000/api/medicine/update/` + this.$route.params.id,
-                newMedicine
+            await this.$axios.post(
+                `http://127.0.0.1:8000/api/medicine/update/` + this.$route.params.id, newMedicine
                 // { headers: { Authorization: "Bearer" + Cookies.get("token") } }
             ).then(function (response) {
                 console.log(response);
+                console.log(this.medicine);
             })
                 .catch(function (error) {
                     console.log(error);
