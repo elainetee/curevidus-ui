@@ -21,7 +21,7 @@
         </q-toolbar-title>
 
         <div class="q-pr-xl row text-navbar cursor-pointer non-selectable">
-          <div class="q-mr-xl" v-if="user.role_id == '3'" @click="$router.push({ name: 'medicine'})">Medicine</div>
+          <div class="q-mr-xl" v-if="user.role_id == '3' || user.role_id == '1'" @click="$router.push({ name: 'medicine', query: {roleid: this.user.role_id }})">Medicine</div>
           <div class="q-mr-xl" @click="$router.push({ name: 'report', params: { id: user.id } })">
             Condition Report
           </div>
@@ -116,13 +116,23 @@
 <script>
 import { ref } from "vue";
 import { Cookies } from "quasar";
+// import { userdetails } from '../components/userId.js';
+// import { reactive } from 'vue';
+
+// export const userid = reactive({
+//     users: ref(this.user),
+//   });
 
 export default {
   data() {
     return {
       user: [],
+      // userdetails
     };
   },
+  // created(){
+  //   // this.user = userdetails.user
+  // },
 
   methods: {
     async getUsername() {
@@ -175,6 +185,8 @@ export default {
     };
   },
   mounted() {
+    // this.userdetails.getUsername();
+    // this.user = userdetails.user
     this.getUsername();
   },
 };

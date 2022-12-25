@@ -7,7 +7,7 @@
                     Day 5 of Quarantine
                 </div> -->
             </div>
-            <div class="column items-center q-my-md">
+            <div v-if="roleid == '3'" class="column items-center q-my-md">
                 <q-btn label="Add Medicine" color="btn" text-color="btn" @click="visitAddPage()" style="width: 15%" />
             </div>
         </div>
@@ -52,7 +52,16 @@
                                     </div>
 
                                 </div>
-                                <div class="col-2">
+                                <div v-if="roleid == '1'" class="col-2">
+                                    <div class="column">
+                                    
+                                        <q-btn label="Add to cart" color="btn-grey"  text-color="btn"/>
+                                        <!-- @click="visitEditPage(medi.medicine_id)" /> -->
+                                        <!-- <div class="q-pa-sm"></div>
+                                        <q-btn label="Delete" color="red-10" @click="medi.confirm = true"/> -->
+                                    </div>
+                                </div>
+                                <div v-if="roleid == '3'" class="col-2">
                                     <div class="column">
                                     
                                     <q-btn label="Edit" color="btn-grey" @click="visitEditPage(medi.medicine_id)" text-color="btn"/>
@@ -142,6 +151,7 @@
 <script>
 import { ref } from 'vue';
 import { Cookies } from "quasar";
+// import { userdetails } from '../components/userId.js';
 
 export default {
     setup() {
@@ -152,11 +162,21 @@ export default {
     data() {
         return {
             medicines: [],
+            // user: ref(userdetails.user),
+            // userdetails
+            roleid: ""
+            
             
         }
     },
+    // async mounted(){
+    //     this.getUsername();
+    //     console.log(this.users);
+    // },
     created() {
         this.getMedicines();
+        // this.getUsername();
+        this.roleid = this.$route.query.roleid
     },
     methods: {
         visitEditPage(medId) {
@@ -211,6 +231,20 @@ export default {
             }
         },
     },
+    // async getUsername() {
+    //   try {
+    //     //  Axios.defaults.headers.common['Authorization'] = 'Bearer' + Cookies.get('token')
+    //     const res = await this.$axios.get(`http://127.0.0.1:8000/api/user`, {
+    //       headers: { Authorization: "Bearer" + Cookies.get("token") },
+    //       contentType: "text/plain",
+    //     });
+    //     this.users = res.data;
+    //     this.user.role_id = this.users.role_id;
+    //     console.log(this.users);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
 }
     // setup() {
     //     return {
