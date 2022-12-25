@@ -1,12 +1,24 @@
 <template>
   <q-page class="relative-position">
     <div class="q-pa-md q-gutter-sm">
-      <q-btn @click="$router.push({ name: 'post', params: { id: this.$route.params.id } })"
-      color="white" text-color="black" label="My post" />
-      <q-btn @click="$router.push({ name: 'all-post' })"
+      <q-btn
+        v-if="user.role_id == '1'"
+        @click="$router.push({ name: 'post', params: { id: this.user.id } })"
+        color="white"
+        text-color="black"
+        label="My post"
+      />
+      <q-btn
+        @click="$router.push({ name: 'friend-post' })"
         color="white"
         text-color="black"
         label="Friend post"
+      />
+      <q-btn
+        @click="$router.push({ name: 'public-post' })"
+        color="white"
+        text-color="black"
+        label="Public post"
       />
     </div>
     <q-separator class="divider" color="grey-2" size="10px" />
@@ -89,15 +101,18 @@
 
 <script>
 import { Cookies } from "quasar";
-
+// import Comment from "../components/Comment.vue";
 export default {
+  components: {
+    // Comment,
+  },
   data() {
     return {
       post: {
         content: "",
       },
       posts: [],
-      users: [],
+      user: [],
     };
   },
 
@@ -169,6 +184,19 @@ export default {
         this.post = res.data;
         this.$q.notify("Posted successfully");
         window.location.reload();
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
+    async getUsername() {
+      try {
+        //  Axios.defaults.headers.common['Authorization'] = 'Bearer' + Cookies.get('token')
+        const res = await this.$axios.get(`http://127.0.0.1:8000/api/user`, {
+          headers: { Authorization: "Bearer" + Cookies.get("token") },
+          contentType: "text/plain",
+        });
+        this.user = res.data;
       } catch (error) {
         console.log(error);
       }
@@ -298,7 +326,7 @@ export default {
   //   },
 
   created() {
-    // this.getUser();
+    this.getUsername();
     this.getPost();
   },
 };

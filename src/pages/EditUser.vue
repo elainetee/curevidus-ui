@@ -77,7 +77,7 @@ export default {
       // call api to submit
       try {
         const res = await this.$axios.patch(
-          `http://localhost/api/user/update/` + this.user.id,
+          `http://127.0.0.1:8000/api/user/update/` + this.user.id,
           this.user,
           {
             headers: { Authorization: "Bearer" + Cookies.get("token") },
@@ -105,7 +105,7 @@ export default {
     // },
     async getUser() {
       try {
-        const res = await this.$axios.get(`http://localhost/api/alluser`, {
+        const res = await this.$axios.get(`http://127.0.0.1:8000/api/alluser`, {
           headers: { Authorization: "Bearer" + Cookies.get("token") },
         });
         this.users = res.data;
