@@ -7,9 +7,9 @@
                     Day 5 of Quarantine
                 </div> -->
             </div>
-            <div class="column items-center q-my-md">
+            <!-- <div class="column items-center q-my-md">
                 <q-btn label="Add Medicine" color="btn" text-color="btn" @click="visitAddPage()" style="width: 15%" />
-            </div>
+            </div> -->
         </div>
 
         <q-card class="q-px-xl q-py-md my-card bg-info" style="width: 70%">
@@ -52,24 +52,24 @@
                                     </div>
 
                                 </div>
-                                <!-- <div v-if="roleid == '1'" class="col-2">
+                                <div class="col-2">
                                     <div class="column">
                                     
                                         <q-btn label="Add to cart" color="btn-grey"  text-color="btn"/>
                                     </div>
-                                </div> -->
-                                <div class="col-2">
+                                </div>
+                                <!-- <div class="col-2">
                                     <div class="column">
                                     
                                     <q-btn label="Edit" color="btn-grey" @click="visitEditPage(medi.medicine_id)" text-color="btn"/>
-                                        <!-- @click="visitEditPage(medi.medicine_id)" /> -->
+                                        
                                     <div class="q-pa-sm"></div>
                                     <q-btn label="Delete" color="red-10" @click="medi.confirm = true"/>
                                 </div>
                                 <q-dialog v-model="medi.confirm" persistent>
                                   <q-card>
                                     <q-card-section class="row items-center">
-                                      <!-- <q-avatar icon="signal_wifi_off" color="primary" text-color="white" /> -->
+                                      
                                       <span class="q-ml-sm">Are you sure you want to delete this medicine?</span>
                                     </q-card-section>
 
@@ -79,7 +79,7 @@
                                     </q-card-actions>
                                   </q-card>
                                 </q-dialog>
-                            </div>
+                            </div> -->
                             </div>
 
                         </q-card-section>

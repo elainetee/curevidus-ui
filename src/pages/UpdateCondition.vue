@@ -318,6 +318,13 @@ export default {
             // return date;
             this.condition.condition_date = date;
         },
+        getConditions() {
+            this.$axios.get(`http://127.0.0.1:8000/api/condition/` + this.$route.params.id)
+            .then(response => {
+                this.conditions = response.data;
+                console.log(this.conditions);
+            });
+        },
         // addCond2() {
         //     this.$axios.post(
         //         `http://127.0.0.1:8000/api/condition/create/` + this.$route.params.id,
@@ -355,7 +362,7 @@ export default {
         //         console.log(error);
         //     }
         // },
-        submitCondition() {
+        async submitCondition() {
             // try {
             let overallCond = this.condition.condition_symptoms.join();
             // let oxy_lvl = ""
@@ -371,7 +378,7 @@ export default {
                 condition_summary: this.condition.condition_summary
             };
             // this.conditions.unshift(newCondition);
-            this.$axios.post(
+            await this.$axios.post(
                 `http://127.0.0.1:8000/api/condition/create/` + this.$route.params.id,
                 newCondition
                 // { headers: { Authorization: "Bearer" + Cookies.get("token") } }
@@ -382,7 +389,11 @@ export default {
                     console.log(error);
                 });
             // this.post = res.data;
+            this.getConditions();
             this.$q.notify("Condition added successfully");
+            this.$router.push({
+                    name: "report"
+                });
             // } catch (error) {
             //     console.log(error);
             // }
