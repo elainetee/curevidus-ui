@@ -1,7 +1,7 @@
 <template>
-  //Display an input field and a send button.
+  <!-- //Display an input field and a send button. -->
   <div class="input-group">
-    //Input field.
+    <!-- //Input field. -->
     <input
       id="btn-input"
       type="text"
@@ -11,9 +11,9 @@
       v-model="newMessage"
       @keyup.enter="sendMessage"
     />
-    //Call sendMessage() when the enter key is pressed. //Button
+    <!-- //Call sendMessage() when the enter key is pressed. //Button -->
     <span class="input-group-btn">
-      //Call sendMessage() this button is clicked.
+      <!-- //Call sendMessage() this button is clicked. -->
       <button class="btn btn-primary btn-sm" id="btn-chat" @click="sendMessage">
         Send
       </button>
@@ -36,7 +36,9 @@ export default {
       this.$emit("messagesent", {
         user: this.user,
         //newMessage is bound to the earlier "btn-input" input field
+        message: this.newMessage,
       });
+      this.newMessage = "";
     },
   },
 };

@@ -83,14 +83,14 @@
                   flat
                   round
                 />
-                <q-btn
+                <!-- <q-btn
                   @click="getComment(post.id)"
                   color="grey"
                   icon="hide_source"
                   size="sm"
                   flat
                   round
-                />
+                /> -->
               </div>
               <!-- <comment :comments="comments"></comment> -->
               <q-dialog v-model="showComment" persistent>
@@ -164,14 +164,14 @@
           </q-item>
           <q-separator inset="item" />
         </q-list>
-        <q-pagination
+        <!-- <q-pagination
           v-model="current"
           max="5"
           direction-links
           flat
           color="grey"
           active-color="primary"
-        />
+        /> -->
       </div>
     </q-scroll-area>
   </q-page>

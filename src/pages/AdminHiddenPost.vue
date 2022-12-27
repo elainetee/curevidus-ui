@@ -37,13 +37,13 @@
           </q-item>
           <q-separator inset="item" />
         </q-list>
-        <q-pagination
+        <!-- <q-pagination
           max="5"
           direction-links
           flat
           color="grey"
           active-color="primary"
-        />
+        /> -->
       </div>
     </q-scroll-area>
   </q-page>

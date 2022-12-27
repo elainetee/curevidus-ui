@@ -125,6 +125,7 @@ export default {
           { headers: { Authorization: "Bearer" + Cookies.get("token") } }
         );
         this.pendingrequests = res.data;
+        this.getFriend();
       } catch (error) {
         console.log(error);
       }

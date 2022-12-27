@@ -124,19 +124,6 @@ export default {
         params: { id: props },
       });
     },
-    async getUser() {
-      try {
-        const res = await this.$axios.get(`http://127.0.0.1:8000/api/alluser`, {
-          headers: { Authorization: "Bearer" + Cookies.get("token") },
-        });
-        this.users = res.data;
-      } catch (error) {
-        console.log(error);
-        if (error.response.status == 401) {
-          this.accessDenied = true;
-        }
-      }
-    },
 
     async deletePost(id) {
       try {
@@ -202,29 +189,6 @@ export default {
       }
     },
 
-    deleteStaff(props) {
-      this.$q
-        .dialog({
-          message: "Are you sure to delete this account?",
-          cancel: true,
-          persistent: true,
-        })
-        .onOk(async () => {
-          try {
-            const res = await this.$axios.delete(
-              `http://127.0.0.1:8000/api/user/` + props.row.id,
-              {
-                headers: { Authorization: "Bearer" + Cookies.get("token") },
-              }
-            );
-            this.getUser();
-            alert("Account deleted");
-          } catch (e) {
-            console.log(e);
-          }
-        });
-    },
-
     editPost(props) {
       this.$q
         .dialog({
@@ -248,12 +212,12 @@ export default {
     },
   },
 
-  visitUserPage(props) {
-    this.$router.push({
-      name: "editUser",
-      params: { id: props.row.id },
-    });
-  },
+  // visitUserPage(props) {
+  //   this.$router.push({
+  //     name: "editUser",
+  //     params: { id: props.row.id },
+  //   });
+  // },
 
   // editStaff(props) {
   //   this.$q

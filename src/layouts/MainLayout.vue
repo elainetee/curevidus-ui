@@ -103,7 +103,8 @@
 
           <q-toolbar-title> </q-toolbar-title>
 
-          <q-btn dense flat @click="toggleRightDrawer">
+          <!-- <q-btn dense flat @click="toggleRightDrawer"> -->
+          <q-btn dense flat>
             <q-avatar square size="30px">
               <img src="icons/chat.png" @click="$router.push('/chat')" />
             </q-avatar>
