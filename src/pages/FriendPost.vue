@@ -160,14 +160,6 @@
               </q-card>
             </q-dialog>
           </q-item-section>
-
-          <!-- <q-item v-show="isComment"> -->
-          <!-- <q-item> -->
-
-          <!-- <comment v-on:commentopened="getComment" :post="post"></comment> -->
-
-          <!-- </q-item> -->
-
           <q-item-section side top> {{ post.duration }} </q-item-section>
         </q-item>
         <q-separator inset="item" />

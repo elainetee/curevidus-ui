@@ -21,11 +21,11 @@
         </q-toolbar-title>
 
         <div class="q-pr-xl row text-navbar cursor-pointer non-selectable">
-          <div class="q-mr-xl" v-if="user.role_id == '3'" @click="$router.push({ name: 'medicine'})">Medicine</div>
-          <div class="q-mr-xl" @click="$router.push({ name: 'report', params: { id: user.id } })">
+          <div class="q-mr-xl" v-if="store.user.role_id == '3'" @click="$router.push({ name: 'medicine'})">Medicine</div>
+          <div class="q-mr-xl" @click="$router.push({ name: 'report', params: { id: store.user.id } })">
             Condition Report
           </div>
-          <div class="q-mr-xl" v-if="user.role_id == '3'">Patients</div>
+          <div class="q-mr-xl" v-if="store.user.role_id == '3'">Patients</div>
           <div class="q-mr-xl" @click="$router.push({ name: 'friend' })" v-else>
             Friends
           </div>
@@ -35,7 +35,7 @@
           > -->
           <div
             class="q-mr-xl"
-            v-if="user.role_id == '3'"
+            v-if="store.user.role_id == '3'"
             @click="$router.push({ name: 'admin-post' })"
           >
             Forum
@@ -50,7 +50,7 @@
           <div
             @click="$router.push({ name: 'manage-account' })"
             class="q-mr-xl"
-            v-if="user.role_id == '3'"
+            v-if="store.user.role_id == '3'"
           >
             Manage Account
           </div>
@@ -60,7 +60,7 @@
         <q-avatar size="30px">
           <img src="icons/noti.png">
         </q-avatar>
-        </q-btn> -->{{ user.name }}
+        </q-btn> -->{{ store.user.name }}
         <div class="q-pr-xl cursor-pointer non-selectable">
           <q-avatar square size="30px">
             <img src="icons/userdd.png" />
@@ -71,7 +71,7 @@
                     @click="
                       $router.push({
                         name: 'profile',
-                        params: { id: this.user.id },
+                        params: { id: this.store.user.id },
                       })
                     "
                     >My Profile</q-item-section
@@ -131,27 +131,16 @@
 <script>
 import { ref } from "vue";
 import { Cookies } from "quasar";
+import { store } from "../store.js";
 
 export default {
   data() {
     return {
-      user: [],
+      store,
     };
   },
 
   methods: {
-    async getUsername() {
-      try {
-        //  Axios.defaults.headers.common['Authorization'] = 'Bearer' + Cookies.get('token')
-        const res = await this.$axios.get(`http://127.0.0.1:8000/api/user`, {
-          headers: { Authorization: "Bearer" + Cookies.get("token") },
-          contentType: "text/plain",
-        });
-        this.user = res.data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
 
     async logout() {
       try {
@@ -166,8 +155,6 @@ export default {
         console.log(error);
       }
       const config = { path: "/", sameSite: "strict" };
-      // Cookies.remove("token", config);
-      // Cookies.remove("token");
       this.$q.notify("Successfully logged out");
       this.$router.push("/");
     },
@@ -190,7 +177,7 @@ export default {
     };
   },
   mounted() {
-    this.getUsername();
+    this.store.getUsername();
   },
 };
 </script>
