@@ -51,7 +51,7 @@ export default {
     async getPost() {
       try {
         const res = await this.$axios.get(
-          `http://localhost/api/specificpost/` + this.$route.params.id,
+          `http://127.0.0.1:8000/api/specificpost/` + this.$route.params.id,
           {
             headers: { Authorization: "Bearer" + Cookies.get("token") },
           }
@@ -83,7 +83,7 @@ export default {
     // async onSubmit() {
     //   try {
     //     const res = await this.$axios.patch(
-    //       `http://localhost/api/post/update/` + this.$route.params.id,
+    //       `http://127.0.0.1:8000/api/post/update/` + this.$route.params.id,
     //       this.post,
     //       { headers: { Authorization: "Bearer" + Cookies.get("token") } }
     //     );

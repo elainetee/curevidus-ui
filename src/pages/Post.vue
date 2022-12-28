@@ -1,12 +1,24 @@
 <template>
   <q-page class="relative-position">
     <div class="q-pa-md q-gutter-sm">
-      <q-btn @click="$router.push({ name: 'post', params: { id: this.$route.params.id } })"
-      color="white" text-color="black" label="My post" />
-      <q-btn @click="$router.push({ name: 'all-post' })"
+      <q-btn
+        v-if="user.role_id == '1'"
+        @click="$router.push({ name: 'post', params: { id: this.user.id } })"
+        color="white"
+        text-color="black"
+        label="My post"
+      />
+      <q-btn
+        @click="$router.push({ name: 'friend-post' })"
         color="white"
         text-color="black"
         label="Friend post"
+      />
+      <q-btn
+        @click="$router.push({ name: 'public-post' })"
+        color="white"
+        text-color="black"
+        label="Public post"
       />
     </div>
     <q-separator class="divider" color="grey-2" size="10px" />
@@ -89,15 +101,18 @@
 
 <script>
 import { Cookies } from "quasar";
-
+// import Comment from "../components/Comment.vue";
 export default {
+  components: {
+    // Comment,
+  },
   data() {
     return {
       post: {
         content: "",
       },
       posts: [],
-      users: [],
+      user: [],
     };
   },
 
@@ -108,19 +123,6 @@ export default {
         name: "editPost",
         params: { id: props },
       });
-    },
-    async getUser() {
-      try {
-        const res = await this.$axios.get(`http://127.0.0.1:8000/api/alluser`, {
-          headers: { Authorization: "Bearer" + Cookies.get("token") },
-        });
-        this.users = res.data;
-      } catch (error) {
-        console.log(error);
-        if (error.response.status == 401) {
-          this.accessDenied = true;
-        }
-      }
     },
 
     async deletePost(id) {
@@ -174,27 +176,17 @@ export default {
       }
     },
 
-    deleteStaff(props) {
-      this.$q
-        .dialog({
-          message: "Are you sure to delete this account?",
-          cancel: true,
-          persistent: true,
-        })
-        .onOk(async () => {
-          try {
-            const res = await this.$axios.delete(
-              `http://127.0.0.1:8000/api/user/` + props.row.id,
-              {
-                headers: { Authorization: "Bearer" + Cookies.get("token") },
-              }
-            );
-            this.getUser();
-            alert("Account deleted");
-          } catch (e) {
-            console.log(e);
-          }
+    async getUsername() {
+      try {
+        //  Axios.defaults.headers.common['Authorization'] = 'Bearer' + Cookies.get('token')
+        const res = await this.$axios.get(`http://127.0.0.1:8000/api/user`, {
+          headers: { Authorization: "Bearer" + Cookies.get("token") },
+          contentType: "text/plain",
         });
+        this.user = res.data;
+      } catch (error) {
+        console.log(error);
+      }
     },
 
     editPost(props) {
@@ -220,12 +212,12 @@ export default {
     },
   },
 
-  visitUserPage(props) {
-    this.$router.push({
-      name: "editUser",
-      params: { id: props.row.id },
-    });
-  },
+  // visitUserPage(props) {
+  //   this.$router.push({
+  //     name: "editUser",
+  //     params: { id: props.row.id },
+  //   });
+  // },
 
   // editStaff(props) {
   //   this.$q
@@ -298,7 +290,7 @@ export default {
   //   },
 
   created() {
-    // this.getUser();
+    this.getUsername();
     this.getPost();
   },
 };
