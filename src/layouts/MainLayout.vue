@@ -21,7 +21,8 @@
         </q-toolbar-title>
 
         <div class="q-pr-xl row text-navbar cursor-pointer non-selectable">
-          <div class="q-mr-xl" @click="$router.push('/report')">
+          <div class="q-mr-xl" v-if="user.role_id == '3'" @click="$router.push({ name: 'medicine'})">Medicine</div>
+          <div class="q-mr-xl" @click="$router.push({ name: 'report', params: { id: user.id } })">
             Condition Report
           </div>
           <div class="q-mr-xl" v-if="user.role_id == '3'">Patients</div>

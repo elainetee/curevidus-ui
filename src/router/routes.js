@@ -4,8 +4,9 @@ const routes = [
     path: "",
     component: () => import('layouts/LoginLayout.vue'),
     children: [
-      { path: "", component: () => import('pages/Index.vue') },
-      { path: '/index2', component: () => import('pages/Index2.vue') }
+      { name: "login", path: "", component: () => import('pages/Index.vue') },
+      { path: '/index2', component: () => import('pages/Index2.vue') },
+      { name: "register", path: "/register", component: () => import('pages/Register.vue') }
     ]
   },
   {
@@ -29,7 +30,8 @@ const routes = [
       { name:"medicine", path: "/medicine", component: () => import('pages/Medicine.vue') },
       { name:"chat", path: "/chat", component: () => import('pages/Chat.vue') },
       { name:"friend", path: "/friend", component: () => import('pages/Friend.vue') },
-
+      { name:"editMed", path: "/medicine/manage/:id", component: () => import('pages/ManageMedicine.vue') },
+      { name:"addMed", path: "/medicine/manage", component: () => import('pages/ManageMedicine.vue') }
     ]
   },
 
