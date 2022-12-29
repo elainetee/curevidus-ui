@@ -159,6 +159,7 @@ export default {
     data() {
         return {
             medicines: [],
+            // user:[],
             // user: ref(userdetails.user),
             // userdetails
             roleid: ""
@@ -167,12 +168,12 @@ export default {
         }
     },
     // async mounted(){
-    //     this.getUsername();
-    //     console.log(this.users);
+    //     let user = await this.$auth.getUserid();
+    //     // console.log(this.users);
     // },
     created() {
         this.getMedicines();
-        // this.getUsername();
+        // this.getUserid();
         // this.roleid = this.$route.query.roleid
     },
     methods: {
@@ -228,16 +229,17 @@ export default {
             }
         },
     },
-    // async getUsername() {
+    // async getUserid() {
     //   try {
     //     //  Axios.defaults.headers.common['Authorization'] = 'Bearer' + Cookies.get('token')
     //     const res = await this.$axios.get(`http://127.0.0.1:8000/api/user`, {
     //       headers: { Authorization: "Bearer" + Cookies.get("token") },
     //       contentType: "text/plain",
     //     });
-    //     this.users = res.data;
-    //     this.user.role_id = this.users.role_id;
-    //     console.log(this.users);
+    //     this.user = res.data;
+    //     console.log(this.user.role_id)
+    //     // this.user.role_id = this.users.role_id;
+    //     console.log(this.user);
     //   } catch (error) {
     //     console.log(error);
     //   }
