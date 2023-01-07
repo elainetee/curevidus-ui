@@ -55,7 +55,7 @@
                                 <div class="col-2">
                                     <div class="column">
                                     
-                                        <q-btn label="Add to cart" color="btn-grey"  text-color="btn"/>
+                                        <q-btn label="Add to cart" color="btn-grey" @click="addToCart(medi.medicine_id)" text-color="btn"/>
                                     </div>
                                 </div>
                                 <!-- <div class="col-2">
@@ -161,7 +161,10 @@ export default {
             medicines: [],
             // user: ref(userdetails.user),
             // userdetails
-            roleid: ""
+            roleid: "",
+            message: "Medicine added to cart successfully",
+            normalMsg: "Medicine added to cart successfully",
+            errorMsg: "Medicine already exists in cart"
             
             
         }
@@ -182,6 +185,27 @@ export default {
                 name: "editMed",
                 params: { id: medId },
             });
+        },
+        async addToCart(medId) {
+            this.message = this.normalMsg;
+            console.log(medId);
+            await this.$axios.post(
+                `http://127.0.0.1:8000/api/order/addtocart/` + medId,
+                null,
+            { headers: { Authorization: "Bearer" + Cookies.get("token") } }
+            ).then(function (response) {
+                console.log(response);
+            }).catch(error=> {
+                console.log(error);
+                if (error.response.status == 400) {
+                    // this.accessDenied = true;
+                    console.log('error 400');
+                    // this.message.push(this.errorMsg);
+                    // this.$q.notify("Medicine already exists in cart");
+                    this.message = this.errorMsg;
+                }
+            });
+            this.$q.notify(this.message);
         },
         visitAddPage() {
             console.log();
