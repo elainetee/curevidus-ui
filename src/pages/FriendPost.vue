@@ -33,65 +33,67 @@
           v-if="store.user.role_id == '1'"
           class="q-py-lg q-px-md row items-end q-col-gutter-md"
         >
-        <div class="col">
-          <q-input
-            v-model="post.content"
-            class="new-post"
-            placeholder="What's happening?"
-            maxlength="280"
-            bottom-slots
-            counter
-            autogrow
-          >
-            <template v-slot:before>
+          <div class="col">
+            <q-input
+              v-model="post.content"
+              class="new-post"
+              placeholder="What's happening?"
+              maxlength="280"
+              bottom-slots
+              counter
+              autogrow
+            >
+              <template v-slot:before>
+                <q-avatar size="xl">
+                  <img src="icons/userdd.png" />
+                </q-avatar>
+              </template>
+            </q-input>
+          </div>
+          <div class="col col-shrink">
+            <q-btn
+              @click="addPost()"
+              :disable="!post.content"
+              class="q-mb-lg"
+              color="primary"
+              label="Post"
+              rounded
+              unelevated
+              no-caps
+            />
+          </div>
+        </div>
+        <q-separator class="divider" color="grey-2" size="10px" />
+        <q-list separator>
+          <q-item v-for="post in posts" :key="post.id" class="q-py-md">
+            <q-item-section avatar top>
               <q-avatar size="xl">
-                <img src="icons/userdd.png" />
+                <!-- <img src="icons/userdd.png" /> -->
               </q-avatar>
-            </template>
-          </q-input>
-        </div>
-        <div class="col col-shrink">
-          <q-btn
-            @click="addPost()"
-            :disable="!post.content"
-            class="q-mb-lg"
-            color="primary"
-            label="Post"
-            rounded
-            unelevated
-            no-caps
-          />
-        </div>
-      </div>
-      <q-separator class="divider" color="grey-2" size="10px" />
-      <q-list separator>
-        <q-item v-for="post in posts" :key="post.id" class="q-py-md">
-          <q-item-section avatar top>
-            <q-avatar size="xl">
-              <!-- <img src="icons/userdd.png" /> -->
-            </q-avatar>
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-subtitle1"
-              ><strong>{{ post.user_name }}</strong>
-            </q-item-label>
-            <q-item-label class="text-body1">
-              {{ post.content }}
-            </q-item-label>
-            <div class="qweet-icons row justify-between q-mt-sm">
-              <q-btn
-                @click="
-                  showComment = true;
-                  getComment(post.id);
-                  tempPost = post.id;
-                "
-                color="grey"
-                icon="comment"
-                size="sm"
-                flat
-                round
-              />
-              <!-- <q-btn
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-subtitle1"
+                ><strong>{{ post.user_name }}</strong>
+              </q-item-label>
+              <q-item-label class="text-body1">
+                {{ post.content }}
+              </q-item-label>
+              <div class="qweet-icons row justify-between q-mt-sm">
+                <q-btn
+                  @click="
+                    showComment = true;
+                    getComment(post.id);
+                    tempPost = post.id;
+                  "
+                  color="grey"
+                  icon="comment"
+                  size="sm"
+                  flat
+                  round
+                >
+                  <div>{{ post.comment_num }}</div>
+                </q-btn>
+                <!-- <q-btn
                   @click="hidePost(post.id)"
                   color="grey"
                   icon="hide_source"
@@ -99,72 +101,72 @@
                   flat
                   round
                 /> -->
-            </div>
-            <!-- <comment :comments="comments"></comment> -->
-            <q-dialog v-model="showComment" persistent>
-              <q-card>
-                <q-card-section class="row">
-                  <div class="text-h6">Comment</div>
-                  <q-space />
-                  <q-btn
-                    flat
-                    round
-                    dense
-                    icon="close"
-                    type="reset"
-                    v-close-popup
-                  />
-                </q-card-section>
-
-                <q-list separator>
-                  <q-item
-                    v-for="comment in comments"
-                    :key="comment.id"
-                    class="q-py-md"
-                  >
-                    <q-item-section>
-                      <q-item-label class="text-subtitle1"
-                        ><strong>{{ comment.user_name }}</strong>
-                      </q-item-label>
-                      <q-item-label class="text-body1">
-                        {{ comment.comment_body }}
-                      </q-item-label>
-                    </q-item-section>
-                  </q-item>
-                </q-list>
-                <div class="q-py-lg q-px-md row items-end q-col-gutter-md">
-                  <div class="col">
-                    <q-input
-                      v-model="comment.comment_body"
-                      class="new-comment"
-                      placeholder="Write a comment..."
-                      maxlength="280"
-                      bottom-slots
-                      counter
-                      autogrow
-                    >
-                    </q-input>
-                  </div>
-                  <div class="col col-shrink">
+              </div>
+              <!-- <comment :comments="comments"></comment> -->
+              <q-dialog v-model="showComment" persistent>
+                <q-card>
+                  <q-card-section class="row">
+                    <div class="text-h6">Comment</div>
+                    <q-space />
                     <q-btn
-                      @click="addComment(tempPost)"
-                      class="q-mb-lg"
-                      color="primary"
-                      icon="send"
-                      rounded
-                      unelevated
-                      no-caps
+                      flat
+                      round
+                      dense
+                      icon="close"
+                      type="reset"
+                      v-close-popup
                     />
+                  </q-card-section>
+
+                  <q-list separator>
+                    <q-item
+                      v-for="comment in comments"
+                      :key="comment.id"
+                      class="q-py-md"
+                    >
+                      <q-item-section>
+                        <q-item-label class="text-subtitle1"
+                          ><strong>{{ comment.user_name }}</strong>
+                        </q-item-label>
+                        <q-item-label class="text-body1">
+                          {{ comment.comment_body }}
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                  <div class="q-py-lg q-px-md row items-end q-col-gutter-md">
+                    <div class="col">
+                      <q-input
+                        v-model="comment.comment_body"
+                        class="new-comment"
+                        placeholder="Write a comment..."
+                        maxlength="280"
+                        bottom-slots
+                        counter
+                        autogrow
+                      >
+                      </q-input>
+                    </div>
+                    <div class="col col-shrink">
+                      <q-btn
+                        @click="addComment(tempPost)"
+                        class="q-mb-lg"
+                        color="primary"
+                        icon="send"
+                        rounded
+                        unelevated
+                        no-caps
+                      />
+                    </div>
                   </div>
-                </div>
-              </q-card>
-            </q-dialog>
-          </q-item-section>
-          <q-item-section side top> {{ post.duration }} </q-item-section>
-        </q-item>
-        <q-separator inset="item" />
-      </q-list>
-      <!-- <q-pagination
+                </q-card>
+              </q-dialog>
+            </q-item-section>
+            <q-item-section side top> {{ post.duration }} </q-item-section>
+          </q-item>
+          <q-separator inset="item" />
+        </q-list>
+        <!-- <q-pagination
           v-model="current"
           max="5"
           direction-links

@@ -70,7 +70,9 @@
               {{ post.content }}
             </q-item-label>
             <div class="qweet-icons row justify-between q-mt-sm">
-              <q-btn color="grey" icon="comment" size="sm" flat round />
+              <q-btn color="grey" icon="comment" size="sm" flat round>
+                <div>{{ post.comment_num }}</div>
+              </q-btn>
 
               <q-btn
                 color="grey"
