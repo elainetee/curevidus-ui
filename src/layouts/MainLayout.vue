@@ -21,11 +21,15 @@
         </q-toolbar-title>
 
         <div class="q-pr-xl row text-navbar cursor-pointer non-selectable">
-          <div class="q-mr-xl" v-if="user.role_id == '3'" @click="$router.push({ name: 'medicine', query: {roleid: this.user.role_id }})">Medicine</div>
-          <div class="q-mr-xl" v-if="user.role_id == '1'" @click="$router.push({ name: 'medicinepat', query: {roleid: this.user.role_id }})">Medicine</div>
           <div class="q-mr-xl" @click="$router.push({ name: 'report', params: { id: user.id } })">
             Condition Report
           </div>
+
+          <div class="q-mr-xl" v-if="user.role_id == '3'" @click="$router.push({ name: 'medicine', query: {roleid: this.user.role_id }})">Medicine</div>
+          <div class="q-mr-xl" v-if="user.role_id == '1'" @click="$router.push({ name: 'medicinepat', query: {roleid: this.user.role_id }})">Medicine</div>
+
+          <div class="q-mr-xl" v-if="user.role_id == '1'" @click="$router.push({ name: 'cart'})">My Cart</div>
+          
           <div class="q-mr-xl" v-if="user.role_id == '3'">Patients</div>
           <div class="q-mr-xl" v-else>Friends</div>
           <div
