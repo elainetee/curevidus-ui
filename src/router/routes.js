@@ -24,6 +24,7 @@ const routes = [
       { name: "friend-post", path: "/friendpost", component: () => import('pages/FriendPost.vue')},
       { name: "admin-post", path: "/adminpost", component: () => import('pages/AdminPost.vue')},
       { name: "hidden-post", path: "/hiddenpost", component: () => import('pages/AdminHiddenPost.vue')},
+      { name: "call", path: "/call", component: () => import('pages/Call.vue')},
       // { path: "/homepage", component: () => import('pages/Homepage.vue') },
       { name: "report", path: "/report/:id", component: () => import('pages/ConditionReport.vue') },
       { name:"condition", path: "/condition/:id", component: () => import('pages/UpdateCondition.vue') },

@@ -3,7 +3,7 @@
     <div class="q-pa-md q-gutter-sm">
       <q-btn
         v-if="store.user.role_id == '1'"
-        @click="$router.push({ name: 'post', params: { id: this.user.id } })"
+        @click="$router.push({ name: 'post', params: { id: store.user.id } })"
         color="white"
         text-color="black"
         label="My post"

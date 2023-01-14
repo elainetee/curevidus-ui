@@ -8,6 +8,11 @@
             color="white"
             text-color="black"
             label="Friendlist"
+          /><q-btn
+            @click="$router.push({ name: 'call' })"
+            color="white"
+            text-color="black"
+            label="Call"
           />
         </div>
         <q-input
@@ -39,9 +44,12 @@
           <q-item-section>
             <q-item-label class="text-subtitle1"
               ><strong>{{ friend.name }}</strong>
+              <q-separator class="divider" color="grey-4" size="2px" />
+
             </q-item-label>
           </q-item-section>
         </q-item>
+              <q-separator class="divider" color="grey-4" size="12px" />
         <div class="text-h6">Pending Friend Request</div>
         <q-item
           style="max-width: 650px"
@@ -57,6 +65,7 @@
           <q-item-section>
             <q-item-label class="text-subtitle1"
               ><strong>{{ pendingrequest.name }}</strong>
+              <q-separator class="divider" color="grey-4" size="2px" />
             </q-item-label>
           </q-item-section>
           <q-item-section top side>

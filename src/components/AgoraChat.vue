@@ -2,9 +2,9 @@
   <main>
     <div class="container">
       <div class="row">
-        <div class="col-12 text-center">
+        <!-- <div class="col-12 text-center">
           <img src="img/agora-logo.png" alt="Agora Logo" class="img-fuild" />
-        </div>
+        </div> -->
       </div>
     </div>
     <div class="container my-5">
@@ -14,7 +14,7 @@
             <button
               type="button"
               class="btn btn-primary mr-2"
-              v-for="user in store.user"
+              v-for="user in alluser"
               :key="user.id"
               @click="placeCall(user.id, user.name)"
             >
@@ -70,19 +70,20 @@
         >
           {{ mutedVideo ? "ShowVideo" : "HideVideo" }}
         </button>
-        <button type="button" class="btn btn-danger" @click="endCall">
-          EndCall
-        </button>
+        <q-btn color="red" @click="endCall"> EndCall </q-btn>
       </div>
     </section>
   </main>
 </template>
 
 <script>
+import { Cookies } from "quasar";
 import { store } from "../store.js";
+import AgoraRTC from "agora-rtc-sdk";
+
 export default {
   name: "AgoraChat",
-  props: ["authuser", "authuserid", "allusers", "agora_id"],
+  // props: ["authuser", "authuserid", "agora_id"],
   data() {
     return {
       callPlaced: false,
@@ -95,23 +96,36 @@ export default {
       incomingCall: false,
       incomingCaller: "",
       agoraChannel: null,
+      duration: null,
       store,
+      alluser: [],
     };
   },
 
   mounted() {
+    this.getUser();
     this.initUserOnlineChannel();
     this.initUserOnlineListeners();
 
-    let recaptchaScript = document.createElement("script");
-    recaptchaScript.setAttribute(
-      "src",
-      "https://cdn.agora.io/sdk/release/AgoraRTCSDK-3.3.1.js"
-    );
-    document.head.appendChild(recaptchaScript);
+    // let recaptchaScript = document.createElement("script");
+    // recaptchaScript.setAttribute(
+    //   "src",
+    //   "https://cdn.agora.io/sdk/release/AgoraRTCSDK-3.3.1.js"
+    // );
+    // document.head.appendChild(recaptchaScript);
   },
 
   methods: {
+    async getUser() {
+      try {
+        const res = await this.$axios.get(`http://127.0.0.1:8000/api/friend`, {
+          headers: { Authorization: "Bearer" + Cookies.get("token") },
+        });
+        this.alluser = res.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
     /**
      * Presence Broadcast Channel Listeners and Methods
      * Provided by Laravel.
@@ -135,6 +149,7 @@ export default {
           this.onlineUsers.push(user);
         }
       });
+      // console.log(this.onlineUsers);
 
       this.userOnlineChannel.leaving((user) => {
         const leavingUserIndex = this.onlineUsers.findIndex(
@@ -145,7 +160,7 @@ export default {
 
       // listen to incomming call
       this.userOnlineChannel.listen("MakeAgoraCall", ({ data }) => {
-        if (parseInt(data.userToCall) === parseInt(this.authuserid)) {
+        if (parseInt(data.userToCall) === parseInt(this.store.user.id)) {
           const callerIndex = this.onlineUsers.findIndex(
             (user) => user.id === data.from
           );
@@ -172,14 +187,20 @@ export default {
     async placeCall(id, calleeName) {
       try {
         // channelName = the caller's and the callee's id. you can use anything. tho.
-        const channelName = `${this.authuser}_${calleeName}`;
+        const channelName = `${this.store.user.name}_${calleeName}`;
         const tokenRes = await this.generateToken(channelName);
-
         // Broadcasts a call event to the callee and also gets back the token
-        await axios.post("/agora/call-user", {
-          user_to_call: id,
-          channel_name: channelName,
-        });
+        // await axios.post("/agora/call-user", {
+        //   user_to_call: id,
+        //   channel_name: channelName,
+        await this.$axios.post(
+          `http://127.0.0.1:8000/api/agora/call-user`,
+          {
+            user_to_call: id,
+            channel_name: channelName,
+          },
+          { headers: { Authorization: "Bearer" + Cookies.get("token") } }
+        );
 
         this.initializeAgora();
         this.joinRoom(tokenRes.data, channelName);
@@ -194,6 +215,10 @@ export default {
       this.joinRoom(tokenRes.data, this.agoraChannel);
       this.incomingCall = false;
       this.callPlaced = true;
+      this.client.getSessionStats(10).then((stats) => {
+        console.log(stats);
+      });
+
     },
 
     declineCall() {
@@ -203,19 +228,24 @@ export default {
     },
 
     generateToken(channelName) {
-      return axios.post("/agora/token", {
-        channelName,
-      });
+      // return axios.post("/agora/token", {
+      //   channelName,
+      return this.$axios.post(
+        `http://127.0.0.1:8000/api/agora/token`,
+        { channelName },
+        { headers: { Authorization: "Bearer" + Cookies.get("token") } }
+      );
     },
 
     /**
      * Agora Events and Listeners
      */
     initializeAgora() {
-      this.client = AgoraRTC.createClient({ mode: "rtc", codec: "h264" });
+      this.client = AgoraRTC.createClient({ mode: "live", codec: "h264" });
       this.client.init(
-        this.agora_id,
+        process.env.AGORA_APP_ID,
         () => {
+          // console.log(this.client);
           console.log("AgoraRTC client initialized");
         },
         (err) => {
@@ -228,7 +258,7 @@ export default {
       this.client.join(
         token,
         channel,
-        this.authuser,
+        this.store.user.name,
         (uid) => {
           console.log("User " + uid + " join channel successfully");
           this.callPlaced = true;
@@ -337,6 +367,10 @@ export default {
       }
     },
   },
+
+  //   created() {
+  //   this.getUser();
+  // },
 };
 </script>
 
