@@ -45,7 +45,7 @@
             >
               <template v-slot:before>
                 <q-avatar size="xl">
-                  <img src="icons/userdd.png" />
+                   <q-img :src="store.user.avatar" />
                 </q-avatar>
               </template>
             </q-input>
@@ -68,7 +68,7 @@
           <q-item v-for="post in posts" :key="post.id" class="q-py-md">
             <q-item-section avatar top>
               <q-avatar size="xl">
-                <!-- <img src="icons/userdd.png" /> -->
+                 <!-- <q-img :src="store.user.avatar" /> -->
               </q-avatar>
             </q-item-section>
             <q-item-section>

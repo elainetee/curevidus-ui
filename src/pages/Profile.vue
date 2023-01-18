@@ -3,6 +3,24 @@
     <div class="row">
       <h5>User details</h5>
     </div>
+    <q-avatar size="200px">
+      <q-img :src="store.user.avatar"/>
+    </q-avatar>
+    <q-card-actions>
+      <label
+        >File
+        <input
+          type="file"
+          id="file"
+          ref="file"
+          v-on:change="handleFileUpload()"
+        />
+      </label>
+      <q-separator dark />
+      <q-btn outline style="color: green" v-on:click="submitFile()"
+        >Upload</q-btn
+      >
+    </q-card-actions>
     <div class="container row">
       <div class="q-pt-xl">
         <q-markup-table>
@@ -21,9 +39,7 @@
             </tr>
             <tr>
               <td class="text-left">Condition</td>
-              <td class="text-right">
-                Mild fever
-              </td>
+              <td class="text-right">Mild fever</td>
             </tr>
             <tr>
               <td class="text-left">Tel no.</td>
@@ -32,7 +48,14 @@
           </tbody>
         </q-markup-table>
         <div class="q-pa-md q-gutter-sm">
-          <q-btn @click="$router.push({ name: 'edit-profile', params: { id: user.id } })" color="white" text-color="black" label="Edit profile" />
+          <q-btn
+            @click="
+              $router.push({ name: 'edit-profile', params: { id: user.id } })
+            "
+            color="white"
+            text-color="black"
+            label="Edit profile"
+          />
           <q-btn color="white" text-color="black" label="change password" />
         </div>
       </div>
@@ -42,10 +65,13 @@
 
 <script>
 import { Cookies } from "quasar";
+import { store } from "../store.js";
+
 export default {
   data() {
     return {
       user: [],
+      store,
     };
   },
   methods: {

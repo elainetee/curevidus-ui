@@ -62,8 +62,8 @@
         </q-avatar>
         </q-btn> -->{{ store.user.name }}
         <div class="q-pr-xl cursor-pointer non-selectable">
-          <q-avatar square size="30px">
-            <img src="icons/userdd.png" />
+          <q-avatar round size="30px">
+            <q-img :src="store.user.avatar" />
             <q-menu auto-close>
               <q-list dense style="min-width: 100px">
                 <q-item clickable>
