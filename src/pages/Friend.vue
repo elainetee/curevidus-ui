@@ -27,10 +27,41 @@
           </template>
         </q-input>
       </div>
-      <q-separator class="divider" color="grey-4" size="12px" />
-      <q-scroll-area class="absolute full-width full-height">
-        <div class="text-h6">Friendlist</div>
-        <q-item
+      <q-separator class="divider" color="grey-4" size="1px" />
+      <q-scroll-area class="absolute full-width full-height q-pr-lg">
+        <!-- <div class="text-h6">Friendlist</div> -->
+        <q-toolbar class="bg-primary text-white shadow-2">
+          <q-toolbar-title>Friend list</q-toolbar-title>
+        </q-toolbar>
+        <q-list bordered>
+          <q-item
+            v-for="friend in friends"
+            :key="friend.id"
+            class="q-my-sm"
+            clickable
+            v-ripple
+          >
+            <q-item-section avatar>
+              <q-avatar color="primary" text-color="white">
+                <img src="../../public/icons/userdd.png" />
+                <!-- <q-img v-if="friend.avatar != ''" :src="friend.avatar" />
+                <q-img v-else src="../../public/icons/userdd.png" /> -->
+              </q-avatar>
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label>{{ friend.name }}</q-item-label>
+              <q-item-label caption lines="1">{{ friend.email }}</q-item-label>
+            </q-item-section>
+
+            <q-item-section side>
+              <q-icon name="chat_bubble" color="grey" />
+            </q-item-section>
+          </q-item>
+
+          <q-separator />
+        </q-list>
+        <!-- <q-item
           style="max-width: 650px"
           v-for="friend in friends"
           :key="friend.id"
@@ -38,58 +69,66 @@
         >
           <q-item-section avatar top>
             <q-avatar size="xl">
-              <!-- <img src="icons/userdd.png" /> -->
+              <img src="icons/userdd.png" />
             </q-avatar>
           </q-item-section>
           <q-item-section>
             <q-item-label class="text-subtitle1"
               ><strong>{{ friend.name }}</strong>
               <q-separator class="divider" color="grey-4" size="2px" />
+            </q-item-label>
+          </q-item-section>
+        </q-item> -->
+        <q-separator class="divider" color="grey-4" size="12px" />
+        <q-toolbar class="bg-primary text-white shadow-2">
+          <q-toolbar-title>Pending Friend Request</q-toolbar-title>
+        </q-toolbar>
+        <q-list bordered>
+          <q-item
+            v-for="pendingrequest in pendingrequests"
+            :key="pendingrequest.id"
+            class="q-my-sm"
+            clickable
+            v-ripple
+          >
+            <q-item-section avatar>
+              <q-avatar color="primary" text-color="white">
+                <img src="../../public/icons/userdd.png" />
+                <!-- <q-img v-if="friend.avatar != ''" :src="friend.avatar" />
+                <q-img v-else src="../../public/icons/userdd.png" /> -->
+              </q-avatar>
+            </q-item-section>
 
-            </q-item-label>
-          </q-item-section>
-        </q-item>
-              <q-separator class="divider" color="grey-4" size="12px" />
-        <div class="text-h6">Pending Friend Request</div>
-        <q-item
-          style="max-width: 650px"
-          v-for="pendingrequest in pendingrequests"
-          :key="pendingrequest.id"
-          class="q-py-md"
-        >
-          <q-item-section avatar top>
-            <q-avatar size="xl">
-              <!-- <img src="icons/userdd.png" /> -->
-            </q-avatar>
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-subtitle1"
-              ><strong>{{ pendingrequest.name }}</strong>
-              <q-separator class="divider" color="grey-4" size="2px" />
-            </q-item-label>
-          </q-item-section>
-          <q-item-section top side>
-            <div class="text-grey-8 q-gutter-xs">
+            <q-item-section>
+              <q-item-label>{{ pendingrequest.name }}</q-item-label>
+            </q-item-section>
+
+            <q-item-section side>
               <q-btn
                 color="green"
                 label="Accept"
                 @click="acceptFriend(pendingrequest.id)"
                 size="sm"
                 no-caps
-              /><q-btn
+              />
+            </q-item-section>
+
+            <q-item-section side>
+              <q-btn
                 color="red"
                 label="Reject"
                 @click="removeFriend(pendingrequest.id)"
                 size="sm"
                 no-caps
               />
-            </div>
-          </q-item-section>
-        </q-item>
+            </q-item-section>
+          </q-item>
+
+          <q-separator />
+        </q-list>
         <q-separator class="divider" color="grey-4" size="12px" />
         <!-- <friendlist v-on:friendsent="addAsFriend" :users="users"></friendlist> -->
         <friendlist :users="users" :searchFriend="searchFriend"></friendlist>
-      
       </q-scroll-area>
     </div>
   </q-page>

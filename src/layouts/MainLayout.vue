@@ -21,8 +21,19 @@
         </q-toolbar-title>
 
         <div class="q-pr-xl row text-navbar cursor-pointer non-selectable">
-          <div class="q-mr-xl" v-if="store.user.role_id == '3'" @click="$router.push({ name: 'medicine'})">Medicine</div>
-          <div class="q-mr-xl" @click="$router.push({ name: 'report', params: { id: store.user.id } })">
+          <div
+            class="q-mr-xl"
+            v-if="store.user.role_id == '3'"
+            @click="$router.push({ name: 'medicine' })"
+          >
+            Medicine
+          </div>
+          <div
+            class="q-mr-xl"
+            @click="
+              $router.push({ name: 'report', params: { id: store.user.id } })
+            "
+          >
             Condition Report
           </div>
           <div class="q-mr-xl" v-if="store.user.role_id == '3'">Patients</div>
@@ -63,7 +74,8 @@
         </q-btn> -->{{ store.user.name }}
         <div class="q-pr-xl cursor-pointer non-selectable">
           <q-avatar round size="30px">
-            <q-img :src="store.user.avatar" />
+            <q-img v-if="store.user.avatar != ''" :src="store.user.avatar" />
+            <q-img v-else src="../../public/icons/userdd.png" />
             <q-menu auto-close>
               <q-list dense style="min-width: 100px">
                 <q-item clickable>
@@ -141,7 +153,6 @@ export default {
   },
 
   methods: {
-
     async logout() {
       try {
         const res = await this.$axios.post(

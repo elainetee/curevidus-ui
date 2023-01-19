@@ -1,23 +1,30 @@
 <template>
   <q-page padding>
-    <q-item
-      style="max-width: 650px"
-      v-for="user in users"
-      :key="user.id"
-      class="q-py-md"
-    >
-      <q-item-section avatar top>
-        <q-avatar size="xl">
-          <!-- <img src="icons/userdd.png" /> -->
-        </q-avatar>
-      </q-item-section>
-      <q-item-section>
-        <q-item-label class="text-subtitle1"
-          ><strong>{{ user.name }}</strong>
-        </q-item-label>
-      </q-item-section>
-      <q-item-section top side>
-        <div class="text-grey-8 q-gutter-xs">
+    <q-toolbar class="bg-primary text-blue-grey-2 shadow-2">
+      <q-toolbar-title>Search Result</q-toolbar-title>
+    </q-toolbar>
+    <q-list bordered>
+      <q-item
+        v-for="user in users"
+        :key="user.id"
+        class="q-my-sm"
+        clickable
+        v-ripple
+      >
+        <q-item-section avatar>
+          <q-avatar color="primary" text-color="white">
+            <img src="../../public/icons/userdd.png" />
+            <!-- <q-img v-if="friend.avatar != ''" :src="friend.avatar" />
+                <q-img v-else src="../../public/icons/userdd.png" /> -->
+          </q-avatar>
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label>{{ user.name }}</q-item-label>
+          <q-item-label caption lines="1">{{ user.email }}</q-item-label>
+        </q-item-section>
+
+        <q-item-section side>
           <q-btn
             v-if="user.friendstatus == '1'"
             @click="
@@ -49,9 +56,11 @@
             text-color="black"
             label="Add as friend"
           />
-        </div>
-      </q-item-section>
-    </q-item>
+        </q-item-section>
+      </q-item>
+
+      <q-separator />
+    </q-list>
   </q-page>
 </template>
 <script>
