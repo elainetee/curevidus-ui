@@ -9,7 +9,17 @@
         <q-card class="q-px-xl q-py-md my-card bg-info" style="width: 70%">
             <q-card-section>
                 <!-- <div v-for="c in cart" :key="c.order_id"> -->
+                    <div v-if="cartMeds.length==0" class="text-h6">
+                        Your cart is empty. Go to 
+                        <span 
+                        id=""
+                        class="text-h6 cursor-pointer underline-on-hover"
+                        @click="visitMedicinePage()">
+                            medicine page
+                        </span> now.
+                    </div>
                     <div v-for="m in cartMeds" :key="m.medicine_id">
+                        
                     <q-card class="q-pa-md q-mb-lg my-card bg-secondary" style="width: 100%">
                         <q-card-section>
                             <!-- {{ c.order_id }}
@@ -32,17 +42,30 @@
                                         />
                                     </div>
                                     <div class="col column q-gutter-md">
-                                    <div class="col row items-start q-pr-md">
+                                    <div class="col row items-start q-pr-xl">
                                         <div class="col-9 text-h5 text-bold">
                                             {{ m.medicine_name }}
                                         </div>
                                         <div class="col-1 text-h5">
-                                            RM{{ m.medicine_price }}
+                                            RM{{ m.medicine_price.toFixed(2) }}
                                         </div>
                                         
                                     </div>
-                                    <div class="col row items-start">
-                                        <q-btn class="offset-md-9" label="Delete" color="red-10" @click="m.confirm = true"/>
+                                    
+                                    <div class="col row items-start q-gutter-md">
+                                        <!-- <div id="app"> -->
+                                            <div class="wrapper col-grow">
+                                                <button class="pmbtn btn--minus" @click="changeCounter('-1', m)" type="button" name="button">
+                                                -
+                                                </button>
+                                                <input class="quantity" type="text" name="name" :value="m.quantity">
+                                                <button class="pmbtn btn--plus" @click="changeCounter('1', m)" type="button" name="button">
+                                                  +
+                                                </button>
+                                            </div>
+                                        <!-- </div> -->
+                                        <q-btn label="Update" color="btn-grey" text-color="btn"/>
+                                        <q-btn class="q-mr-md" label="Delete" color="red-10" @click="m.confirm = true"/>
                                     </div>
 
                                     
@@ -74,18 +97,20 @@
 import { ref } from 'vue';
 import { Cookies } from "quasar";
 
+
 export default {
     setup() {
         return {
             confirm: ref(false),
+            // quantity: 1
         }
     },
     data() {
         return {
             cart: [],
             cartMeds: [],
-            roleid: ""
-            
+            roleid: "",
+            counter: 1
             
         }
     },
@@ -101,10 +126,10 @@ export default {
                 params: { id: medId },
             });
         },
-        visitAddPage() {
+        visitMedicinePage() {
             console.log();
             this.$router.push({
-                name: "addMed"
+                name: "medicinepat"
             });
         },
         getCart() {
@@ -155,6 +180,12 @@ export default {
                 console.log(error);
             }
         },
+        changeCounter: function(num, medicine){
+				medicine.quantity += +num
+				console.log(medicine.quantity)
+				!isNaN(medicine.quantity) && medicine.quantity > 0 ? medicine.quantity : medicine.quantity = 1;
+        },
+        
     },
 }
 
