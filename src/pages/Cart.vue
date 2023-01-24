@@ -42,7 +42,7 @@
                                         />
                                     </div>
                                     <div class="col column q-gutter-md">
-                                    <div class="col row items-start q-pr-xl">
+                                    <div class="col row items-start q-pr-lg">
                                         <div class="col-9 text-h5 text-bold">
                                             {{ m.medicine_name }}
                                         </div>
@@ -64,7 +64,7 @@
                                                 </button>
                                             </div>
                                         <!-- </div> -->
-                                        <q-btn label="Update" color="btn-grey" text-color="btn"/>
+                                        <q-btn label="Update" color="btn-grey" text-color="btn" @click="updateMedQty(m.medicine_id, m.quantity)"/>
                                         <q-btn class="q-mr-md" label="Delete" color="red-10" @click="m.confirm = true"/>
                                     </div>
 
@@ -163,6 +163,24 @@ export default {
                 if (error.response.status == 401) {
                     this.accessDenied = true;
                 }
+            }
+        },
+        async updateMedQty(id, qty) {
+            let newQty = {
+                quantity: qty
+            };
+            try {
+                const res = await this.$axios.post(
+                    `http://127.0.0.1:8000/api/updateQty/` + id, newQty,
+                    {
+                        headers: { Authorization: "Bearer" + Cookies.get("token") },
+                    }
+                );
+                // this.medicines = res.data;
+                this.getCartMedicines();
+                this.$q.notify("Medicine quantity is updated");
+            } catch (error) {
+                console.log(error);
             }
         },
         async deleteCartMed(id) {

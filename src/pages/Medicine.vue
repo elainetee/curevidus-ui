@@ -48,7 +48,7 @@
                                         {{ medi.medicine_desc }}
                                     </div>
                                     <div class="text-h5">
-                                        RM{{ medi.medicine_price }}
+                                        RM{{ medi.medicine_price.toFixed(2) }}
                                     </div>
 
                                 </div>
