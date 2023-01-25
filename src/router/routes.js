@@ -28,7 +28,9 @@ const routes = [
       { name:"medicinepat", path: "/medicinepat", component: () => import('pages/MedicinePatient.vue') },
       { name:"editMed", path: "/medicine/manage/:id", component: () => import('pages/ManageMedicine.vue') },
       { name:"addMed", path: "/medicine/manage", component: () => import('pages/ManageMedicine.vue') },
-      { name:"cart", path: "/cart", component: () => import('pages/Cart.vue') }
+      { name:"cart", path: "/cart", component: () => import('pages/Cart.vue') },
+      { name:"orderHistory", path: "/order/history", component: () => import('pages/OrderHistory.vue') },
+
     ]
   },
 

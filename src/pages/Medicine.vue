@@ -3,9 +3,6 @@
         <div class="q-mb-md full-width">
             <div class="text-h4 text-center text-subheadcolour">
                 List of Medicines
-                <!-- <div class="text-h5 text-subheadcolour">
-                    Day 5 of Quarantine
-                </div> -->
             </div>
             <div class="column items-center q-my-md">
                 <q-btn label="Add Medicine" color="btn" text-color="btn" @click="visitAddPage()" style="width: 15%" />
