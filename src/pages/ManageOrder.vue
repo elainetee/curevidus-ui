@@ -5,141 +5,7 @@
                 All Orders
             </div>
         </div>
-        <!-- <q-card class="q-pa-md my-card bg-info" style="width: 90%">
-            <q-card-section> -->
-                    <!-- <q-tabs v-model="tab" align="left" >
-                        <q-tab name="cart" label="Cart" />
-                        <q-tab name="history" label="Order History" />
-                    </q-tabs>
-                     <q-tab-panels v-model="tab" swipeable> -->
-                    <!--    <q-tab-panel name="cart" class="bg-secondary">
-
-                        
-                    <div v-if="cartMeds.length==0" class="text-h6">
-                        Your cart is empty. Go to 
-                        <span 
-                        id=""
-                        class="text-h6 cursor-pointer underline-on-hover"
-                        @click="visitMedicinePage()">
-                            medicine page
-                        </span> now.
-                    </div>
-                    <q-card v-else flat class=" my-card bg-secondary" style="width: 100%">
-                        
-                        <q-card-section >
-                            <q-list>
-                                <q-separator></q-separator>
-                                <q-item>
-                                    <q-item-section class="text-h6 text-bold">
-                                        Medicine Photo
-                                    </q-item-section>
-                                    <q-item-section class="col-4 text-h6 text-bold">
-                                        Medicine Name
-                                    </q-item-section>
-                                    <q-item-section class="col text-h6 text-bold">
-                                        Unit Price
-                                    </q-item-section>
-                                    <q-item-section class="col text-h6 text-bold">
-                                        Quantity
-                                    </q-item-section>
-                                    <q-item-section class="text-h6 text-bold">
-                                        Action
-                                    </q-item-section>
-                                    <q-item-section class="col text-h6 text-bold">
-                                        Total Price
-                                    </q-item-section>
-                                </q-item>
-                                <q-separator></q-separator>
-                                <div v-for="m in cartMeds" :key="m.medicine_id" >
-                                <q-item class="q-py-md">
-                                    <q-item-section top>
-                                        <div v-if="m.medicine_photo_name != null" class="col-3">
-                                            <q-img
-                                                :src="'http://127.0.0.1:8000/storage/uploads/' + m.medicine_photo_name"
-                                                :ratio="4/3"
-                                                style="height: 120px; max-width: 130px"
-                                                />
-                                        </div>
-                                        <div v-if="m.medicine_photo_name == null" class="col-3">
-                                            <q-img
-                                                :src="'https://img.kpopmap.com/wp-content/uploads_kpopmap/2017/09/chanyeol-min-1.jpg'"
-                                                :ratio="4/3"
-                                                style="height: 120px; max-width: 130px"
-                                            />
-                                        </div>
-                                    </q-item-section>
-                                    <q-item-section top class="col-4">
-                                            <div class="q-mx-sm text-h5 text-bold">
-                                                {{ m.medicine_name }}
-                                            </div>
-                                            
-                                    </q-item-section>
-                                    <q-item-section top class="col">
-                                        <div class=" text-h5">
-                                            RM{{ m.medicine_price.toFixed(2) }}
-                                        </div>
-                                    </q-item-section>
-                                    <q-item-section top class="col">
-                                        <div class="pmwrapper ">
-                                            <button class="pmbtn btn--minus" @click="changeCounter('-1', m)" type="button" name="button">
-                                            -
-                                            </button>
-                                            <input class="quantity" type="text" name="name" :value="m.quantity">
-                                            <button class="pmbtn btn--plus" @click="changeCounter('1', m)" type="button" name="button">
-                                              +
-                                            </button>
-                                        </div>
-                                    </q-item-section>
-                                    <q-item-section top class="column q-mr-md q-gutter-md">
-                                        <q-btn label="Update" color="btn-grey" text-color="btn" @click="updateMedQty(m.medicine_id, m.quantity)"/>
-                                        <q-btn  label="Delete" color="red-10" @click="m.confirm = true"/>
-                                    </q-item-section>
-                                    <q-item-section top class="col">
-                                        <div class=" text-h5">
-                                            RM{{ m.medTotalPrice.toFixed(2) }}
-                                        </div>
-                                    </q-item-section>
-                                </q-item>
-                                
-                            
-                        
-                    
-                    <q-dialog v-model="m.confirm" persistent>
-                        <q-card>
-                            <q-card-section class="row items-center">
-                                <span class="q-ml-sm">Are you sure you want to remove this medicine from the cart?</span>
-                            </q-card-section>
-
-                            <q-card-actions align="right">
-                                <q-btn flat label="No" color="primary" v-close-popup />
-                                <q-btn flat label="Yes, delete" color="primary" @click="deleteCartMed(m.medicine_id)" />
-                            </q-card-actions>
-                        </q-card>
-                    </q-dialog>
-                    <q-separator></q-separator>
-                </div>
-                <q-item>
-                    <q-item-section class="column q-pt-sm">
-                        <div v-for="c in order" :key="c.order_id" class="q-mx-sm text-h5 text-bold self-end">
-                            Subtotal ({{ totalQty }} items): RM{{ c.order_price.toFixed(2) }}
-                            <div class="q-pt-md">
-                                <q-btn class="btn-checkout" label="Checkout" @click="checkout(c.order_id)"/>
-                            </div>
-                        </div>
-                    </q-item-section>
-                </q-item>
-            </q-list>
-                    </q-card-section>
-                </q-card>
-            </q-tab-panel> -->
-            <!-- <q-tab-panel name="history" class="bg-secondary"> -->
                 <q-card class="q-pa-lg q-mb-lg my-card bg-secondary" style="width: 90%">
-                    <!-- <q-card class="q-pa-md q-mb-lg my-card bg-secondary" style="width: 100%">
-                        <q-card-section>
-
-                        </q-card-section>
-                    </q-card> -->
-
                     <q-list>
                         <q-separator style="height: 2px"/>
                         <q-item class="q-py-md text-h6 text-bold">
@@ -198,10 +64,6 @@
                     </div>
                 </q-list>
                 </q-card>
-            <!-- </q-tab-panel>
-            </q-tab-panels> -->
-            <!-- </q-card-section>
-        </q-card> -->
         
         <div v-for="o in order" :key="o.order_id">
             <q-dialog v-model="o.hMed" >
@@ -230,24 +92,6 @@
                     </q-card-section>
                     <q-card-section style="max-height: 60vh" class="scroll">
                         <q-list>
-                            <!-- <q-separator></q-separator>
-                                <q-item>
-                                    <q-item-section class="text-h6 text-bold">
-                                        Medicine Photo
-                                    </q-item-section>
-                                    <q-item-section class="col-4 text-h6 text-bold">
-                                        Medicine Name
-                                    </q-item-section>
-                                    <q-item-section class="col text-h6 text-bold">
-                                        Unit Price
-                                    </q-item-section>
-                                    <q-item-section class="col text-h6 text-bold">
-                                        Quantity
-                                    </q-item-section>
-                                    <q-item-section class="col text-h6 text-bold">
-                                        Total Price
-                                    </q-item-section>
-                                </q-item> -->
                             <div v-for="hm in historyMeds" :key="hm.medicine_id">
                                 <q-item class="q-py-md text-h5">
                                     <q-item-section top>
@@ -291,9 +135,6 @@
                             <q-item-section class="column q-pt-sm">
                                 <div class="q-mx-sm text-h5 text-bold self-end">
                                     Subtotal ({{ totalQtyCheckout }} items): RM{{ o.order_price.toFixed(2) }}
-                                    <!-- <div class="q-pt-md">
-                                        <q-btn class="btn-checkout" label="Checkout" @click="checkout(c.order_id)"/>
-                                    </div> -->
                                 </div>
                             </q-item-section>
                         </q-list>
@@ -305,82 +146,6 @@
                 </q-card>
             </q-dialog>
         </div>
-        <!-- <q-card class="q-px-xl q-py-md my-card bg-info" style="width: 70%">
-            <q-card-section>
-                    <div v-if="cartMeds.length==0" class="text-h6">
-                        Your cart is empty. Go to 
-                        <span 
-                        id=""
-                        class="text-h6 cursor-pointer underline-on-hover"
-                        @click="visitMedicinePage()">
-                            medicine page
-                        </span> now.
-                    </div>
-                    <div v-for="m in cartMeds" :key="m.medicine_id">
-                        
-                    <q-card class="q-pa-md q-mb-lg my-card bg-secondary" style="width: 100%">
-                        <q-card-section>
-                            <div class="row q-gutter-md justify-center">
-                                <div v-if="m.medicine_photo_name != null" class="col-3">
-                                    <q-img
-                                        :src="'http://127.0.0.1:8000/storage/uploads/' + m.medicine_photo_name"
-                                        :ratio="4/3"
-                                        style="height: 160px; max-width: 170px"
-                                        />
-                                    </div>
-                                    <div v-if="m.medicine_photo_name == null" class="col-3">
-                                        <q-img
-                                            :src="'https://img.kpopmap.com/wp-content/uploads_kpopmap/2017/09/chanyeol-min-1.jpg'"
-                                            :ratio="4/3"
-                                            style="height: 160px; max-width: 170px"
-                                        />
-                                    </div>
-                                    <div class="col column q-gutter-md">
-                                    <div class="col row items-start q-pr-lg">
-                                        <div class="col-9 text-h5 text-bold">
-                                            {{ m.medicine_name }}
-                                        </div>
-                                        <div class="col-1 text-h5">
-                                            RM{{ m.medicine_price.toFixed(2) }}
-                                        </div>
-                                        
-                                    </div>
-                                    
-                                    <div class="col row items-start q-gutter-md">
-                                            <div class="wrapper col-grow">
-                                                <button class="pmbtn btn--minus" @click="changeCounter('-1', m)" type="button" name="button">
-                                                -
-                                                </button>
-                                                <input class="quantity" type="text" name="name" :value="m.quantity">
-                                                <button class="pmbtn btn--plus" @click="changeCounter('1', m)" type="button" name="button">
-                                                  +
-                                                </button>
-                                            </div>
-                                        <q-btn label="Update" color="btn-grey" text-color="btn" @click="updateMedQty(m.medicine_id, m.quantity)"/>
-                                        <q-btn class="q-mr-md" label="Delete" color="red-10" @click="m.confirm = true"/>
-                                    </div>
-
-                                    
-                                </div>
-                            
-                        </div>
-                        </q-card-section>
-                    </q-card>
-                    <q-dialog v-model="m.confirm" persistent>
-                        <q-card>
-                            <q-card-section class="row items-center">
-                                <span class="q-ml-sm">Are you sure you want to remove this medicine from the cart?</span>
-                            </q-card-section>
-
-                            <q-card-actions align="right">
-                                <q-btn flat label="No" color="primary" v-close-popup />
-                                <q-btn flat label="Yes, delete" color="primary" @click="deleteCartMed(m.medicine_id)" />
-                            </q-card-actions>
-                        </q-card>
-                    </q-dialog>
-                </div>
-            </q-card-section>
-        </q-card> -->
     </q-page>
 </template>
 
@@ -399,12 +164,10 @@ export default {
             confirm: ref(false),
             tab: ref('cart'),
             hMed: ref(false),
-            // quantity: 1
         }
     },
     data() {
         return {
-            // order_status: "",
             order: [],
             history: [],
             cartMeds: [],
@@ -466,23 +229,6 @@ export default {
                 this.historyMeds = response.data;
                 console.log(response.data);
             });
-        },
-        async getMedicine() { //not working
-            try {
-                const res = await this.$axios.get(
-                    `http://127.0.0.1:8000/api/medicine`,
-                    {
-                        headers: { Authorization: "Bearer" + Cookies.get("token") },
-                    }
-                );
-                this.medicines = res.data;
-                console.log(this.medicines);
-            } catch (error) {
-                console.log(error);
-                if (error.response.status == 401) {
-                    this.accessDenied = true;
-                }
-            }
         },
         async updateMedQty(id, qty) {
             let newQty = {
