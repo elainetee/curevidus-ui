@@ -26,7 +26,10 @@
               class="q-mt-md q-mr-sm"
               v-model="user.tel_no"
               filled
-              :rules="[(v) => v !== '' || 'This field is required']"
+              :rules="[
+                (v) => v !== '' || 'This field is required',
+                isValidNumber,
+              ]"
               label="Telephone no."
             ></q-input>
           </div>
@@ -58,6 +61,11 @@ export default {
       const emailPattern =
         /^(?=[a-zA-Z0-9@._%+-]{6,254}$)[a-zA-Z0-9._%+-]{1,64}@(?:[a-zA-Z0-9-]{1,63}\.){1,8}[a-zA-Z]{2,63}$/;
       return emailPattern.test(val) || "Invalid email";
+    },
+
+    isValidNumber(val) {
+      const numPattern = /^[0-9]+$/;
+      return numPattern.test(val) || "Please input number only";
     },
 
     async onSubmitUser() {
