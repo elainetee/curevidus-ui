@@ -32,10 +32,24 @@
           <div class="q-mr-xl" v-if="user.role_id == '3'" @click="$router.push({ name: 'order'})">Orders</div>
           
           <div class="q-mr-xl" v-if="user.role_id == '3'">Patients</div>
-          <div class="q-mr-xl" v-else>Friends</div>
-          <div
+          <div class="q-mr-xl" @click="$router.push({ name: 'friend' })" v-else>
+            Friends
+          </div>
+          <!-- <div
             class="q-mr-xl"
             @click="$router.push({ name: 'post', params: { id: user.id } })"
+          > -->
+          <div
+            class="q-mr-xl"
+            v-if="user.role_id == '3'"
+            @click="$router.push({ name: 'admin-post' })"
+          >
+            Forum
+          </div>
+          <div
+            class="q-mr-xl"
+            v-else
+            @click="$router.push({ name: 'friend-post' })"
           >
             Forum
           </div>
@@ -63,7 +77,7 @@
                     @click="
                       $router.push({
                         name: 'profile',
-                        params: {id: this.user.id},
+                        params: { id: this.user.id },
                       })
                     "
                     >My Profile</q-item-section
@@ -96,9 +110,10 @@
 
           <q-toolbar-title> </q-toolbar-title>
 
-          <q-btn dense flat @click="toggleRightDrawer">
+          <!-- <q-btn dense flat @click="toggleRightDrawer"> -->
+          <q-btn dense flat>
             <q-avatar square size="30px">
-              <img src="icons/chat.png" />
+              <img src="icons/chat.png" @click="$router.push('/chat')" />
             </q-avatar>
           </q-btn>
         </q-toolbar>

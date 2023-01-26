@@ -22,7 +22,7 @@
             <tr>
               <td class="text-left">Condition</td>
               <td class="text-right">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit
+                Mild fever
               </td>
             </tr>
             <tr>

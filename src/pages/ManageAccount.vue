@@ -141,7 +141,7 @@ export default {
 
     // async getComName() {
     //   try {
-    //     const res = await this.$axios.get(`http://localhost/api/company`, {
+    //     const res = await this.$axios.get(`http://127.0.0.1:8000/api/company`, {
     //       headers: { Authorization: "Bearer" + Cookies.get("token") },
     //     });
     //     this.options = res.data;
