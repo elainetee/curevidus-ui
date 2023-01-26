@@ -12,6 +12,9 @@ export const store = reactive({
         contentType: "text/plain",
       });
       this.user = res.data;
+      if (this.user.avatar) {
+        this.user.avatar = `http://127.0.0.1:8000` + this.user.avatar;
+      }
     } catch (error) {
       console.log(error);
     }

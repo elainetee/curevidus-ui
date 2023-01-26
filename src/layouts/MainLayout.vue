@@ -21,17 +21,31 @@
         </q-toolbar-title>
 
         <div class="q-pr-xl row text-navbar cursor-pointer non-selectable">
-          <div class="q-mr-xl" @click="$router.push({ name: 'report', params: { id: user.id } })">
+          <div
+            class="q-mr-xl"
+            v-if="store.user.role_id == '3'"
+            @click="$router.push({ name: 'medicine' })"
+          >
+            Medicine
+          </div>
+          <div
+            class="q-mr-xl"
+            @click="
+              $router.push({ name: 'report', params: { id: store.user.id } })
+            "
+          >
+          <!-- <div class="q-mr-xl" @click="$router.push({ name: 'report', params: { id: user.id } })"> -->
             Condition Report
           </div>
-
-          <div class="q-mr-xl" v-if="user.role_id == '3'" @click="$router.push({ name: 'medicine', query: {roleid: this.user.role_id }})">Medicine</div>
+          
+          <!-- <div class="q-mr-xl" v-if="user.role_id == '3'" @click="$router.push({ name: 'medicine', query: {roleid: this.user.role_id }})">Medicine</div> -->
           <div class="q-mr-xl" v-if="user.role_id == '1'" @click="$router.push({ name: 'medicinepat', query: {roleid: this.user.role_id }})">Medicine</div>
-
+          
           <div class="q-mr-xl" v-if="user.role_id == '1'" @click="$router.push({ name: 'cart'})">My Cart</div>
           <div class="q-mr-xl" v-if="user.role_id == '3'" @click="$router.push({ name: 'order'})">Orders</div>
           
-          <div class="q-mr-xl" v-if="user.role_id == '3'">Patients</div>
+          <div class="q-mr-xl" v-if="store.user.role_id == '3'">Patients</div>
+          <!-- <div class="q-mr-xl" v-if="user.role_id == '3'">Patients</div> -->
           <div class="q-mr-xl" @click="$router.push({ name: 'friend' })" v-else>
             Friends
           </div>
@@ -41,7 +55,7 @@
           > -->
           <div
             class="q-mr-xl"
-            v-if="user.role_id == '3'"
+            v-if="store.user.role_id == '3'"
             @click="$router.push({ name: 'admin-post' })"
           >
             Forum
@@ -56,7 +70,7 @@
           <div
             @click="$router.push({ name: 'manage-account' })"
             class="q-mr-xl"
-            v-if="user.role_id == '3'"
+            v-if="store.user.role_id == '3'"
           >
             Manage Account
           </div>
@@ -66,10 +80,14 @@
         <q-avatar size="30px">
           <img src="icons/noti.png">
         </q-avatar>
-        </q-btn> -->{{ user.name }}
+        </q-btn> -->{{ store.user.name }}
         <div class="q-pr-xl cursor-pointer non-selectable">
-          <q-avatar square size="30px">
-            <img src="icons/userdd.png" />
+          <q-avatar round size="30px">
+            <q-img v-if="store.user.avatar != ''" :src="store.user.avatar" />
+            <q-img v-else src="../../public/icons/userdd.png" />
+            <q-badge floating color="grey">
+              <q-icon name="expand_more" color="white"
+            /></q-badge>
             <q-menu auto-close>
               <q-list dense style="min-width: 100px">
                 <q-item clickable>
@@ -77,7 +95,7 @@
                     @click="
                       $router.push({
                         name: 'profile',
-                        params: { id: this.user.id },
+                        params: { id: this.store.user.id },
                       })
                     "
                     >My Profile</q-item-section
@@ -137,6 +155,7 @@
 <script>
 import { ref } from "vue";
 import { Cookies } from "quasar";
+import { store } from "../store.js";
 // import { userdetails } from '../components/userId.js';
 // import { reactive } from 'vue';
 
@@ -147,8 +166,7 @@ import { Cookies } from "quasar";
 export default {
   data() {
     return {
-      user: [],
-      // userdetails
+      store,
     };
   },
   // created(){
@@ -156,19 +174,6 @@ export default {
   // },
 
   methods: {
-    async getUsername() {
-      try {
-        //  Axios.defaults.headers.common['Authorization'] = 'Bearer' + Cookies.get('token')
-        const res = await this.$axios.get(`http://127.0.0.1:8000/api/user`, {
-          headers: { Authorization: "Bearer" + Cookies.get("token") },
-          contentType: "text/plain",
-        });
-        this.user = res.data;
-      } catch (error) {
-        console.log(error);
-      }
-    },
-
     async logout() {
       try {
         const res = await this.$axios.post(
@@ -182,8 +187,6 @@ export default {
         console.log(error);
       }
       const config = { path: "/", sameSite: "strict" };
-      // Cookies.remove("token", config);
-      // Cookies.remove("token");
       this.$q.notify("Successfully logged out");
       this.$router.push("/");
     },
@@ -206,9 +209,7 @@ export default {
     };
   },
   mounted() {
-    // this.userdetails.getUsername();
-    // this.user = userdetails.user
-    this.getUsername();
+    this.store.getUsername();
   },
 };
 </script>

@@ -21,10 +21,18 @@
         label="Public post"
       />
     </div>
-    <q-separator v-if="user.role_id == '1'" class="divider" color="grey-2" size="10px" />
+    <q-separator
+      v-if="user.role_id == '1'"
+      class="divider"
+      color="grey-2"
+      size="10px"
+    />
     <q-scroll-area class="absolute full-width full-height">
       <div class="q-pa-lg">
-        <div v-if="user.role_id == '1'" class="q-py-lg q-px-md row items-end q-col-gutter-md">
+        <div
+          v-if="user.role_id == '1'"
+          class="q-py-lg q-px-md row items-end q-col-gutter-md"
+        >
           <div class="col">
             <q-input
               v-model="post.content"
@@ -82,7 +90,9 @@
                   size="sm"
                   flat
                   round
-                />
+                >
+                  <div>{{ post.comment_num }}</div>
+                </q-btn>
                 <!-- <q-btn
                   @click="getComment(post.id)"
                   color="grey"

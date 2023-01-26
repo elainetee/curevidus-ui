@@ -36,7 +36,11 @@
           >
             <template v-slot:before>
               <q-avatar size="xl">
-                <img src="icons/userdd.png" />
+                <q-img
+                  v-if="store.user.avatar != ''"
+                  :src="store.user.avatar"
+                />
+                <q-img v-else src="../../public/icons/userdd.png" />
               </q-avatar>
             </template>
           </q-input>
@@ -59,7 +63,8 @@
         <q-item v-for="post in posts" :key="post.id" class="q-py-md">
           <q-item-section avatar top>
             <q-avatar size="xl">
-              <img src="icons/userdd.png" />
+              <q-img v-if="store.user.avatar != ''" :src="store.user.avatar" />
+              <q-img v-else src="../../public/icons/userdd.png" />
             </q-avatar>
           </q-item-section>
           <q-item-section>
@@ -70,7 +75,9 @@
               {{ post.content }}
             </q-item-label>
             <div class="qweet-icons row justify-between q-mt-sm">
-              <q-btn color="grey" icon="comment" size="sm" flat round />
+              <q-btn color="grey" icon="comment" size="sm" flat round>
+                <div>{{ post.comment_num }}</div>
+              </q-btn>
 
               <q-btn
                 color="grey"
@@ -101,6 +108,8 @@
 
 <script>
 import { Cookies } from "quasar";
+import { store } from "../store.js";
+
 // import Comment from "../components/Comment.vue";
 export default {
   components: {
@@ -113,6 +122,7 @@ export default {
       },
       posts: [],
       user: [],
+      store,
     };
   },
 

@@ -103,17 +103,17 @@ export default {
           align: "center",
         },
         {
-          name: "quarantine_status",
-          label: "Quarantine Status.",
-          field: "quarantine_status",
+          name: "quarantine_day",
+          label: "Quarantine Day",
+          field: "quarantine_day",
           align: "center",
         },
-        {
-          name: "vac_status",
-          label: "Vaccination Status",
-          field: "vac_status",
-          align: "center",
-        },
+        // {
+        //   name: "vac_status",
+        //   label: "Vaccination Status",
+        //   field: "vac_status",
+        //   align: "center",
+        // },
         { name: "action", label: "Edit", align: "center", field: "action" },
         { name: "delete", label: "Delete", align: "center", field: "action" },
       ],
@@ -138,17 +138,6 @@ export default {
         }
       }
     },
-
-    // async getComName() {
-    //   try {
-    //     const res = await this.$axios.get(`http://127.0.0.1:8000/api/company`, {
-    //       headers: { Authorization: "Bearer" + Cookies.get("token") },
-    //     });
-    //     this.options = res.data;
-    //   } catch (error) {
-    //     console.log(error);
-    //   }
-    // },
 
     deleteStaff(props) {
       this.$q
