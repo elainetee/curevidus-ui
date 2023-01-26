@@ -52,7 +52,7 @@ export default {
     async getUsername() {
       try {
         //  Axios.defaults.headers.common['Authorization'] = 'Bearer' + Cookies.get('token')
-        const res = await this.$axios.get(`http://localhost/api/user`, {
+        const res = await this.$axios.get(`http://127.0.0.1:8000/api/user`, {
           headers: { Authorization: "Bearer" + Cookies.get("token") },
           contentType: "text/plain",
         });
