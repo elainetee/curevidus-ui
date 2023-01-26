@@ -29,7 +29,7 @@ const routes = [
       { name:"editMed", path: "/medicine/manage/:id", component: () => import('pages/ManageMedicine.vue') },
       { name:"addMed", path: "/medicine/manage", component: () => import('pages/ManageMedicine.vue') },
       { name:"cart", path: "/cart", component: () => import('pages/Cart.vue') },
-      { name:"orderHistory", path: "/order/history", component: () => import('pages/OrderHistory.vue') },
+      { name:"order", path: "/order", component: () => import('pages/ManageOrder.vue') },
 
     ]
   },

@@ -29,6 +29,7 @@
           <div class="q-mr-xl" v-if="user.role_id == '1'" @click="$router.push({ name: 'medicinepat', query: {roleid: this.user.role_id }})">Medicine</div>
 
           <div class="q-mr-xl" v-if="user.role_id == '1'" @click="$router.push({ name: 'cart'})">My Cart</div>
+          <div class="q-mr-xl" v-if="user.role_id == '3'" @click="$router.push({ name: 'order'})">Orders</div>
           
           <div class="q-mr-xl" v-if="user.role_id == '3'">Patients</div>
           <div class="q-mr-xl" v-else>Friends</div>
