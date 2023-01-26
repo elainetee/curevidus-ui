@@ -3,6 +3,7 @@ import { createRouter, createMemoryHistory, createWebHistory, createWebHashHisto
 import routes from './routes'
 import EchoLibrary from 'laravel-echo';
 import { Cookies } from "quasar";
+import { store } from "../store.js";
 
 
 window.Pusher = require('pusher-js');
@@ -67,7 +68,69 @@ window.Echo.connector.pusher.connection.bind(
 
     console.log("disconnected", payload);
   }
+  
 );
+
+// code from call
+
+// store.userOnlineChannel = window.Echo.join("agora-online-channel");
+
+//   store.userOnlineChannel.here((users) => {
+//     store.onlineUsers = users;
+//   console.log(store.onlineUsers);
+
+//   });
+
+//   store.userOnlineChannel.joining((user) => {
+//     // check user availability
+//     const joiningUserIndex = store.onlineUsers.findIndex(
+//       (data) => data.id === user.id
+//     );
+//     if (joiningUserIndex < 0) {
+//       store.onlineUsers.push(user);
+//     }
+//   });
+//   // console.log(this.onlineUsers);
+
+//   store.userOnlineChannel.leaving((user) => {
+//     const leavingUserIndex = store.onlineUsers.findIndex(
+//       (data) => data.id === user.id
+//     );
+//     store.onlineUsers.splice(leavingUserIndex, 1);
+//   });
+
+//   // listen to incoming call
+//   store.userOnlineChannel.listen("MakeAgoraCall", ({ data }) => {
+//     if (parseInt(data.userToCall) === parseInt(store.user.id)) {
+//       const callerIndex = store.onlineUsers.findIndex(
+//         (user) => user.id === data.from
+//       );
+//       store.incomingCaller = store.onlineUsers[callerIndex]["name"];
+//       store.incomingCall = true;
+
+//       // the channel that was sent over to the user being called is what
+//       // the receiver will use to join the call when accepting the call.
+//       store.agoraChannel = data.channelName;
+//       console.log("xxx is calling")
+//     }
+//   });
+
+
+// code from chat
+
+// window.Echo.join("plchat")
+// .here((users) => {
+//   console.log("online", users);
+//   this.onlineFriends = users;
+// })
+// .joining((user) => {
+//   // this.onlineFriends.push(user);
+//   // console.log("joining", user.name);
+// })
+// .leaving((user) => {
+//   this.onlineFriends.splice(this.onlineFriends.indexOf(user), 1);
+//   console.log("leaving", user.name);
+// });
 
 /*
  * If not building with SSR mode, you can

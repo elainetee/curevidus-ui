@@ -55,7 +55,7 @@
             </q-item-section>
 
             <q-item-section side>
-              <q-icon name="chat_bubble" color="grey" />
+              <q-icon name="chat_bubble" color="grey" @click="$router.push('/chat')"/>
             </q-item-section>
           </q-item>
 
@@ -79,7 +79,7 @@
             </q-item-label>
           </q-item-section>
         </q-item> -->
-        <q-separator class="divider" color="grey-4" size="12px" />
+        <q-separator class="divider" color="grey-4" size="5px" />
         <q-toolbar class="bg-primary text-white shadow-2">
           <q-toolbar-title>Pending Friend Request</q-toolbar-title>
         </q-toolbar>
@@ -126,7 +126,6 @@
 
           <q-separator />
         </q-list>
-        <q-separator class="divider" color="grey-4" size="12px" />
         <!-- <friendlist v-on:friendsent="addAsFriend" :users="users"></friendlist> -->
         <friendlist :users="users" :searchFriend="searchFriend"></friendlist>
       </q-scroll-area>
@@ -160,8 +159,9 @@ export default {
           { headers: { Authorization: "Bearer" + Cookies.get("token") } }
         );
         this.users = res.data;
-      } catch (error) {
-        console.log(error);
+      } catch (e) {
+        alert(e.response.data);
+        console.log(e);
       }
     },
 

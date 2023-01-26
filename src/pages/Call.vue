@@ -1,13 +1,14 @@
 <template>
   <q-page padding>
-    <div class="container">
+    <!-- <div class="container">
       <div class="card">
         <div class="card-header">Call</div>
         <div class="card-body">
           <agora-chat> </agora-chat>
         </div>
       </div>
-    </div>
+    </div> -->
+    <agora-chat> </agora-chat>
   </q-page>
 </template>
 

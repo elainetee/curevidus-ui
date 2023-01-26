@@ -30,6 +30,7 @@ const routes = [
       { name:"condition", path: "/condition/:id", component: () => import('pages/UpdateCondition.vue') },
       { name:"medicine", path: "/medicine", component: () => import('pages/Medicine.vue') },
       { name:"chat", path: "/chat", component: () => import('pages/Chat.vue') },
+      { name:"public-chat", path: "/publicchat", component: () => import('pages/PublicChat.vue') },
       { name:"friend", path: "/friend", component: () => import('pages/Friend.vue') },
       { name:"editMed", path: "/medicine/manage/:id", component: () => import('pages/ManageMedicine.vue') },
       { name:"addMed", path: "/medicine/manage", component: () => import('pages/ManageMedicine.vue') }

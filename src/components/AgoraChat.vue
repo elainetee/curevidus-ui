@@ -1,31 +1,52 @@
 <template>
   <main>
-    <div class="container">
+    <!-- <div class="container">
       <div class="row">
-        <!-- <div class="col-12 text-center">
+        <div class="col-12 text-center">
           <img src="img/agora-logo.png" alt="Agora Logo" class="img-fuild" />
-        </div> -->
-      </div>
-    </div>
-    <div class="container my-5">
-      <div class="row">
-        <div class="col">
-          <div class="btn-group" role="group">
-            <button
-              type="button"
-              class="btn btn-primary mr-2"
-              v-for="user in alluser"
-              :key="user.id"
-              @click="placeCall(user.id, user.name)"
-            >
-              Call {{ user.name }}
-              <span class="badge badge-light">{{
-                getUserOnlineStatus(user.id)
-              }}</span>
-            </button>
-          </div>
         </div>
       </div>
+    </div> -->
+    <div class="container my-5">
+      <q-toolbar class="bg-primary text-white shadow-2">
+        <q-toolbar-title>Video Call Friends</q-toolbar-title>
+      </q-toolbar>
+      <q-list bordered>
+        <q-item
+          v-for="user in alluser"
+          :key="user.id"
+          class="q-my-sm"
+          clickable
+          v-ripple
+        >
+          <q-item-section avatar>
+            <q-avatar color="primary" text-color="white">
+              <img src="../../public/icons/userdd.png" />
+              <!-- <q-img v-if="friend.avatar != ''" :src="friend.avatar" />
+                <q-img v-else src="../../public/icons/userdd.png" /> -->
+            </q-avatar>
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>{{ user.name }}</q-item-label>
+          </q-item-section>
+
+          <q-item-section side>
+            <q-icon
+              name="video_call"
+              @click="placeCall(user.id, user.name)"
+            />
+            <span class="badge badge-light">{{
+              getUserOnlineStatus(user.id)
+            }}</span>
+          </q-item-section>
+        </q-item>
+      </q-list>
+
+      <!-- Pending call -->
+      <!-- <div class="row my-5" v-if="pendingCall">
+        Pending user to accept call
+        </div> -->
 
       <!-- Incoming Call  -->
       <div class="row my-5" v-if="incomingCall">
@@ -55,7 +76,7 @@
       <!-- End of Incoming Call  -->
     </div>
 
-    <section id="video-container" v-if="callPlaced">
+    <div id="video-container" v-if="callPlaced">
       <div id="local-video"></div>
       <div id="remote-video"></div>
 
@@ -72,7 +93,7 @@
         </button>
         <q-btn color="red" @click="endCall"> EndCall </q-btn>
       </div>
-    </section>
+    </div>
   </main>
 </template>
 
@@ -86,6 +107,7 @@ export default {
   // props: ["authuser", "authuserid", "agora_id"],
   data() {
     return {
+      pendingCall: false,
       callPlaced: false,
       client: null,
       localStream: null,
@@ -158,7 +180,7 @@ export default {
         this.onlineUsers.splice(leavingUserIndex, 1);
       });
 
-      // listen to incomming call
+      // listen to incoming call
       this.userOnlineChannel.listen("MakeAgoraCall", ({ data }) => {
         if (parseInt(data.userToCall) === parseInt(this.store.user.id)) {
           const callerIndex = this.onlineUsers.findIndex(
@@ -170,6 +192,7 @@ export default {
           // the channel that was sent over to the user being called is what
           // the receiver will use to join the call when accepting the call.
           this.agoraChannel = data.channelName;
+          console.log("xxx is calling");
         }
       });
     },
@@ -190,9 +213,6 @@ export default {
         const channelName = `${this.store.user.name}_${calleeName}`;
         const tokenRes = await this.generateToken(channelName);
         // Broadcasts a call event to the callee and also gets back the token
-        // await axios.post("/agora/call-user", {
-        //   user_to_call: id,
-        //   channel_name: channelName,
         await this.$axios.post(
           `http://127.0.0.1:8000/api/agora/call-user`,
           {
@@ -218,7 +238,6 @@ export default {
       this.client.getSessionStats(10).then((stats) => {
         console.log(stats);
       });
-
     },
 
     declineCall() {
@@ -269,6 +288,7 @@ export default {
           console.log("Join channel failed", err);
         }
       );
+
     },
 
     initializedAgoraListeners() {
@@ -305,6 +325,8 @@ export default {
         var uid = evt.uid;
         var reason = evt.reason;
         console.log("remote user left ", uid, "reason: ", reason);
+        alert('The call is ended.');
+        this.endCall();
       });
 
       this.client.on("stream-unpublished", (evt) => {
@@ -334,8 +356,10 @@ export default {
       );
     },
 
-    endCall() {
+    async endCall() {
       this.localStream.close();
+      // this.client.unpublish();
+      console.log(this.client);
       this.client.leave(
         () => {
           console.log("Leave channel successfully");
@@ -374,7 +398,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 main {
   margin-top: 50px;
 }
@@ -426,9 +450,5 @@ main {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
-}
-
-#login-form {
-  margin-top: 100px;
 }
 </style>

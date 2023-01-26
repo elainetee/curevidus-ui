@@ -1,6 +1,11 @@
 <template>
   <div>
     <div class="q-pa-md row justify-center">
+      <!-- <div class="tab" style="width: 840px">
+        <q-tabs v-model="tab"  class="bg-teal text-yellow shadow-2">
+          Lili
+        </q-tabs>
+      </div> -->
       <div
         style="width: 100%; max-width: 900px"
         v-for="message in allMessages"
@@ -17,7 +22,7 @@
         <q-chat-message
           v-else
           :text="[message.message]"
-          :avatar="avatar(message.avatar)"
+          :avatar="avatar(message.user.avatar)"
           :name="message.user_name"
           :stamp="moment(message.created_at)"
         />
@@ -89,5 +94,8 @@ export default {
 .chat-card img {
   max-width: 300px;
   max-height: 200px;
+}
+.tab {
+  position: fixed;
 }
 </style>

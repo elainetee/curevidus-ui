@@ -1,5 +1,6 @@
 <template>
   <main>
+    <chat-button></chat-button>
     <!-- <div class="column online-users" xs3> -->
     <div>
       <q-splitter v-model="splitterModel" class="col-2">
@@ -10,16 +11,26 @@
             @click="activeFriend = friend.id"
           >
             <q-tabs v-model="tab" vertical class="text-teal">
-              <q-tab name="mails" :label="friend.name" >
-              <!-- <q-badge floating color="teal">new</q-badge> -->
-              <q-icon
-                name="circle"
-                :color="
-                  onlineFriends.find((user) => user.id === friend.id)
-                    ? 'green'
-                    : 'red'
-                "
-              ></q-icon></q-tab>
+              <q-tab
+                :name="friend.name"
+                :label="friend.name"
+              >
+                <q-icon
+                  name="circle"
+                  :color="
+                    onlineFriends.find((user) => user.id === friend.id)
+                      ? 'green'
+                      : 'red'
+                  "
+                ></q-icon>
+                <!-- <q-item-section avatar>
+                  <q-avatar size="30px" color="primary" text-color="white">
+                    <img :src="friend.user.avatar" />
+                    <q-img v-if="friend.avatar != ''" :src="friend.avatar" />
+                <q-img v-else src="../../public/icons/userdd.png" />
+                  </q-avatar>
+                </q-item-section> -->
+              </q-tab>
             </q-tabs>
           </div>
         </template>
@@ -50,6 +61,11 @@
           </q-list-tile>
         </q-list> -->
 
+        <!-- <div >
+            <q-tabs class="bg-teal text-yellow shadow-2">
+              Lili
+            </q-tabs>
+          </div> -->
         <div id="privateMessageBox" class="messages">
           <message-list :all-messages="allMessages"></message-list>
 
@@ -81,6 +97,7 @@
           <!-- <v-icon class="mt-3">attach_file</v-icon> -->
           <!-- </file-upload>
           </v-flex> -->
+
           <div class="input-group">
             <!-- //Input field. -->
             <q-input
@@ -97,6 +114,7 @@
               </template>
             </q-input>
           </div>
+
           <!-- </v-layout> -->
         </div>
       </q-splitter>
@@ -107,6 +125,7 @@
 <script>
 import { ref } from "vue";
 import MessageList from "../components/MessageList.vue";
+import ChatButton from "../components/ChatButton.vue";
 import { Picker, EmojiIndex } from "emoji-mart-vue-fast";
 import { Cookies } from "quasar";
 import { store } from "../store.js";
@@ -115,7 +134,7 @@ export default {
   // props: ["user"],
   components: {
     // Picker,
-    MessageList,
+    MessageList, ChatButton
   },
 
   data() {
@@ -131,6 +150,7 @@ export default {
       typingClock: null,
       emoStatus: false,
       users: [],
+      u: [],
       store,
       // token: document.head.querySelector('meta[name="csrf-token"]').content,
     };
@@ -226,6 +246,50 @@ export default {
       }
     },
 
+    async getUsername() {
+      try {
+        const res = await this.$axios.get(`http://127.0.0.1:8000/api/user`, {
+          headers: { Authorization: "Bearer" + Cookies.get("token") },
+        });
+        this.u = res.data;
+        window.Echo.join("plchat")
+          .here((users) => {
+            console.log("online", users);
+            this.onlineFriends = users;
+          })
+          .joining((user) => {
+            this.onlineFriends.push(user);
+            console.log("joining", user.name);
+          })
+          .leaving((user) => {
+            this.onlineFriends.splice(this.onlineFriends.indexOf(user), 1);
+            console.log("leaving", user.name);
+          });
+
+        window.Echo.private("privatechat." + this.u.id)
+          .listen("PrivateMessageSent", (e) => {
+            console.log("pmessage sent");
+            this.activeFriend = e.message.user_id;
+            this.allMessages.push(e.message);
+            setTimeout(this.scrollToEnd, 100);
+          })
+          .listenForWhisper("typing", (e) => {
+            if (e.user.id == this.activeFriend) {
+              console.log("typing");
+              this.typingFriend = e.user;
+
+              if (this.typingClock) clearTimeout();
+
+              this.typingClock = setTimeout(() => {
+                this.typingFriend = {};
+              }, 9000);
+            }
+          });
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     scrollToEnd() {
       document.getElementById("privateMessageBox").scrollTo(0, 99999);
     },
@@ -253,40 +317,7 @@ export default {
 
   created() {
     this.getFriend();
-
-    window.Echo.join("plchat")
-      .here((users) => {
-        console.log("online", users);
-        this.onlineFriends = users;
-      })
-      .joining((user) => {
-        this.onlineFriends.push(user);
-        console.log("joining", user.name);
-      })
-      .leaving((user) => {
-        this.onlineFriends.splice(this.onlineFriends.indexOf(user), 1);
-        console.log("leaving", user.name);
-      });
-
-    window.Echo.private("privatechat." + this.store.user.id)
-      .listen("PrivateMessageSent", (e) => {
-        console.log("pmessage sent");
-        this.activeFriend = e.message.user_id;
-        this.allMessages.push(e.message);
-        setTimeout(this.scrollToEnd, 100);
-      })
-      .listenForWhisper("typing", (e) => {
-        if (e.user.id == this.activeFriend) {
-          console.log("typing");
-          this.typingFriend = e.user;
-
-          if (this.typingClock) clearTimeout();
-
-          this.typingClock = setTimeout(() => {
-            this.typingFriend = {};
-          }, 9000);
-        }
-      });
+    this.getUsername();
   },
 };
 </script>

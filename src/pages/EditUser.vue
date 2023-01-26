@@ -31,9 +31,9 @@
             ></q-input>
             <q-input
               class="q-mt-md q-mr-sm"
-              v-model="user.quarantine_status"
+              v-model="user.quarantine_day"
               filled
-              label="Quarantine Status"
+              label="Quarantine Day"
               :rules="[(v) => v !== '' || 'This field is required']"
             ></q-input>
             <q-input

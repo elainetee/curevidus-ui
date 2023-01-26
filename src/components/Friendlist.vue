@@ -27,11 +27,7 @@
         <q-item-section side>
           <q-btn
             v-if="user.friendstatus == '1'"
-            @click="
-              $router.push({
-                name: 'sendmsg',
-              })
-            "
+            @click="$router.push('/chat')"
             color="white"
             text-color="black"
             label="Send message"
@@ -44,6 +40,7 @@
             label="Friend request sent"
           />
           <q-btn
+            @click="scrollToBottom"
             v-if="user.friendstatus == '3'"
             color="white"
             text-color="black"
@@ -76,6 +73,9 @@ export default {
     return {};
   },
   methods: {
+    scrollToBottom() {
+      this.$refs["bottom"].scrollIntoView({ behavior: "smooth" });
+    },
     async addAsFriend(id) {
       try {
         const res = await this.$axios.post(
