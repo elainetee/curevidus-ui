@@ -29,11 +29,15 @@ const routes = [
       { name: "report", path: "/report/:id", component: () => import('pages/ConditionReport.vue') },
       { name:"condition", path: "/condition/:id", component: () => import('pages/UpdateCondition.vue') },
       { name:"medicine", path: "/medicine", component: () => import('pages/Medicine.vue') },
+      { name:"medicinepat", path: "/medicinepat", component: () => import('pages/MedicinePatient.vue') },
       { name:"chat", path: "/chat", component: () => import('pages/Chat.vue') },
       { name:"public-chat", path: "/publicchat", component: () => import('pages/PublicChat.vue') },
       { name:"friend", path: "/friend", component: () => import('pages/Friend.vue') },
       { name:"editMed", path: "/medicine/manage/:id", component: () => import('pages/ManageMedicine.vue') },
-      { name:"addMed", path: "/medicine/manage", component: () => import('pages/ManageMedicine.vue') }
+      { name:"addMed", path: "/medicine/manage", component: () => import('pages/ManageMedicine.vue') },
+      { name:"cart", path: "/cart", component: () => import('pages/Cart.vue') },
+      { name:"order", path: "/order", component: () => import('pages/ManageOrder.vue') },
+
     ]
   },
 

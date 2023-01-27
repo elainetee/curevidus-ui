@@ -3,9 +3,6 @@
         <div class="q-mb-md full-width">
             <div class="text-h4 text-center text-subheadcolour">
                 List of Medicines
-                <!-- <div class="text-h5 text-subheadcolour">
-                    Day 5 of Quarantine
-                </div> -->
             </div>
             <div class="column items-center q-my-md">
                 <q-btn label="Add Medicine" color="btn" text-color="btn" @click="visitAddPage()" style="width: 15%" />
@@ -17,8 +14,30 @@
                 <div v-for="medi in medicines" :key="medi.medicine_id">
                     <q-card class="q-pa-md q-mb-lg my-card bg-secondary" style="width: 100%">
                         <q-card-section>
-                            <div class="row ">
-                                <div class="text-left col text-h4 text-subheadcolour">
+                            <!-- <div class="grow-1 column bg-primary">
+                                    <q-img
+                                        :src="'http://127.0.0.1:8000/storage/uploads/' + medi.medicine_photo_name"
+                                        :ratio="4/3"
+                                        style="height: 140px; max-width: 150px"
+                                    />
+                                </div> -->
+                            <div class="row items-center q-gutter-md">
+                                <div v-if="medi.medicine_photo_name != null" class="col-3">
+                                    <q-img
+                                        :src="'http://127.0.0.1:8000/storage/uploads/' + medi.medicine_photo_name"
+                                        :ratio="4/3"
+                                        style="height: 190px; max-width: 200px"
+                                    />
+                                </div>
+                                <div v-if="medi.medicine_photo_name == null" class="col-3">
+                                    <q-img
+                                        :src="'https://img.kpopmap.com/wp-content/uploads_kpopmap/2017/09/chanyeol-min-1.jpg'"
+                                        :ratio="4/3"
+                                        style="height: 190px; max-width: 200px"
+                                    />
+                                </div>
+                                <!-- <div class="grow-3 text-left col-6 text-h4 text-subheadcolour"> -->
+                                <div class="grow-3 text-left col text-h4 text-subheadcolour">
                                     <div>
                                         {{ medi.medicine_name }}
                                     </div>
@@ -26,15 +45,38 @@
                                         {{ medi.medicine_desc }}
                                     </div>
                                     <div class="text-h5">
-                                        RM{{ medi.medicine_price }}
+                                        RM{{ medi.medicine_price.toFixed(2) }}
                                     </div>
 
                                 </div>
-                                <div class="col-4">
-                                    <q-btn label="Edit" color="btn" @click="visitEditPage(medi.medicine_id)" text-color="btn"/>
+                                <!-- <div v-if="roleid == '1'" class="col-2">
+                                    <div class="column">
+                                    
+                                        <q-btn label="Add to cart" color="btn-grey"  text-color="btn"/>
+                                    </div>
+                                </div> -->
+                                <div class="col-2">
+                                    <div class="column">
+                                    
+                                    <q-btn label="Edit" color="btn-grey" @click="visitEditPage(medi.medicine_id)" text-color="btn"/>
                                         <!-- @click="visitEditPage(medi.medicine_id)" /> -->
-                                    <q-btn label="Delete" color="red-10" @click="deleteMedicine(medi.medicine_id)"/>
+                                    <div class="q-pa-sm"></div>
+                                    <q-btn label="Delete" color="red-10" @click="medi.confirm = true"/>
                                 </div>
+                                <q-dialog v-model="medi.confirm" persistent>
+                                  <q-card>
+                                    <q-card-section class="row items-center">
+                                      <!-- <q-avatar icon="signal_wifi_off" color="primary" text-color="white" /> -->
+                                      <span class="q-ml-sm">Are you sure you want to delete this medicine?</span>
+                                    </q-card-section>
+
+                                    <q-card-actions align="right">
+                                      <q-btn flat label="No" color="primary" v-close-popup />
+                                      <q-btn flat label="Yes, delete" color="primary" @click="deleteMedicine(medi.medicine_id)" />
+                                    </q-card-actions>
+                                  </q-card>
+                                </q-dialog>
+                            </div>
                             </div>
 
                         </q-card-section>
@@ -56,6 +98,8 @@
 
             </q-card-section>
         </q-card>
+
+        
 
         <!-- <div v-for="condition in conditions" :key="condition.id"> -->
         <!-- <q-dialog v-model="fixed">
@@ -101,20 +145,33 @@
 <script>
 import { ref } from 'vue';
 import { Cookies } from "quasar";
+// import { userdetails } from '../components/userId.js';
 
 export default {
-    // setup() {
-    //     return {
-    //         fixed: ref(false)
-    //     }
-    // },
+    setup() {
+        return {
+            confirm: ref(false),
+        }
+    },
     data() {
         return {
             medicines: [],
+            // user:[],
+            // user: ref(userdetails.user),
+            // userdetails
+            roleid: ""
+            
+            
         }
     },
+    // async mounted(){
+    //     let user = await this.$auth.getUserid();
+    //     // console.log(this.users);
+    // },
     created() {
         this.getMedicines();
+        // this.getUserid();
+        // this.roleid = this.$route.query.roleid
     },
     methods: {
         visitEditPage(medId) {
@@ -169,6 +226,21 @@ export default {
             }
         },
     },
+    // async getUserid() {
+    //   try {
+    //     //  Axios.defaults.headers.common['Authorization'] = 'Bearer' + Cookies.get('token')
+    //     const res = await this.$axios.get(`http://127.0.0.1:8000/api/user`, {
+    //       headers: { Authorization: "Bearer" + Cookies.get("token") },
+    //       contentType: "text/plain",
+    //     });
+    //     this.user = res.data;
+    //     console.log(this.user.role_id)
+    //     // this.user.role_id = this.users.role_id;
+    //     console.log(this.user);
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
 }
     // setup() {
     //     return {

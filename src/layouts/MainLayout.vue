@@ -34,9 +34,18 @@
               $router.push({ name: 'report', params: { id: store.user.id } })
             "
           >
+          <!-- <div class="q-mr-xl" @click="$router.push({ name: 'report', params: { id: user.id } })"> -->
             Condition Report
           </div>
+          
+          <!-- <div class="q-mr-xl" v-if="user.role_id == '3'" @click="$router.push({ name: 'medicine', query: {roleid: this.user.role_id }})">Medicine</div> -->
+          <div class="q-mr-xl" v-if="store.user.role_id == '1'" @click="$router.push({ name: 'medicinepat', query: {roleid: this.store.user.role_id }})">Medicine</div>
+          
+          <div class="q-mr-xl" v-if="store.user.role_id == '1'" @click="$router.push({ name: 'cart'})">My Cart</div>
+          <div class="q-mr-xl" v-if="store.user.role_id == '3'" @click="$router.push({ name: 'order'})">Orders</div>
+          
           <div class="q-mr-xl" v-if="store.user.role_id == '3'">Patients</div>
+          <!-- <div class="q-mr-xl" v-if="user.role_id == '3'">Patients</div> -->
           <div class="q-mr-xl" @click="$router.push({ name: 'friend' })" v-else>
             Friends
           </div>
@@ -147,6 +156,12 @@
 import { ref } from "vue";
 import { Cookies } from "quasar";
 import { store } from "../store.js";
+// import { userdetails } from '../components/userId.js';
+// import { reactive } from 'vue';
+
+// export const userid = reactive({
+//     users: ref(this.user),
+//   });
 
 export default {
   data() {
@@ -154,6 +169,9 @@ export default {
       store,
     };
   },
+  // created(){
+  //   // this.user = userdetails.user
+  // },
 
   methods: {
     async logout() {

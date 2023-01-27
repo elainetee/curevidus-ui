@@ -67,7 +67,15 @@
                             />
                             
                             <!-- <div v-if="!yeah" class="column items-left"> -->
-                            <q-checkbox
+                            <q-option-group
+                              name="music_genre"
+                              v-model="condition.condition_symptoms"
+                              type="checkbox"
+                              :options="sympOptions"
+                              :disable = "isDisabled()"
+                            />
+
+                            <!-- <q-checkbox
                               name="music_genre"
                               v-model="condition.condition_symptoms"
                               val="Fever"
@@ -145,7 +153,7 @@
                               val="Diarrhea"
                               label="Diarrhea"
                               :disable = "isDisabled()"
-                            />
+                            /> -->
                         <!-- </div> -->
                         </div>
                         <!-- <div class="q-px-sm">
@@ -160,18 +168,50 @@
                         lazy-rules :rules="[
                             val => val && val.length > 0 || 'Please key in your temperature',
                             val => val > 25 && val <= 41 || 'Please key in a valid temperature'
-                        ]" />
+                        ]" 
+                        class="q-pt-md"/>
 
                     <q-input filled bg-color="white" v-model="condition.oxygen_lvl" label="Oxygen Level (%)" lazy-rules
                         :rules="[
-                            val => val > 0 && val <= 100 || 'Oxygen Level must be between 1-100'
+                            val => (isNumberBlank(val) || (val > 0 && val <= 100)) || 'Oxygen Level must be between 1-100'
                         ]" />
 
-                    <q-input filled bg-color="white" v-model="condition.condition_summary"
+                    <!-- <q-input filled bg-color="white" v-model="condition.condition_summary"
                         label="Overall condition (no/mild/severe symptoms) *" lazy-rules :rules="[
                             val => val && val.length > 0 || 'Please key in your overall condition'
-                        ]" />
+                        ]" /> -->
 
+                    <div class="bg-grey-2 q-pa-sm rounded-borders column items-left">
+                        <div class="q-px-sm text-h6">
+                            Overall condition: *
+                        </div>
+                        <q-option-group
+                            v-model="condition.condition_summary"
+                            type="radio"
+                            :options="sumOptions"
+                        />
+                        <!-- <q-radio
+                            name="music_genre"
+                            v-model="condition.condition_summary"
+                            val="No symptoms"
+                            label="No Symptoms"
+                        /> -->
+                            
+                            <!-- <div v-if="!yeah" class="column items-left"> -->
+                        <!-- <q-radio
+                            name="music_genre"
+                            v-model="condition.condition_summary"
+                            val="Mild symptoms"
+                            label="Mild Symptoms"
+                        />
+                            
+                        <q-radio
+                            name="music_genre"
+                            v-model="condition.condition_summary"
+                            val="Severe symptoms"
+                            label="Severe Symptoms"
+                        /> -->
+                    </div>
 
                     <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
 
@@ -233,6 +273,24 @@ export default {
             },
             conditions: [],
             users: [],
+
+            sumOptions: [
+                { label: 'No Symptoms', value: 'No Symptoms' },
+                { label: 'Mild Symptoms', value: 'Mild Symptoms'},
+                { label: 'Severe Symptoms', value: 'Severe Symptoms'}
+            ],
+            sympOptions: [
+                { label: 'Fever', value: 'Fever' },
+                { label: 'Fatigue', value: 'Fatigue'},
+                { label: 'Runny nose or nasal congestion', value: 'Runny nose or nasal congestion'},
+                { label: 'Body ache', value: 'Body ache'},
+                { label: 'Headache', value: 'Headache'},
+                { label: 'Sore throat', value: 'Sore throat'},
+                { label: 'Chills', value: 'Chills'},
+                { label: 'Shivering', value: 'Shivering'},
+                { label: 'Nausea or vomiting', value: 'Nausea or vomiting'},
+                { label: 'Diarrhea', value: 'Diarrhea'},
+            ]
             
 
         };
@@ -241,6 +299,12 @@ export default {
         this.currentDate();
     },
     methods: {
+        isNumberBlank(val) {
+            if (val.length === 0) {
+                return true
+            }
+            return false
+        },
         isDisabled(){
             if(this.condition.condition_symptoms.includes('No symptoms')){
                 this.condition.condition_symptoms = ['No symptoms'];
@@ -254,23 +318,30 @@ export default {
             // return date;
             this.condition.condition_date = date;
         },
-        addCond2() {
-            this.$axios.post(
-                `http://127.0.0.1:8000/api/condition/create/` + this.$route.params.id,
-                {
-                    condition_date: this.condition.condition_date,
-                    condition_symptoms: this.condition.condition_symptoms,
-                    temperature: this.condition.temperature,
-                    oxygen_lvl: this.condition.oxygen_lvl,
-                    condition_summary: this.condition.condition_summary
-                })
-                .then(function (response) {
-                    console.log(response);
-                })
-                .catch(function (error) {
-                    console.log(error);
-                });
+        getConditions() {
+            this.$axios.get(`http://127.0.0.1:8000/api/condition/` + this.$route.params.id)
+            .then(response => {
+                this.conditions = response.data;
+                console.log(this.conditions);
+            });
         },
+        // addCond2() {
+        //     this.$axios.post(
+        //         `http://127.0.0.1:8000/api/condition/create/` + this.$route.params.id,
+        //         {
+        //             condition_date: this.condition.condition_date,
+        //             condition_symptoms: this.condition.condition_symptoms,
+        //             temperature: this.condition.temperature,
+        //             oxygen_lvl: this.condition.oxygen_lvl,
+        //             condition_summary: this.condition.condition_summary
+        //         })
+        //         .then(function (response) {
+        //             console.log(response);
+        //         })
+        //         .catch(function (error) {
+        //             console.log(error);
+        //         });
+        // },
         // addCond() {
         //     try {
         //         let newCondition = {
@@ -291,9 +362,14 @@ export default {
         //         console.log(error);
         //     }
         // },
-        submitCondition() {
+        async submitCondition() {
             // try {
             let overallCond = this.condition.condition_symptoms.join();
+            // let oxy_lvl = ""
+            // if(this.condition.oxygen_lvl != null){
+            //     oxy_lvl = this.condition.oxygen_lvl
+            // }
+            
             let newCondition = {
                 condition_date: this.condition.condition_date,
                 condition_symptoms: overallCond,
@@ -302,7 +378,7 @@ export default {
                 condition_summary: this.condition.condition_summary
             };
             // this.conditions.unshift(newCondition);
-            this.$axios.post(
+            await this.$axios.post(
                 `http://127.0.0.1:8000/api/condition/create/` + this.$route.params.id,
                 newCondition
                 // { headers: { Authorization: "Bearer" + Cookies.get("token") } }
@@ -313,7 +389,11 @@ export default {
                     console.log(error);
                 });
             // this.post = res.data;
+            this.getConditions();
             this.$q.notify("Condition added successfully");
+            this.$router.push({
+                    name: "report"
+                });
             // } catch (error) {
             //     console.log(error);
             // }

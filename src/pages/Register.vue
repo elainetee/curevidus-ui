@@ -152,7 +152,9 @@ import InputField from "../components/InputField.vue";
                 // const config = { path: "/", sameSite: "strict" };
                 // Cookies.set("token", res.data.token, config);
                 console.log(this.form);
+                this.$q.notify("Account created successfully");
                 this.$router.push("/");
+                
             }
             catch (e) {
                 this.isLoading = false;

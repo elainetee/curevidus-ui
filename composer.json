@@ -1,0 +1,5 @@
+{
+    "require": {
+        "staudenmeir/laravel-merged-relations": "^1.0"
+    }
+}
