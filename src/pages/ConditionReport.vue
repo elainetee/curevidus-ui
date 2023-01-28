@@ -8,12 +8,12 @@
                 </div> -->
             </div>
             <div v-else class="text-h4 text-center text-subheadcolour">
-                {{store.user.name}}'s Condition Report
+                {{userToView.name}}'s Condition Report
                 <!-- <div class="text-h5 text-subheadcolour">
                     Day 5 of Quarantine
                 </div> -->
             </div>
-            <div class="column items-center q-my-md">
+            <div v-if="store.user.id==this.$route.params.id" class="column items-center q-my-md">
                 <q-btn label="Update Condition" color="btn" text-color="btn"
                     @click="visitUpdatePage(this.$route.params.id)" style="width: 15%" />
             </div>
@@ -21,7 +21,10 @@
 
         <q-card class="q-px-xl q-py-md my-card bg-info" style="width: 70%">
             <q-card-section>
-                <div v-for="condition in conditions" :key="condition.id">
+                <div v-if="conditions.length==0" class="text-h6">
+                    No condition updated yet.
+                </div>
+                <div v-else v-for="condition in conditions" :key="condition.id">
                     <q-card class="q-pa-md q-mb-lg my-card bg-secondary" style="width: 100%">
                         <q-card-section>
                             <div class="row ">
@@ -118,10 +121,12 @@ export default {
             // },
             conditions: [],
             users: [],
+            userToView: [],
         };
     },
     created() {
         this.getConditions();
+        this.getUserWithId(this.$route.params.id);
     },
 
     methods: {
@@ -130,6 +135,13 @@ export default {
             .then(response => {
                 this.conditions = response.data;
                 console.log(this.conditions);
+            });
+        },
+        getUserWithId(userId) {
+            this.$axios.get(`http://127.0.0.1:8000/api/getuser/` + userId)
+            .then(response => {
+                this.userToView = response.data;
+                console.log(this.userToView);
             });
         },
         async getUser() {
