@@ -20,8 +20,18 @@
           :key="tableKey"
         >
           <template v-slot:top>
-            <div style="width: 100%" class="row">
-              <div class="col-9">Accounts</div>
+            <div style="width: 100%" class="row q-gutter-sm">
+              <div class="col-1 text-h5">Accounts</div>
+              <div class="col-grow">
+                <q-btn
+                  label="Add New Staff"
+                  color="btn-grey"
+                  text-color="btn"
+                  unelevated
+                  no-caps
+                  @click="visitStaffSignUpPage()"
+                />
+              </div>
               <div class="col-3">
                 <q-input dense debounce="400" color="primary" v-model="filter">
                   <template v-slot:append>
@@ -186,6 +196,12 @@ export default {
         name: "report",
         params: { id: props.row.id },
       });
+    },
+    visitStaffSignUpPage() {
+            console.log();
+            this.$router.push({
+                name: "register-staff"
+            });
     },
 
     // editStaff(props) {

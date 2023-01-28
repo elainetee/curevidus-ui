@@ -6,7 +6,7 @@ const routes = [
     children: [
       { name: "login", path: "", component: () => import('pages/Index.vue') },
       { path: '/index2', component: () => import('pages/Index2.vue') },
-      { name: "register", path: "/register", component: () => import('pages/Register.vue') }
+      { name: "register", path: "/register", component: () => import('pages/Register.vue') },
     ]
   },
   {
@@ -14,6 +14,7 @@ const routes = [
     component: () => import('layouts/MainLayout.vue'),
     children: [
       { name: "homepage", path: "/homepage", component: () => import('pages/Homepage.vue') },
+      { name: "register-staff", path: "/registerStaff", component: () => import('pages/RegisterStaff.vue') },
       { name: "manage-account", path: "/manageaccount", component: () => import('pages/ManageAccount.vue') },
       { name: "profile", path: "/profile/:id", component: () => import('pages/Profile.vue') },
       { name: "edit-profile", path: "/editprofile/:id", component: () => import('pages/EditProfile.vue') },
