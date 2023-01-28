@@ -55,6 +55,18 @@
                 />
               </div>
             </q-td>
+            <q-td>
+              <div class="text-center">
+                <q-btn v-if="props.row.role_id=='1'"
+                  icon="search"
+                  color="red"
+                  no-caps
+                  flat
+                  dense
+                  @click="viewCondition(props)"
+                />
+              </div>
+            </q-td>
           </template>
         </q-table>
       </div>
@@ -116,6 +128,7 @@ export default {
         // },
         { name: "action", label: "Edit", align: "center", field: "action" },
         { name: "delete", label: "Delete", align: "center", field: "action" },
+        { name: "view", label: "View Condition", align: "center", field: "action" },
       ],
     };
   },
@@ -165,6 +178,12 @@ export default {
     visitUserPage(props) {
       this.$router.push({
         name: "editUser",
+        params: { id: props.row.id },
+      });
+    },
+    viewCondition(props) {
+      this.$router.push({
+        name: "report",
         params: { id: props.row.id },
       });
     },

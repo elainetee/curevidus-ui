@@ -1,8 +1,14 @@
 <template>
     <q-page class="column items-center">
         <div class="q-mb-md full-width">
-            <div class="text-h4 text-center text-subheadcolour">
+            <div v-if="store.user.id==this.$route.params.id" class="text-h4 text-center text-subheadcolour">
                 My Condition Report
+                <!-- <div class="text-h5 text-subheadcolour">
+                    Day 5 of Quarantine
+                </div> -->
+            </div>
+            <div v-else class="text-h4 text-center text-subheadcolour">
+                {{store.user.name}}'s Condition Report
                 <!-- <div class="text-h5 text-subheadcolour">
                     Day 5 of Quarantine
                 </div> -->
@@ -92,6 +98,7 @@
 <script>
 import { ref } from 'vue';
 import { Cookies } from "quasar";
+import { store } from "../store.js";
 
 export default {
     setup() {
@@ -101,6 +108,7 @@ export default {
     },
     data() {
         return {
+            store,
             // condition: {
             //     condition_date: "",
             //     condition_symptoms: "",

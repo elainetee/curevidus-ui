@@ -83,8 +83,8 @@
         </q-btn> -->{{ store.user.name }}
         <div class="q-pr-xl cursor-pointer non-selectable">
           <q-avatar round size="30px">
-            <q-img v-if="store.user.avatar != ''" :src="store.user.avatar" />
-            <q-img v-else src="../../public/icons/userdd.png" />
+            <q-img v-if="store.user.avatar != null" :src="store.user.avatar" />
+            <q-img v-else src="icons/userdd.png" />
             <!-- <q-badge floating color="grey">
               <q-icon name="expand_more" color="white"
             /></q-badge> -->
