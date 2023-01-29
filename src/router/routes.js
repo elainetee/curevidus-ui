@@ -7,6 +7,24 @@ const routes = [
       { name: "login", path: "", component: () => import('pages/Index.vue') },
       { path: '/index2', component: () => import('pages/Index2.vue') },
       { name: "register", path: "/register", component: () => import('pages/Register.vue') },
+      { name: "reset-password", path: "/reset-password", component: () => import('pages/ForgotPassword.vue') },
+      // { name: "register", path: "/register", component: () => import('pages/Register.vue') },
+      // { 
+      //   path: '/reset-password', 
+      //   name: 'reset-password', 
+      //   component: ForgotPassword, 
+      //   meta: { 
+      //     auth:false 
+      //   } 
+      // },
+      // { 
+      //   path: '/reset-password/:token', 
+      //   name: 'reset-password-form', 
+      //   component: ResetPasswordForm, 
+      //   meta: { 
+      //     auth:false 
+      //   }
+      // } 
     ]
   },
   {

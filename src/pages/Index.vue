@@ -32,7 +32,7 @@
               <div
                 id="hover"
                 class="text-right text-caption cursor-pointer"
-                @click="$router.push('/forgot-password')"
+                @click="$router.push('/reset-password')"
               >
                 Forgot password?
               </div>
