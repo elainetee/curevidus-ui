@@ -21,7 +21,8 @@
         >
           <q-item-section avatar>
             <q-avatar color="primary" text-color="white">
-              <img src="../../public/icons/userdd.png" />
+              <q-img :src="avatar(user.avatar)" />
+
               <!-- <q-img v-if="friend.avatar != ''" :src="friend.avatar" />
                 <q-img v-else src="../../public/icons/userdd.png" /> -->
             </q-avatar>
@@ -32,10 +33,7 @@
           </q-item-section>
 
           <q-item-section side>
-            <q-icon
-              name="video_call"
-              @click="placeCall(user.id, user.name)"
-            />
+            <q-icon name="video_call" @click="placeCall(user.id, user.name)" />
             <span class="badge badge-light">{{
               getUserOnlineStatus(user.id)
             }}</span>
@@ -122,6 +120,14 @@ export default {
       store,
       alluser: [],
     };
+  },
+
+  computed: {
+    avatar() {
+      return (v) => {
+        return `http://127.0.0.1:8000` + v;
+      };
+    },
   },
 
   mounted() {
@@ -288,7 +294,6 @@ export default {
           console.log("Join channel failed", err);
         }
       );
-
     },
 
     initializedAgoraListeners() {
@@ -325,7 +330,7 @@ export default {
         var uid = evt.uid;
         var reason = evt.reason;
         console.log("remote user left ", uid, "reason: ", reason);
-        alert('The call is ended.');
+        alert("The call is ended.");
         this.endCall();
       });
 

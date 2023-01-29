@@ -7,13 +7,9 @@
     </div>
     <div class="text-center">
       <q-card>
-        <q-avatar size="100px" class="q-mt-sm">
-          <q-img v-if="store.user.avatar != '' "
-            :src="store.user.avatar"
-          />
-          <q-img v-else
-            src="../../public/icons/userdd.png"
-          />
+        <q-avatar size="90px" class="q-mt-sm">
+          <q-img v-if="store.user.avatar != ''" :src="store.user.avatar" />
+          <q-img v-else src="../../public/icons/userdd.png" />
         </q-avatar>
         <q-card-actions vertical>
           <label>
@@ -51,15 +47,16 @@
               </td>
             </tr>
             <tr>
-              <td class="text-left">Condition</td>
-              <td class="text-right">Mild fever</td>
-            </tr>
-            <tr>
               <td class="text-left">Tel no.</td>
               <td class="text-right">{{ user.tel_no }}</td>
             </tr>
+            <tr>
+              <td class="text-left">Quarantine day</td>
+              <td class="text-right">{{ user.quarantine_day }}</td>
+            </tr>
           </tbody>
         </q-markup-table>
+        <div class="text-black" v-if="store.user.role_id == '1'"> **account will be deleted if quarantine day exceeds 19 days</div>
         <div class="q-pa-md q-gutter-sm">
           <q-btn
             @click="

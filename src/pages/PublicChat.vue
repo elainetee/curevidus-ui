@@ -8,18 +8,22 @@
     </div> -->
     <q-splitter v-model="splitterModel" class="col-2">
         <template v-slot:before>
-          <div
+          <!-- <div
+            v-for="friend in onlineFriends"
+            :key="friend.id"
+            @click="activeFriend = friend.id"
+          > -->
+            <q-tabs v-model="tab" vertical class="text-teal">
+              <q-tab class="text-black" name="mails" label="Members:" >
+              </q-tab><div
             v-for="friend in onlineFriends"
             :key="friend.id"
             @click="activeFriend = friend.id"
           >
-            <q-tabs v-model="tab" vertical class="text-teal">
-              <q-tab class="text-black" name="mails" label="Members:" >
-              </q-tab>
               <q-tab name="mails" :label="friend.name" >
-              </q-tab>
+              </q-tab></div>
             </q-tabs>
-          </div>
+          <!-- </div> -->
         </template>
     <div id="privateMessageBox" class="messages">
       <public-message-list
@@ -108,7 +112,7 @@ export default {
           { headers: { Authorization: "Bearer" + Cookies.get("token") } }
         );
         this.message = null;
-        this.allMessages.push(res.data.message);
+        // this.allMessages.push(res.data.message);
         setTimeout(this.scrollToEnd, 100);
       } catch (error) {
         console.log(error);

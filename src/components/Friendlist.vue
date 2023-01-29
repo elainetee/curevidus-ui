@@ -13,9 +13,8 @@
       >
         <q-item-section avatar>
           <q-avatar color="primary" text-color="white">
-            <img src="../../public/icons/userdd.png" />
-            <!-- <q-img v-if="friend.avatar != ''" :src="friend.avatar" />
-                <q-img v-else src="../../public/icons/userdd.png" /> -->
+            <q-img v-if="user.avatar != ''" :src="avatar(user.avatar)" />
+            <q-img v-else src="../../public/icons/userdd.png" />
           </q-avatar>
         </q-item-section>
 
@@ -72,6 +71,13 @@ export default {
   data() {
     return {};
   },
+  computed: {
+    avatar() {
+      return (v) => {
+        return `http://127.0.0.1:8000` + v;
+      };
+    },
+  },
   methods: {
     scrollToBottom() {
       this.$refs["bottom"].scrollIntoView({ behavior: "smooth" });
@@ -88,6 +94,7 @@ export default {
         // });
         this.user = res.data;
         this.searchFriend();
+        alert("Friend request sent");
       } catch (error) {
         console.log(error);
       }
@@ -102,6 +109,7 @@ export default {
         );
         this.user = res.data;
         this.searchFriend();
+        alert("Friend request removed");
       } catch (error) {
         console.log(error);
       }

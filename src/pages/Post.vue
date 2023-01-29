@@ -136,20 +136,29 @@ export default {
     },
 
     async deletePost(id) {
-      try {
-        const res = await this.$axios.delete(
-          `http://127.0.0.1:8000/api/post/delete/` + id,
-          {
-            headers: { Authorization: "Bearer" + Cookies.get("token") },
-          }
-        );
-        this.posts = res.data;
+            this.$q
+        .dialog({
+          message: "Are you sure to delete this post?",
+          cancel: true,
+          persistent: true,
+        })
+        .onOk(async () => {
+          try {
+            const res = await this.$axios.delete(
+              `http://127.0.0.1:8000/api/post/delete/` + id,
+              {
+                headers: { Authorization: "Bearer" + Cookies.get("token") },
+              }
+            );
+        // this.posts = res.data;
         this.getPost();
         this.$q.notify("Post deleted successfully");
-      } catch (error) {
-        console.log(error);
-      }
-    },
+          } catch (e) {
+            console.log(e);
+          }
+        });
+      },
+    
 
     async getPost() {
       try {
@@ -180,7 +189,7 @@ export default {
         );
         this.post = res.data;
         this.$q.notify("Posted successfully");
-        window.location.reload();
+        this.getPost();
       } catch (error) {
         console.log(error);
       }

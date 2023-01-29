@@ -43,9 +43,9 @@
           >
             <q-item-section avatar>
               <q-avatar color="primary" text-color="white">
-                <img src="../../public/icons/userdd.png" />
-                <!-- <q-img v-if="friend.avatar != ''" :src="friend.avatar" />
-                <q-img v-else src="../../public/icons/userdd.png" /> -->
+                <!-- <img src="../../public/icons/userdd.png" /> -->
+                <q-img v-if="friend.avatar != ''" :src="avatar(friend.avatar)" />
+                <q-img v-else src="../../public/icons/userdd.png" />
               </q-avatar>
             </q-item-section>
 
@@ -93,9 +93,9 @@
           >
             <q-item-section avatar>
               <q-avatar color="primary" text-color="white">
-                <img src="../../public/icons/userdd.png" />
-                <!-- <q-img v-if="friend.avatar != ''" :src="friend.avatar" />
-                <q-img v-else src="../../public/icons/userdd.png" /> -->
+                <!-- <img src="../../public/icons/userdd.png" /> -->
+                <q-img v-if="pendingrequest.avatar != ''" :src="avatar(pendingrequest.avatar)" />
+                <q-img v-else src="../../public/icons/userdd.png" />
               </q-avatar>
             </q-item-section>
 
@@ -150,6 +150,13 @@ export default {
       pendingrequests: [],
     };
   },
+    computed: {
+    avatar() {
+      return (v) => {
+        return `http://127.0.0.1:8000` + v;
+      };
+    },
+  },
   methods: {
     async searchFriend() {
       try {
@@ -174,6 +181,7 @@ export default {
         );
         this.pendingrequests = res.data;
         this.getFriend();
+        this.$q.notify("Friend request accepted");
       } catch (error) {
         console.log(error);
       }
@@ -187,6 +195,7 @@ export default {
           { headers: { Authorization: "Bearer" + Cookies.get("token") } }
         );
         this.pendingrequests = res.data;
+        this.$q.notify("Friend request rejected");
       } catch (error) {
         console.log(error);
       }
