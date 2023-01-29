@@ -57,6 +57,17 @@
             <q-item-section side>
               <q-icon name="chat_bubble" color="grey" @click="$router.push('/chat')"/>
             </q-item-section>
+            <q-item-section side>
+              <q-icon name="search" color="grey" @click="viewCondition(friend.id)"/>
+              <!-- <q-btn
+                  icon="search"
+                  color="red"
+                  no-caps
+                  flat
+                  dense
+                  @click="viewCondition(friend.id)"
+                /> -->
+            </q-item-section>
           </q-item>
 
           <q-separator />
@@ -224,6 +235,13 @@ export default {
       } catch (error) {
         console.log(error);
       }
+    },
+    viewCondition(friend_id) {
+        this.$router.push({
+          name: "report",
+          params: { id: friend_id },
+        });
+        console.log(friend_id);
     },
   },
   created() {

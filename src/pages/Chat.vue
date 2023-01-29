@@ -5,6 +5,40 @@
     <div>
       <q-splitter v-model="splitterModel" class="col-2">
         <template v-slot:before>
+          <!-- <div v-if="store.user.role_id == 1">
+
+            <q-separator size="2px"/>
+            <div class="flex flex-center text-h6">
+              Medical Staffs
+            </div>
+            <q-separator size="2px"/>
+            <div
+              v-for="friend in medicfriends"
+              :key="friend.id"
+              @click="activeFriend = friend.id"
+            >
+              <q-tabs v-model="tab" vertical class="text-teal">
+                <q-tab
+                  :name="friend.name"
+                  :label="friend.name"
+                >
+                  <q-icon
+                    name="circle"
+                    :color="
+                      onlineFriends.find((user) => user.id === friend.id)
+                        ? 'green'
+                        : 'red'
+                    "
+                  ></q-icon>
+                </q-tab>
+              </q-tabs>
+            </div>
+            <q-separator size="2px"/>
+            <div class="flex flex-center text-h6">
+              Friends
+            </div>
+            <q-separator size="2px"/>
+          </div> -->
           <div
             v-for="friend in friends"
             :key="friend.id"
@@ -159,7 +193,15 @@ export default {
   computed: {
     friends() {
       return this.users.filter((user) => {
+        if(this.store.user.role_id == 1){
+          return ((user.id !== this.store.user.id) && user.role_id == 2);
+        }
         return user.id !== this.store.user.id;
+      });
+    },
+    medicfriends() {
+      return this.users.filter((user) => {
+        return ((user.id !== this.store.user.id) && user.role_id == 3);
       });
     },
   },

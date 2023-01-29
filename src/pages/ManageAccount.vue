@@ -20,8 +20,18 @@
           :key="tableKey"
         >
           <template v-slot:top>
-            <div style="width: 100%" class="row">
-              <div class="col-9">Accounts</div>
+            <div style="width: 100%" class="row q-gutter-sm">
+              <div class="col-1 text-h5">Accounts</div>
+              <div class="col-grow">
+                <q-btn
+                  label="Add New Staff"
+                  color="btn-grey"
+                  text-color="btn"
+                  unelevated
+                  no-caps
+                  @click="visitStaffSignUpPage()"
+                />
+              </div>
               <div class="col-3">
                 <q-input dense debounce="400" color="primary" v-model="filter">
                   <template v-slot:append>
@@ -52,6 +62,18 @@
                   flat
                   dense
                   @click="deleteStaff(props)"
+                />
+              </div>
+            </q-td>
+            <q-td>
+              <div class="text-center">
+                <q-btn v-if="props.row.role_id=='1'"
+                  icon="search"
+                  color="red"
+                  no-caps
+                  flat
+                  dense
+                  @click="viewCondition(props)"
                 />
               </div>
             </q-td>
@@ -116,6 +138,7 @@ export default {
         // },
         { name: "action", label: "Edit", align: "center", field: "action" },
         { name: "delete", label: "Delete", align: "center", field: "action" },
+        { name: "view", label: "View Condition", align: "center", field: "action" },
       ],
     };
   },
@@ -167,6 +190,18 @@ export default {
         name: "editUser",
         params: { id: props.row.id },
       });
+    },
+    viewCondition(props) {
+      this.$router.push({
+        name: "report",
+        params: { id: props.row.id },
+      });
+    },
+    visitStaffSignUpPage() {
+            console.log();
+            this.$router.push({
+                name: "register-staff"
+            });
     },
 
     // editStaff(props) {

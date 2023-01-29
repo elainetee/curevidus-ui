@@ -28,45 +28,22 @@
           >
             Medicine
           </div>
-          <div v-if="store.user.role_id == '1'"
+          <div v-if="store.user.role_id == '1'"
             class="q-mr-xl"
             @click="
               $router.push({ name: 'report', params: { id: store.user.id } })
             "
           >
-            <!-- <div class="q-mr-xl" @click="$router.push({ name: 'report', params: { id: user.id } })"> -->
-            Condition Report
-          </div>
-
+          Condition Report
+        </div>
+          <!-- <div class="q-mr-xl" @click="$router.push({ name: 'report', params: { id: user.id } })"> -->
+          
           <!-- <div class="q-mr-xl" v-if="user.role_id == '3'" @click="$router.push({ name: 'medicine', query: {roleid: this.user.role_id }})">Medicine</div> -->
-          <div
-            class="q-mr-xl"
-            v-if="store.user.role_id == '1'"
-            @click="
-              $router.push({
-                name: 'medicinepat',
-                query: { roleid: this.store.user.role_id },
-              })
-            "
-          >
-            Medicine
-          </div>
-
-          <div
-            class="q-mr-xl"
-            v-if="store.user.role_id == '1'"
-            @click="$router.push({ name: 'cart' })"
-          >
-            My Cart
-          </div>
-          <div
-            class="q-mr-xl"
-            v-if="store.user.role_id == '3'"
-            @click="$router.push({ name: 'order' })"
-          >
-            Orders
-          </div>
-
+          <div class="q-mr-xl" v-if="store.user.role_id == '1'" @click="$router.push({ name: 'medicinepat', query: {roleid: this.store.user.role_id }})">Medicine</div>
+          
+          <div class="q-mr-xl" v-if="store.user.role_id == '1'" @click="$router.push({ name: 'cart'})">My Cart</div>
+          <div class="q-mr-xl" v-if="store.user.role_id == '3'" @click="$router.push({ name: 'order'})">Orders</div>
+          
           <!-- <div class="q-mr-xl" v-if="store.user.role_id == '3'">Patients</div> -->
           <!-- <div class="q-mr-xl" v-if="user.role_id == '3'">Patients</div> -->
           <div class="q-mr-xl" @click="$router.push({ name: 'friend' })" v-else>
@@ -106,6 +83,9 @@
         </q-btn> -->{{ store.user.name }}
         <div class="q-pr-xl cursor-pointer non-selectable">
           <q-avatar round size="30px">
+            <q-img v-if="store.user.avatar != null" :src="store.user.avatar" />
+            <q-img v-else src="icons/userdd.png" />
+             <!-- <q-badge floating color="grey"> -->
             <q-img v-if="store.user.avatar != ''" :src="store.user.avatar" />
             <q-img v-else src="../../public/icons/userdd.png" />
             <!-- <q-badge transparent floating color="grey">

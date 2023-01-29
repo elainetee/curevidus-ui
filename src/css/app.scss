@@ -62,6 +62,15 @@
     text-decoration: underline;
 }
 
+.desc:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.desc {
+    color: #bf0808;
+}
+
 .pg-bg-colour {
     background: #F1FAEE;
 }

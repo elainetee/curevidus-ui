@@ -7,11 +7,18 @@
             <div class="column items-center q-my-md">
                 <q-btn label="Add Medicine" color="btn" text-color="btn" @click="visitAddPage()" style="width: 15%" />
             </div>
+            <div class="flex flex-center column" style="width: 80%">
+                <q-input class="self-end" dense debounce="400" color="primary" v-model="search">
+                      <template v-slot:append>
+                        <q-icon name="search" />
+                      </template>
+                </q-input>
+            </div>
         </div>
 
         <q-card class="q-px-xl q-py-md my-card bg-info" style="width: 70%">
             <q-card-section>
-                <div v-for="medi in medicines" :key="medi.medicine_id">
+                <div v-for="medi in filteredList" :key="medi.medicine_id">
                     <q-card class="q-pa-md q-mb-lg my-card bg-secondary" style="width: 100%">
                         <q-card-section>
                             <!-- <div class="grow-1 column bg-primary">
@@ -37,17 +44,27 @@
                                     />
                                 </div>
                                 <!-- <div class="grow-3 text-left col-6 text-h4 text-subheadcolour"> -->
-                                <div class="grow-3 text-left col text-h4 text-subheadcolour">
+                                <div class="grow-3 text-left col text-h5 text-subheadcolour column q-gutter-sm self-start">
                                     <div>
                                         {{ medi.medicine_name }}
                                     </div>
-                                    <div class="text-h6">
+                                    <div v-if="medi.medicine_desc.length >= 100">
+                                        <div class="text-h6" v-if="!medi.readActivated">
+                                            {{ medi.medicine_desc.slice(0,100)}}...<span class="read desc" 
+               v-if="!medi.readActivated" @click="activateReadMore(medi)">read more</span>
+                                        </div>
+                                        <div class="text-h6" v-if="medi.readActivated">
+                                            {{ medi.medicine_desc }} <span class="read desc" 
+               v-if="medi.readActivated" @click="deactivateReadMore(medi)">read less</span>
+                                        </div>
+                                    </div>
+                                    <div v-else class="text-h6">
                                         {{ medi.medicine_desc }}
                                     </div>
                                     <div class="text-h5">
                                         RM{{ medi.medicine_price.toFixed(2) }}
                                     </div>
-
+                                    
                                 </div>
                                 <!-- <div v-if="roleid == '1'" class="col-2">
                                     <div class="column">
@@ -95,7 +112,19 @@
 
                     </q-card-section>
                 </q-card> -->
+                <div class="flex flex-center">
+                    <q-pagination
+                      v-model="page"
+                      :min="currentPage"
+                      :max="Math.ceil(searchBarFilter.length/totalPages)"
+                      direction-links
+                      flat
+                      color="black"
+                      active-color="blue"
+                      size="20px"
+                    />
 
+                </div>
             </q-card-section>
         </q-card>
 
@@ -159,7 +188,12 @@ export default {
             // user:[],
             // user: ref(userdetails.user),
             // userdetails
-            roleid: ""
+            roleid: "",
+            readActivated: false,
+            page: 1,
+            currentPage:1,
+            totalPages:4,
+            search: "",
             
             
         }
@@ -168,12 +202,36 @@ export default {
     //     let user = await this.$auth.getUserid();
     //     // console.log(this.users);
     // },
+    computed:{
+		getData(){ //for pagination
+			return this.medicines.slice((this.page-1)*this.totalPages,(this.page-1)*this.totalPages+this.totalPages)
+		},
+        searchBarFilter(){ //for search bar
+            return this.medicines.filter(medicine => {
+                return ((medicine.medicine_name.toLowerCase().includes(this.search.toLowerCase())) ||
+                (medicine.medicine_desc.toLowerCase().includes(this.search.toLowerCase())))
+            })
+        },
+        filteredList() { //pagination + search bar
+            let filteredMed = this.medicines.filter(medicine => {
+                return ((medicine.medicine_name.toLowerCase().includes(this.search.toLowerCase())) ||
+                (medicine.medicine_desc.toLowerCase().includes(this.search.toLowerCase())))
+            });
+            return filteredMed.slice((this.page-1)*this.totalPages,(this.page-1)*this.totalPages+this.totalPages)
+        },
+	},
     created() {
         this.getMedicines();
         // this.getUserid();
         // this.roleid = this.$route.query.roleid
     },
     methods: {
+        activateReadMore(medi){
+            medi.readActivated = true;
+        },
+        deactivateReadMore(medi){
+            medi.readActivated = false;
+        },
         visitEditPage(medId) {
             console.log(medId);
             this.$router.push({

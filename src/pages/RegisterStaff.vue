@@ -3,7 +3,7 @@
       <q-card class="my-card bg-secondary" style="width: 700px">
         <q-card-section>
           <div class="q-my-md text-h4 text-center text-headingcolour">
-            Register Account
+            Register Staff Account
           </div>
           <div class="q-pa-lg">
             <div style="width: 100%">
@@ -57,13 +57,12 @@
                     ]"
                 />
 
-                <q-card flat class="q-pa-sm ">
+                <!-- <q-card flat class="q-pa-sm ">
                     <div class="text-primary text-h6 q-px-sm">
-                        Choose Your Role:
+                        Your Role:
                     </div>
-                <q-radio name="role" v-model="form.role_id" val="1" label="Covid-19 Patient" />
-                <q-radio name="role" v-model="form.role_id" val="2" label="Family/Friends" />
-                </q-card>
+                <q-radio name="role" v-model="form.role_id" val="3" label="Medical Staff" />
+                </q-card> -->
 
                 <InputField class="q-pt-md" v-if="form.role_id==1"
                     v-model="form.quarantine_day"
@@ -95,21 +94,12 @@
                   <q-btn
                     color="btn"
                     text-color="btn"
-                    label="Register"
+                    label="Create Staff Account"
                     :loading="isLoading"
                     type="submit"
                     ><template v-slot:loading> <q-spinner-facebook /> </template
                   ></q-btn>
                   <!-- <q-btn label="Back to Login" color="btn" text-color="btn" @click="backToLogin()"/> -->
-                  <div>Already have an account? 
-                  <span
-                    id="hover"
-                    class="text-center cursor-pointer"
-                    @click="backToLogin()"
-                  >
-                    Back to login.
-                    </span>
-                  </div>
                   <!-- <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" /> -->
                 </div>
               </q-form>
@@ -134,6 +124,9 @@
 import InputField from "../components/InputField.vue";
   
   export default {
+    created(){
+        // this.form.role_id == 3;
+    },
     data() {
         return {
             form: {
@@ -141,7 +134,7 @@ import InputField from "../components/InputField.vue";
                 email: "",
                 password: "",
                 tel_no: "",
-                role_id: 0,
+                role_id: 3,
                 quarantine_day: "",
             },
             cpassword: "",
@@ -163,7 +156,7 @@ import InputField from "../components/InputField.vue";
                 // Cookies.set("token", res.data.token, config);
                 console.log(this.form);
                 this.$q.notify("Account created successfully");
-                this.$router.push("/");
+                this.backToManageAcc();
                 
             }
             catch (e) {
@@ -179,10 +172,10 @@ import InputField from "../components/InputField.vue";
         inSubmit() {
             console.log("Hello");
         },
-        backToLogin() {
+        backToManageAcc() {
             console.log();
             this.$router.push({
-                name: "login"
+                name: "manage-account"
             });
     },
         // setup() {

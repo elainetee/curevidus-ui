@@ -30,9 +30,9 @@
                             val => val && val.length > 0 || 'Please key in medicine description'
                         ]" />
 
-                    <q-input filled bg-color="white" v-model="medicine.medicine_price" label="Price (RM) *" lazy-rules
+                    <q-input class="q-pb-sm" filled bg-color="white" v-model="medicine.medicine_price" label="Price (RM) *" lazy-rules
                         :rules="[
-                            val => val.length > 0 || 'Please key in the price for medicine',
+                            val => val && val.length > 0 || 'Please key in the price for medicine',
                             val => val > 0 || 'Please key in a valid price'
                         ]" />
                     
