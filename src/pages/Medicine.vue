@@ -11,7 +11,7 @@
 
         <q-card class="q-px-xl q-py-md my-card bg-info" style="width: 70%">
             <q-card-section>
-                <div v-for="medi in medicines" :key="medi.medicine_id">
+                <div v-for="medi in getData" :key="medi.medicine_id">
                     <q-card class="q-pa-md q-mb-lg my-card bg-secondary" style="width: 100%">
                         <q-card-section>
                             <!-- <div class="grow-1 column bg-primary">
@@ -105,7 +105,19 @@
 
                     </q-card-section>
                 </q-card> -->
+                <div class="flex flex-center">
+                    <q-pagination
+                      v-model="page"
+                      :min="currentPage"
+                      :max="Math.ceil(medicines.length/totalPages)"
+                      direction-links
+                      flat
+                      color="black"
+                      active-color="blue"
+                      size="20px"
+                    />
 
+                </div>
             </q-card-section>
         </q-card>
 
@@ -171,6 +183,10 @@ export default {
             // userdetails
             roleid: "",
             readActivated: false,
+            page: 1,
+            currentPage:1,
+            // nextPage: null,
+            totalPages:4,
             
             
         }
@@ -179,6 +195,11 @@ export default {
     //     let user = await this.$auth.getUserid();
     //     // console.log(this.users);
     // },
+    computed:{
+		getData(){
+			return this.medicines.slice((this.page-1)*this.totalPages,(this.page-1)*this.totalPages+this.totalPages)
+		}
+	},
     created() {
         this.getMedicines();
         // this.getUserid();
