@@ -28,15 +28,15 @@
           >
             Medicine
           </div>
-          <div
+          <div v-if="store.user.role_id == '1'"
             class="q-mr-xl"
             @click="
               $router.push({ name: 'report', params: { id: store.user.id } })
             "
           >
+          Condition Report
+        </div>
           <!-- <div class="q-mr-xl" @click="$router.push({ name: 'report', params: { id: user.id } })"> -->
-            Condition Report
-          </div>
           
           <!-- <div class="q-mr-xl" v-if="user.role_id == '3'" @click="$router.push({ name: 'medicine', query: {roleid: this.user.role_id }})">Medicine</div> -->
           <div class="q-mr-xl" v-if="store.user.role_id == '1'" @click="$router.push({ name: 'medicinepat', query: {roleid: this.store.user.role_id }})">Medicine</div>
@@ -44,7 +44,7 @@
           <div class="q-mr-xl" v-if="store.user.role_id == '1'" @click="$router.push({ name: 'cart'})">My Cart</div>
           <div class="q-mr-xl" v-if="store.user.role_id == '3'" @click="$router.push({ name: 'order'})">Orders</div>
           
-          <div class="q-mr-xl" v-if="store.user.role_id == '3'">Patients</div>
+          <!-- <div class="q-mr-xl" v-if="store.user.role_id == '3'">Patients</div> -->
           <!-- <div class="q-mr-xl" v-if="user.role_id == '3'">Patients</div> -->
           <div class="q-mr-xl" @click="$router.push({ name: 'friend' })" v-else>
             Friends
@@ -83,11 +83,11 @@
         </q-btn> -->{{ store.user.name }}
         <div class="q-pr-xl cursor-pointer non-selectable">
           <q-avatar round size="30px">
-            <q-img v-if="store.user.avatar != ''" :src="store.user.avatar" />
-            <q-img v-else src="../../public/icons/userdd.png" />
-            <q-badge floating color="grey">
+            <q-img v-if="store.user.avatar != null" :src="store.user.avatar" />
+            <q-img v-else src="icons/userdd.png" />
+            <!-- <q-badge floating color="grey">
               <q-icon name="expand_more" color="white"
-            /></q-badge>
+            /></q-badge> -->
             <q-menu auto-close>
               <q-list dense style="min-width: 100px">
                 <q-item clickable>

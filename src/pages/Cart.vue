@@ -141,7 +141,10 @@
             </q-tab-panel>
             <q-tab-panel name="history" class="bg-secondary">
                 <q-card flat class=" my-card bg-secondary" style="width: 100%">
-                    <q-list>
+                    <div v-if="history.length == 0" class="text-h6">
+                        No order history yet.
+                    </div>
+                    <q-list v-else>
                         <q-separator></q-separator>
                         <q-item class="q-py-md text-h6 text-bold">
                             <q-item-section class="col-3">

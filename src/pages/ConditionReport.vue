@@ -1,21 +1,30 @@
 <template>
     <q-page class="column items-center">
         <div class="q-mb-md full-width">
-            <div class="text-h4 text-center text-subheadcolour">
+            <div v-if="store.user.id==this.$route.params.id" class="text-h4 text-center text-subheadcolour">
                 My Condition Report
                 <!-- <div class="text-h5 text-subheadcolour">
                     Day 5 of Quarantine
                 </div> -->
             </div>
-            <div class="column items-center q-my-md">
+            <div v-else class="text-h4 text-center text-subheadcolour">
+                {{userToView.name}}'s Condition Report
+                <!-- <div class="text-h5 text-subheadcolour">
+                    Day 5 of Quarantine
+                </div> -->
+            </div>
+            <div v-if="store.user.id==this.$route.params.id" class="column items-center q-my-md">
                 <q-btn label="Update Condition" color="btn" text-color="btn"
                     @click="visitUpdatePage(this.$route.params.id)" style="width: 15%" />
             </div>
         </div>
 
-        <q-card class="q-px-xl q-py-md my-card bg-info" style="width: 70%">
+        <q-card class="q-px-xl q-pt-md my-card bg-info" style="width: 70%">
             <q-card-section>
-                <div v-for="condition in conditions" :key="condition.id">
+                <div v-if="conditions.length==0" class="text-h6 q-pb-md">
+                    No condition updated yet.
+                </div>
+                <div v-else v-for="condition in getData" :key="condition.id">
                     <q-card class="q-pa-md q-mb-lg my-card bg-secondary" style="width: 100%">
                         <q-card-section>
                             <div class="row ">
@@ -30,6 +39,7 @@
                         </q-card-section>
                     </q-card>
                 </div>
+                
                 <!-- <q-card class="q-pa-md my-card bg-secondary" style="width: 100%">
                     <q-card-section>
                         <div class="row ">
@@ -46,6 +56,19 @@
 
             </q-card-section>
         </q-card>
+        <div class="flex flex-center">
+                    <q-pagination
+                      v-model="page"
+                      :min="currentPage"
+                      :max="Math.ceil(conditions.length/totalPages)"
+                      direction-links
+                      flat
+                      color="black"
+                      active-color="blue"
+                      size="20px"
+                    />
+
+                </div>
 
         <div v-for="condition in conditions" :key="condition.id">
             <q-dialog v-model="condition.fixed">
@@ -92,6 +115,7 @@
 <script>
 import { ref } from 'vue';
 import { Cookies } from "quasar";
+import { store } from "../store.js";
 
 export default {
     setup() {
@@ -101,6 +125,7 @@ export default {
     },
     data() {
         return {
+            store,
             // condition: {
             //     condition_date: "",
             //     condition_symptoms: "",
@@ -110,10 +135,20 @@ export default {
             // },
             conditions: [],
             users: [],
+            userToView: [],
+            page: 1,
+            currentPage:1,
+            totalPages:8,
         };
     },
+    computed:{
+		getData(){
+			return this.conditions.slice((this.page-1)*this.totalPages,(this.page-1)*this.totalPages+this.totalPages)
+		}
+	},
     created() {
         this.getConditions();
+        this.getUserWithId(this.$route.params.id);
     },
 
     methods: {
@@ -122,6 +157,13 @@ export default {
             .then(response => {
                 this.conditions = response.data;
                 console.log(this.conditions);
+            });
+        },
+        getUserWithId(userId) {
+            this.$axios.get(`http://127.0.0.1:8000/api/getuser/` + userId)
+            .then(response => {
+                this.userToView = response.data;
+                console.log(this.userToView);
             });
         },
         async getUser() {
