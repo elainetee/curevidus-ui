@@ -37,17 +37,27 @@
                                     />
                                 </div>
                                 <!-- <div class="grow-3 text-left col-6 text-h4 text-subheadcolour"> -->
-                                <div class="grow-3 text-left col text-h4 text-subheadcolour">
+                                <div class="grow-3 text-left col text-h5 text-subheadcolour column q-gutter-sm self-start">
                                     <div>
                                         {{ medi.medicine_name }}
                                     </div>
-                                    <div class="text-h6">
+                                    <div v-if="medi.medicine_desc.length >= 100">
+                                        <div class="text-h6" v-if="!medi.readActivated">
+                                            {{ medi.medicine_desc.slice(0,100)}}...<span class="read desc" 
+               v-if="!medi.readActivated" @click="activateReadMore(medi)">read more</span>
+                                        </div>
+                                        <div class="text-h6" v-if="medi.readActivated">
+                                            {{ medi.medicine_desc }} <span class="read desc" 
+               v-if="medi.readActivated" @click="deactivateReadMore(medi)">read less</span>
+                                        </div>
+                                    </div>
+                                    <div v-else class="text-h6">
                                         {{ medi.medicine_desc }}
                                     </div>
                                     <div class="text-h5">
                                         RM{{ medi.medicine_price.toFixed(2) }}
                                     </div>
-
+                                    
                                 </div>
                                 <!-- <div v-if="roleid == '1'" class="col-2">
                                     <div class="column">
@@ -159,7 +169,8 @@ export default {
             // user:[],
             // user: ref(userdetails.user),
             // userdetails
-            roleid: ""
+            roleid: "",
+            readActivated: false,
             
             
         }
@@ -174,6 +185,12 @@ export default {
         // this.roleid = this.$route.query.roleid
     },
     methods: {
+        activateReadMore(medi){
+            medi.readActivated = true;
+        },
+        deactivateReadMore(medi){
+            medi.readActivated = false;
+        },
         visitEditPage(medId) {
             console.log(medId);
             this.$router.push({
