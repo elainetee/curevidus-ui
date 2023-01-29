@@ -185,7 +185,6 @@ export default {
             readActivated: false,
             page: 1,
             currentPage:1,
-            // nextPage: null,
             totalPages:4,
             
             

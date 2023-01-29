@@ -14,7 +14,7 @@
 
         <q-card class="q-px-xl q-py-md my-card bg-info" style="width: 70%">
             <q-card-section>
-                <div v-for="medi in medicines" :key="medi.medicine_id">
+                <div v-for="medi in getData" :key="medi.medicine_id">
                     <q-card class="q-pa-md q-mb-lg my-card bg-secondary" style="width: 100%">
                         <q-card-section>
                             <!-- <div class="grow-1 column bg-primary">
@@ -108,7 +108,19 @@
 
                     </q-card-section>
                 </q-card> -->
+                <div class="flex flex-center">
+                    <q-pagination
+                      v-model="page"
+                      :min="currentPage"
+                      :max="Math.ceil(medicines.length/totalPages)"
+                      direction-links
+                      flat
+                      color="black"
+                      active-color="blue"
+                      size="20px"
+                    />
 
+                </div>
             </q-card-section>
         </q-card>
 
@@ -176,10 +188,16 @@ export default {
             normalMsg: "Medicine added to cart successfully",
             errorMsg: "Medicine already exists in cart",
             readActivated: false,
-            
-            
+            page: 1,
+            currentPage:1,
+            totalPages:4,
         }
     },
+    computed:{
+		getData(){
+			return this.medicines.slice((this.page-1)*this.totalPages,(this.page-1)*this.totalPages+this.totalPages)
+		}
+	},
     // async mounted(){
     //     this.getUsername();
     //     console.log(this.users);

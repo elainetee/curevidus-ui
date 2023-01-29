@@ -19,12 +19,12 @@
             </div>
         </div>
 
-        <q-card class="q-px-xl q-py-md my-card bg-info" style="width: 70%">
+        <q-card class="q-px-xl q-pt-md my-card bg-info" style="width: 70%">
             <q-card-section>
-                <div v-if="conditions.length==0" class="text-h6">
+                <div v-if="conditions.length==0" class="text-h6 q-pb-md">
                     No condition updated yet.
                 </div>
-                <div v-else v-for="condition in conditions" :key="condition.id">
+                <div v-else v-for="condition in getData" :key="condition.id">
                     <q-card class="q-pa-md q-mb-lg my-card bg-secondary" style="width: 100%">
                         <q-card-section>
                             <div class="row ">
@@ -39,6 +39,7 @@
                         </q-card-section>
                     </q-card>
                 </div>
+                
                 <!-- <q-card class="q-pa-md my-card bg-secondary" style="width: 100%">
                     <q-card-section>
                         <div class="row ">
@@ -55,6 +56,19 @@
 
             </q-card-section>
         </q-card>
+        <div class="flex flex-center">
+                    <q-pagination
+                      v-model="page"
+                      :min="currentPage"
+                      :max="Math.ceil(conditions.length/totalPages)"
+                      direction-links
+                      flat
+                      color="black"
+                      active-color="blue"
+                      size="20px"
+                    />
+
+                </div>
 
         <div v-for="condition in conditions" :key="condition.id">
             <q-dialog v-model="condition.fixed">
@@ -122,8 +136,16 @@ export default {
             conditions: [],
             users: [],
             userToView: [],
+            page: 1,
+            currentPage:1,
+            totalPages:8,
         };
     },
+    computed:{
+		getData(){
+			return this.conditions.slice((this.page-1)*this.totalPages,(this.page-1)*this.totalPages+this.totalPages)
+		}
+	},
     created() {
         this.getConditions();
         this.getUserWithId(this.$route.params.id);

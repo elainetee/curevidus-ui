@@ -29,7 +29,7 @@
                             </q-item-section>
                         </q-item>
                         <q-separator style="height: 2px"/>
-                        <div v-for="o in order" :key="o.order_id">
+                        <div v-for="o in getData" :key="o.order_id">
                         <q-item class="q-py-md text-h5 text-bold">
                             <q-item-section class="col-1">
                                 {{ o.order_id }}
@@ -63,7 +63,19 @@
                         <q-separator></q-separator>
                     </div>
                 </q-list>
-                </q-card>
+            </q-card>
+            <div class="flex flex-center">
+                <q-pagination
+                  v-model="page"
+                  :min="currentPage"
+                  :max="Math.ceil(order.length/totalPages)"
+                  direction-links
+                  flat
+                  color="black"
+                  active-color="blue"
+                  size="20px"
+                />
+            </div>
         
         <div v-for="o in order" :key="o.order_id">
             <q-dialog v-model="o.hMed" >
@@ -138,6 +150,7 @@
                                 </div>
                             </q-item-section>
                         </q-list>
+                        
                     </q-card-section>
                     <q-separator />
                     <q-card-actions align="right">
@@ -175,10 +188,18 @@ export default {
             roleid: "",
             totalQty: 0,
             totalQtyCheckout: 0,
-            stringOptions
+            stringOptions,
+            page: 1,
+            currentPage:1,
+            totalPages:8,
             
         }
     },
+    computed:{
+		getData(){
+			return this.order.slice((this.page-1)*this.totalPages,(this.page-1)*this.totalPages+this.totalPages)
+		}
+	},
     created() {
         this.getOrder();
         this.getHistory();
