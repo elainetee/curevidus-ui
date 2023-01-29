@@ -7,11 +7,18 @@
             <div class="column items-center q-my-md">
                 <q-btn label="Add Medicine" color="btn" text-color="btn" @click="visitAddPage()" style="width: 15%" />
             </div>
+            <div class="flex flex-center column" style="width: 80%">
+                <q-input class="self-end" dense debounce="400" color="primary" v-model="search">
+                      <template v-slot:append>
+                        <q-icon name="search" />
+                      </template>
+                </q-input>
+            </div>
         </div>
 
         <q-card class="q-px-xl q-py-md my-card bg-info" style="width: 70%">
             <q-card-section>
-                <div v-for="medi in getData" :key="medi.medicine_id">
+                <div v-for="medi in filteredList" :key="medi.medicine_id">
                     <q-card class="q-pa-md q-mb-lg my-card bg-secondary" style="width: 100%">
                         <q-card-section>
                             <!-- <div class="grow-1 column bg-primary">
@@ -109,7 +116,7 @@
                     <q-pagination
                       v-model="page"
                       :min="currentPage"
-                      :max="Math.ceil(medicines.length/totalPages)"
+                      :max="Math.ceil(searchBarFilter.length/totalPages)"
                       direction-links
                       flat
                       color="black"
@@ -186,6 +193,7 @@ export default {
             page: 1,
             currentPage:1,
             totalPages:4,
+            search: "",
             
             
         }
@@ -195,9 +203,22 @@ export default {
     //     // console.log(this.users);
     // },
     computed:{
-		getData(){
+		getData(){ //for pagination
 			return this.medicines.slice((this.page-1)*this.totalPages,(this.page-1)*this.totalPages+this.totalPages)
-		}
+		},
+        searchBarFilter(){ //for search bar
+            return this.medicines.filter(medicine => {
+                return ((medicine.medicine_name.toLowerCase().includes(this.search.toLowerCase())) ||
+                (medicine.medicine_desc.toLowerCase().includes(this.search.toLowerCase())))
+            })
+        },
+        filteredList() { //pagination + search bar
+            let filteredMed = this.medicines.filter(medicine => {
+                return ((medicine.medicine_name.toLowerCase().includes(this.search.toLowerCase())) ||
+                (medicine.medicine_desc.toLowerCase().includes(this.search.toLowerCase())))
+            });
+            return filteredMed.slice((this.page-1)*this.totalPages,(this.page-1)*this.totalPages+this.totalPages)
+        },
 	},
     created() {
         this.getMedicines();

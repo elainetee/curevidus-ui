@@ -7,6 +7,14 @@
                     Day 5 of Quarantine
                 </div> -->
             </div>
+            <div class="flex flex-center column" style="width: 80%">
+                <q-input class="self-end" dense debounce="400" color="primary" v-model="search">
+                      <template v-slot:append>
+                        <q-icon name="search" />
+                      </template>
+                </q-input>
+
+            </div>
             <!-- <div class="column items-center q-my-md">
                 <q-btn label="Add Medicine" color="btn" text-color="btn" @click="visitAddPage()" style="width: 15%" />
             </div> -->
@@ -14,86 +22,88 @@
 
         <q-card class="q-px-xl q-py-md my-card bg-info" style="width: 70%">
             <q-card-section>
-                <div v-for="medi in getData" :key="medi.medicine_id">
-                    <q-card class="q-pa-md q-mb-lg my-card bg-secondary" style="width: 100%">
-                        <q-card-section>
-                            <!-- <div class="grow-1 column bg-primary">
-                                    <q-img
-                                        :src="'http://127.0.0.1:8000/storage/uploads/' + medi.medicine_photo_name"
-                                        :ratio="4/3"
-                                        style="height: 140px; max-width: 150px"
-                                    />
-                                </div> -->
-                            <div class="row items-center q-gutter-md">
-                                <div v-if="medi.medicine_photo_name != null" class="col-3">
-                                    <q-img
-                                        :src="'http://127.0.0.1:8000/storage/uploads/' + medi.medicine_photo_name"
-                                        :ratio="4/3"
-                                        style="height: 190px; max-width: 200px"
-                                    />
-                                </div>
-                                <div v-if="medi.medicine_photo_name == null" class="col-3">
-                                    <q-img
-                                        :src="'https://img.kpopmap.com/wp-content/uploads_kpopmap/2017/09/chanyeol-min-1.jpg'"
-                                        :ratio="4/3"
-                                        style="height: 190px; max-width: 200px"
-                                    />
-                                </div>
-                                <!-- <div class="grow-3 text-left col-6 text-h4 text-subheadcolour"> -->
-                                    <div class="grow-3 text-left col text-h5 text-subheadcolour column q-gutter-sm self-start">
-                                    <div>
-                                        {{ medi.medicine_name }}
+                <div v-for="medi in filteredList" :key="medi.medicine_id">
+                    <!-- <div v-for="medi in getData" :key="medi.medicine_id"> -->
+                        <q-card class="q-pa-md q-mb-lg my-card bg-secondary" style="width: 100%">
+                            <q-card-section>
+                                <!-- <div class="grow-1 column bg-primary">
+                                        <q-img
+                                            :src="'http://127.0.0.1:8000/storage/uploads/' + medi.medicine_photo_name"
+                                            :ratio="4/3"
+                                            style="height: 140px; max-width: 150px"
+                                        />
+                                    </div> -->
+                                <div class="row items-center q-gutter-md">
+                                    <div v-if="medi.medicine_photo_name != null" class="col-3">
+                                        <q-img
+                                            :src="'http://127.0.0.1:8000/storage/uploads/' + medi.medicine_photo_name"
+                                            :ratio="4/3"
+                                            style="height: 190px; max-width: 200px"
+                                        />
                                     </div>
-                                    <div v-if="medi.medicine_desc.length >= 100">
-                                        <div class="text-h6" v-if="!medi.readActivated">
-                                            {{ medi.medicine_desc.slice(0,100)}}...<span class="read desc" 
-               v-if="!medi.readActivated" @click="activateReadMore(medi)">read more</span>
+                                    <div v-if="medi.medicine_photo_name == null" class="col-3">
+                                        <q-img
+                                            :src="'https://img.kpopmap.com/wp-content/uploads_kpopmap/2017/09/chanyeol-min-1.jpg'"
+                                            :ratio="4/3"
+                                            style="height: 190px; max-width: 200px"
+                                        />
+                                    </div>
+                                    <!-- <div class="grow-3 text-left col-6 text-h4 text-subheadcolour"> -->
+                                        <div class="grow-3 text-left col text-h5 text-subheadcolour column q-gutter-sm self-start">
+                                        <div>
+                                            {{ medi.medicine_name }}
                                         </div>
-                                        <div class="text-h6" v-if="medi.readActivated">
-                                            {{ medi.medicine_desc }} <span class="read desc" 
-               v-if="medi.readActivated" @click="deactivateReadMore(medi)">read less</span>
+                                        <div v-if="medi.medicine_desc.length >= 100">
+                                            <div class="text-h6" v-if="!medi.readActivated">
+                                                {{ medi.medicine_desc.slice(0,100)}}...<span class="read desc" 
+                   v-if="!medi.readActivated" @click="activateReadMore(medi)">read more</span>
+                                            </div>
+                                            <div class="text-h6" v-if="medi.readActivated">
+                                                {{ medi.medicine_desc }} <span class="read desc" 
+                   v-if="medi.readActivated" @click="deactivateReadMore(medi)">read less</span>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div v-else class="text-h6">
-                                        {{ medi.medicine_desc }}
-                                    </div>
-                                    <div class="text-h5">
-                                        RM{{ medi.medicine_price.toFixed(2) }}
-                                    </div>
-                                    
-                                </div>
-                                <div class="col-2">
-                                    <div class="column">
-                                    
-                                        <q-btn label="Add to cart" color="btn-grey" @click="addToCart(medi.medicine_id)" text-color="btn"/>
-                                    </div>
-                                </div>
-                                <!-- <div class="col-2">
-                                    <div class="column">
-                                    
-                                    <q-btn label="Edit" color="btn-grey" @click="visitEditPage(medi.medicine_id)" text-color="btn"/>
+                                        <div v-else class="text-h6">
+                                            {{ medi.medicine_desc }}
+                                        </div>
+                                        <div class="text-h5">
+                                            RM{{ medi.medicine_price.toFixed(2) }}
+                                        </div>
                                         
-                                    <div class="q-pa-sm"></div>
-                                    <q-btn label="Delete" color="red-10" @click="medi.confirm = true"/>
+                                    </div>
+                                    <div class="col-2">
+                                        <div class="column">
+                                        
+                                            <q-btn label="Add to cart" color="btn-grey" @click="addToCart(medi.medicine_id)" text-color="btn"/>
+                                        </div>
+                                    </div>
+                                    <!-- <div class="col-2">
+                                        <div class="column">
+                                        
+                                        <q-btn label="Edit" color="btn-grey" @click="visitEditPage(medi.medicine_id)" text-color="btn"/>
+                                            
+                                        <div class="q-pa-sm"></div>
+                                        <q-btn label="Delete" color="red-10" @click="medi.confirm = true"/>
+                                    </div>
+                                    <q-dialog v-model="medi.confirm" persistent>
+                                      <q-card>
+                                        <q-card-section class="row items-center">
+                                          
+                                          <span class="q-ml-sm">Are you sure you want to delete this medicine?</span>
+                                        </q-card-section>
+    
+                                        <q-card-actions align="right">
+                                          <q-btn flat label="No" color="primary" v-close-popup />
+                                          <q-btn flat label="Yes, delete" color="primary" @click="deleteMedicine(medi.medicine_id)" />
+                                        </q-card-actions>
+                                      </q-card>
+                                    </q-dialog>
+                                </div> -->
                                 </div>
-                                <q-dialog v-model="medi.confirm" persistent>
-                                  <q-card>
-                                    <q-card-section class="row items-center">
-                                      
-                                      <span class="q-ml-sm">Are you sure you want to delete this medicine?</span>
-                                    </q-card-section>
-
-                                    <q-card-actions align="right">
-                                      <q-btn flat label="No" color="primary" v-close-popup />
-                                      <q-btn flat label="Yes, delete" color="primary" @click="deleteMedicine(medi.medicine_id)" />
-                                    </q-card-actions>
-                                  </q-card>
-                                </q-dialog>
-                            </div> -->
-                            </div>
-
-                        </q-card-section>
-                    </q-card>
+    
+                            </q-card-section>
+                        </q-card>
+                    <!-- </div> -->
                 </div>
                 <!-- <q-card class="q-pa-md my-card bg-secondary" style="width: 100%">
                     <q-card-section>
@@ -112,7 +122,7 @@
                     <q-pagination
                       v-model="page"
                       :min="currentPage"
-                      :max="Math.ceil(medicines.length/totalPages)"
+                      :max="Math.ceil(searchBarFilter.length/totalPages)"
                       direction-links
                       flat
                       color="black"
@@ -191,12 +201,27 @@ export default {
             page: 1,
             currentPage:1,
             totalPages:4,
+            search: "",
+            filteredMed: [],
         }
     },
     computed:{
-		getData(){
+		getData(){ //for pagination
 			return this.medicines.slice((this.page-1)*this.totalPages,(this.page-1)*this.totalPages+this.totalPages)
-		}
+		},
+        searchBarFilter(){ //for search bar
+            return this.medicines.filter(medicine => {
+                return ((medicine.medicine_name.toLowerCase().includes(this.search.toLowerCase())) ||
+                (medicine.medicine_desc.toLowerCase().includes(this.search.toLowerCase())))
+            })
+        },
+        filteredList() { //pagination + search bar
+            let filteredMed = this.medicines.filter(medicine => {
+                return ((medicine.medicine_name.toLowerCase().includes(this.search.toLowerCase())) ||
+                (medicine.medicine_desc.toLowerCase().includes(this.search.toLowerCase())))
+            });
+            return filteredMed.slice((this.page-1)*this.totalPages,(this.page-1)*this.totalPages+this.totalPages)
+        },
 	},
     // async mounted(){
     //     this.getUsername();
