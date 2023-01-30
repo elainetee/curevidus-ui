@@ -36,13 +36,13 @@
               label="Quarantine Day"
               :rules="[(v) => v !== '' || 'This field is required']"
             ></q-input>
-            <q-input
+            <!-- <q-input
               class="q-mt-md q-mr-sm"
               v-model="user.vac_status"
               filled
               label="Vaccination status"
               :rules="[(v) => v !== '' || 'This field is required']"
-            ></q-input>
+            ></q-input> -->
           </div>
           <div class="row justify-center">
             <q-btn
