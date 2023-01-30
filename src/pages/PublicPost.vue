@@ -121,7 +121,11 @@
                       v-close-popup
                     />
                   </q-card-section>
-
+                  <q-item-section v-if="comments.length == 0">
+                    <q-item-label class="text-body2 q-pa-md"
+                      >Comment section is empty
+                    </q-item-label>
+                  </q-item-section>
                   <q-list separator>
                     <q-item
                       v-for="comment in comments"
@@ -225,7 +229,7 @@ export default {
       };
     },
   },
-  
+
   methods: {
     visitPostPage(props) {
       console.log(props);

@@ -33,7 +33,17 @@
           </q-item-section>
 
           <q-item-section side>
-            <q-icon name="video_call" @click="placeCall(user.id, user.name)" />
+            <q-icon
+              v-if="getUserOnlineStatus(user.id) == 'Online'"
+              color="green"
+              name="video_call"
+              @click="placeCall(user.id, user.name)"
+            />            <q-icon
+              v-else
+              color="red"
+              name="video_call"
+              @click="placeCall(user.id, user.name)"
+            />
             <span class="badge badge-light">{{
               getUserOnlineStatus(user.id)
             }}</span>
@@ -53,21 +63,13 @@
             Incoming Call From <strong>{{ incomingCaller }}</strong>
           </p>
           <div class="btn-group" role="group">
-            <button
-              type="button"
-              class="btn btn-danger"
-              data-dismiss="modal"
+            <q-btn square color="green" icon="call" @click="acceptCall" />
+            <q-btn
+              square
+              color="red"
+              icon="phone_disabled"
               @click="declineCall"
-            >
-              Decline
-            </button>
-            <button
-              type="button"
-              class="btn btn-success ml-5"
-              @click="acceptCall"
-            >
-              Accept
-            </button>
+            />
           </div>
         </div>
       </div>
@@ -215,21 +217,25 @@ export default {
 
     async placeCall(id, calleeName) {
       try {
-        // channelName = the caller's and the callee's id. you can use anything. tho.
-        const channelName = `${this.store.user.name}_${calleeName}`;
-        const tokenRes = await this.generateToken(channelName);
-        // Broadcasts a call event to the callee and also gets back the token
-        await this.$axios.post(
-          `http://127.0.0.1:8000/api/agora/call-user`,
-          {
-            user_to_call: id,
-            channel_name: channelName,
-          },
-          { headers: { Authorization: "Bearer" + Cookies.get("token") } }
-        );
+        if (this.getUserOnlineStatus(id) == "Offline") {
+          alert("User offline, couldn't place a call");
+        } else {
+          // channelName = the caller's and the callee's id. you can use anything. tho.
+          const channelName = `${this.store.user.name}_${calleeName}`;
+          const tokenRes = await this.generateToken(channelName);
+          // Broadcasts a call event to the callee and also gets back the token
+          await this.$axios.post(
+            `http://127.0.0.1:8000/api/agora/call-user`,
+            {
+              user_to_call: id,
+              channel_name: channelName,
+            },
+            { headers: { Authorization: "Bearer" + Cookies.get("token") } }
+          );
 
-        this.initializeAgora();
-        this.joinRoom(tokenRes.data, channelName);
+          this.initializeAgora();
+          this.joinRoom(tokenRes.data, channelName);
+        }
       } catch (error) {
         console.log(error);
       }
@@ -310,6 +316,7 @@ export default {
           console.log("Subscribe stream failed", err);
         });
       });
+      peer;
 
       this.client.on("stream-subscribed", (evt) => {
         // Attach remote stream to the remote-video div

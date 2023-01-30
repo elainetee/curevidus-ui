@@ -75,9 +75,93 @@
               {{ post.content }}
             </q-item-label>
             <div class="qweet-icons row justify-between q-mt-sm">
-              <q-btn color="grey" icon="comment" size="sm" flat round>
-                <div>{{ post.comment_num }}</div>
-              </q-btn>
+              <div class="qweet-icons row justify-between q-mt-sm">
+                <q-btn
+                  @click="
+                    showComment = true;
+                    getComment(post.id);
+                    tempPost = post.id;
+                  "
+                  color="grey"
+                  icon="comment"
+                  size="sm"
+                  flat
+                  round
+                >
+                  <div>{{ post.comment_num }}</div>
+                </q-btn>
+                <!-- <q-btn
+                  @click="hidePost(post.id)"
+                  color="grey"
+                  icon="hide_source"
+                  size="sm"
+                  flat
+                  round
+                /> -->
+              </div>
+              <!-- <comment :comments="comments"></comment> -->
+              <q-dialog v-model="showComment" persistent>
+                <q-card>
+                  <q-card-section class="row">
+                    <div class="text-h6">Comment</div>
+                    <q-space />
+                    <q-btn
+                      flat
+                      round
+                      dense
+                      icon="close"
+                      type="reset"
+                      v-close-popup
+                    />
+                  </q-card-section>
+                  <q-item-section v-if="comments.length == 0">
+                    <q-item-label class="text-body2 q-pa-md"
+                      >Comment section is empty
+                    </q-item-label>
+                  </q-item-section>
+                  <q-list separator>
+                    <q-item
+                      v-for="comment in comments"
+                      :key="comment.id"
+                      class="q-py-md"
+                    >
+                      <q-item-section>
+                        <q-item-label class="text-subtitle1"
+                          ><strong>{{ comment.user_name }}</strong>
+                        </q-item-label>
+                        <q-item-label class="text-body1">
+                          {{ comment.comment_body }}
+                        </q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                  <div class="q-py-lg q-px-md row items-end q-col-gutter-md">
+                    <div class="col">
+                      <q-input
+                        v-model="comment.comment_body"
+                        class="new-comment"
+                        placeholder="Write a comment..."
+                        maxlength="280"
+                        bottom-slots
+                        counter
+                        autogrow
+                      >
+                      </q-input>
+                    </div>
+                    <div class="col col-shrink">
+                      <q-btn
+                        @click="addComment(tempPost)"
+                        class="q-mb-lg"
+                        color="primary"
+                        icon="send"
+                        rounded
+                        unelevated
+                        no-caps
+                      />
+                    </div>
+                  </div>
+                </q-card>
+              </q-dialog>
 
               <q-btn
                 color="grey"
@@ -121,6 +205,12 @@ export default {
         content: "",
       },
       posts: [],
+      comments: [],
+      comment: {
+        comment_body: "",
+      },
+      showComment: false,
+      tempPost: "",
       user: [],
       store,
     };
@@ -135,8 +225,22 @@ export default {
       });
     },
 
+    async getComment(id) {
+      try {
+        const res = await this.$axios.get(
+          `http://127.0.0.1:8000/api/comment/` + id,
+          {
+            headers: { Authorization: "Bearer" + Cookies.get("token") },
+          }
+        );
+        this.comments = res.data;
+      } catch (error) {
+        console.log(error);
+      }
+    },
+
     async deletePost(id) {
-            this.$q
+      this.$q
         .dialog({
           message: "Are you sure to delete this post?",
           cancel: true,
@@ -150,15 +254,14 @@ export default {
                 headers: { Authorization: "Bearer" + Cookies.get("token") },
               }
             );
-        // this.posts = res.data;
-        this.getPost();
-        this.$q.notify("Post deleted successfully");
+            // this.posts = res.data;
+            this.getPost();
+            this.$q.notify("Post deleted successfully");
           } catch (e) {
             console.log(e);
           }
         });
-      },
-    
+    },
 
     async getPost() {
       try {
