@@ -45,7 +45,7 @@
             >
               <template v-slot:before>
                 <q-avatar size="xl">
-                   <q-img :src="store.user.avatar" />
+                  <q-img :src="store.user.avatar" />
                 </q-avatar>
               </template>
             </q-input>
@@ -68,7 +68,7 @@
           <q-item v-for="post in posts" :key="post.id" class="q-py-md">
             <q-item-section avatar top>
               <q-avatar size="xl">
-                 <!-- <q-img :src="store.user.avatar" /> -->
+                <q-img :src="avatar(post.user.avatar)" />
               </q-avatar>
             </q-item-section>
             <q-item-section>
@@ -117,7 +117,11 @@
                       v-close-popup
                     />
                   </q-card-section>
-
+                  <q-item-section v-if="comments.length == 0">
+                    <q-item-label class="text-body2 q-pa-md"
+                      >Comment section is empty
+                    </q-item-label>
+                  </q-item-section>
                   <q-list separator>
                     <q-item
                       v-for="comment in comments"
@@ -204,6 +208,14 @@ export default {
     };
   },
 
+  computed: {
+    avatar() {
+      return (v) => {
+        return `http://127.0.0.1:8000` + v;
+      };
+    },
+  },
+
   methods: {
     visitPostPage(props) {
       console.log(props);
@@ -274,7 +286,7 @@ export default {
     async addPost() {
       try {
         const res = await this.$axios.post(
-          `http://127.0.0.1:8000/api/post/create/` + this.user.id,
+          `http://127.0.0.1:8000/api/post/create/` + this.store.user.id,
           this.post,
           { headers: { Authorization: "Bearer" + Cookies.get("token") } }
         );

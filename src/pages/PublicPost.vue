@@ -45,7 +45,11 @@
             >
               <template v-slot:before>
                 <q-avatar size="xl">
-                  <img src="icons/userdd.png" />
+                  <q-img
+                    v-if="store.user.avatar != ''"
+                    :src="store.user.avatar"
+                  />
+                  <q-img v-else src="../../public/icons/userdd.png" />
                 </q-avatar>
               </template>
             </q-input>
@@ -68,7 +72,7 @@
           <q-item v-for="post in posts" :key="post.id" class="q-py-md">
             <q-item-section avatar top>
               <q-avatar size="xl">
-                <!-- <img src="icons/userdd.png" /> -->
+                <q-img :src="avatar(post.user.avatar)" />
               </q-avatar>
             </q-item-section>
             <q-item-section>
@@ -117,7 +121,11 @@
                       v-close-popup
                     />
                   </q-card-section>
-
+                  <q-item-section v-if="comments.length == 0">
+                    <q-item-label class="text-body2 q-pa-md"
+                      >Comment section is empty
+                    </q-item-label>
+                  </q-item-section>
                   <q-list separator>
                     <q-item
                       v-for="comment in comments"
@@ -190,12 +198,15 @@
 <script>
 import { Cookies } from "quasar";
 import Comment from "../components/Comment.vue";
+import { store } from "../store.js";
+
 export default {
   // components: {
   //   Comment,
   // },
   data() {
     return {
+      store,
       post: {
         content: "",
       },
@@ -209,6 +220,14 @@ export default {
       tempPost: "",
       current: 1,
     };
+  },
+
+  computed: {
+    avatar() {
+      return (v) => {
+        return `http://127.0.0.1:8000` + v;
+      };
+    },
   },
 
   methods: {

@@ -85,7 +85,10 @@
           <q-avatar round size="30px">
             <q-img v-if="store.user.avatar != null" :src="store.user.avatar" />
             <q-img v-else src="icons/userdd.png" />
-            <!-- <q-badge floating color="grey">
+             <!-- <q-badge floating color="grey"> -->
+            <q-img v-if="store.user.avatar != ''" :src="store.user.avatar" />
+            <q-img v-else src="../../public/icons/userdd.png" />
+            <!-- <q-badge transparent floating color="grey">
               <q-icon name="expand_more" color="white"
             /></q-badge> -->
             <q-menu auto-close>
@@ -120,17 +123,21 @@
       </q-toolbar>
       <div class="q-pa-xs q-pl-md row items-center pg-bg-colour">
         <q-toolbar class="pg-bg-colour">
-          <q-btn dense flat round @click="toggleLeftDrawer">
+          <!-- <q-btn dense flat round @click="toggleLeftDrawer">
             <q-avatar square size="30px">
               <img src="icons/noti.png" />
             </q-avatar>
-          </q-btn>
+          </q-btn> -->
 
           <q-toolbar-title> </q-toolbar-title>
 
           <!-- <q-btn dense flat @click="toggleRightDrawer"> -->
           <q-btn dense flat>
-            <q-avatar square size="30px">
+            <q-avatar
+              square
+              size="30px"
+              v-if="store.user.role_id == '1' || store.user.role_id == '2'"
+            >
               <img src="icons/chat.png" @click="$router.push('/chat')" />
             </q-avatar>
           </q-btn>

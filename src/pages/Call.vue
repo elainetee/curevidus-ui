@@ -1,5 +1,18 @@
 <template>
   <q-page padding>
+            <div class="q-pa-md q-gutter-sm">
+          <q-btn
+            @click="$router.push({ name: 'friend' })"
+            color="white"
+            text-color="black"
+            label="Friendlist"
+          /><q-btn
+            @click="$router.push({ name: 'call' })"
+            color="white"
+            text-color="black"
+            label="Call"
+          />
+        </div>
     <!-- <div class="container">
       <div class="card">
         <div class="card-header">Call</div>
