@@ -28,15 +28,37 @@
         </q-card-section>
       </q-card>
     </div>
+    <q-dialog v-model="confirm" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <!-- <q-avatar icon="signal_wifi_off" color="primary" text-color="white" /> -->
+          <span class="q-ml-sm text-h6 text-center">Remember to update your condition!</span>
+        </q-card-section>
+  
+        <q-card-actions align="right">
+          <q-btn flat label="OK" color="primary" v-close-popup />
+          <!-- <q-btn flat label="Yes, delete" color="primary" @click="deleteMedicine(medi.medicine_id)" /> -->
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 <script>
 import { Cookies } from "quasar";
 import moment from "moment";
+import { store } from "../store.js";
+import { ref } from "vue";
+
 export default {
+  setup() {
+    return {
+        confirm: ref(false),
+    }
+  },
   data() {
     return {
       news: [],
+      store,
     };
   },
   methods: {
@@ -58,9 +80,17 @@ export default {
         console.log(error);
       }
     },
+    remindUpdate(){
+      this.confirm = true;
+      Cookies.set('noti', 1)
+      console.log(this.confirm);
+    }
   },
   created() {
-    // this.getNews();
+    this.getNews();
+    if((this.store.user.role_id == 1) && (Cookies.get('noti') !== 1)){
+      this.remindUpdate();
+    }
   },
   computed: {
     moment() {

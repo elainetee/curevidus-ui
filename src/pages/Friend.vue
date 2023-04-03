@@ -53,11 +53,8 @@
               <q-item-label>{{ friend.name }}</q-item-label>
               <q-item-label caption lines="1">{{ friend.email }}</q-item-label>
             </q-item-section>
-
-            <q-item-section side>
-              <q-icon name="chat_bubble" color="grey" @click="$router.push('/chat')"/>
-            </q-item-section>
-            <q-item-section side>
+            
+            <q-item-section v-if="friend.role_id == 1" side>
               <q-icon name="search" color="grey" @click="viewCondition(friend.id)"/>
               <!-- <q-btn
                   icon="search"
@@ -67,6 +64,9 @@
                   dense
                   @click="viewCondition(friend.id)"
                 /> -->
+            </q-item-section>
+            <q-item-section side>
+              <q-icon name="chat_bubble" color="grey" @click="$router.push('/chat')"/>
             </q-item-section>
           </q-item>
 
