@@ -136,7 +136,6 @@
             <q-avatar
               square
               size="30px"
-              v-if="store.user.role_id == '1' || store.user.role_id == '2'"
             >
               <img src="icons/chat.png" @click="$router.push('/chat')" />
             </q-avatar>

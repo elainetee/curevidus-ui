@@ -87,7 +87,7 @@ export default {
     }
   },
   created() {
-    // this.getNews();
+    this.getNews();
     if((this.store.user.role_id == 1) && (Cookies.get('noti') !== 1)){
       this.remindUpdate();
     }
